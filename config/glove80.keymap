@@ -36,7 +36,7 @@
 
 ////////////////////////////////
 
-#include "combos.dtsi"  // requires layer aliases
+//#include "combos.dtsi"  // requires layer aliases
 #include "mouse.dtsi"
 
 #define XXX &none
@@ -63,6 +63,38 @@
 };
 
 ////////////////////////////////////////////////////////////////
+/* mod-morph's */
+
+// reuse basic mod-morph scheme
+#define SIMPLE_MORPH(NAME, MOD, BINDING1, BINDING2) \
+    ZMK_MOD_MORPH(NAME, \
+        mods = <(MOD_L ## MOD|MOD_R ## MOD)>; \
+        bindings = <BINDING1>, <BINDING2>; \
+    )
+
+SIMPLE_MORPH(morph_comma, SFT, &kp COMMA, &kp SEMICOLON)
+SIMPLE_MORPH(morph_dot, SFT, &kp DOT, &kp COLON)
+SIMPLE_MORPH(morph_excl, SFT, &kp EXCLAMATION, &kp QMARK)
+
+SIMPLE_MORPH(morph_pars, SFT, &kp LEFT_PARENTHESIS, &kp RIGHT_PARENTHESIS)
+SIMPLE_MORPH(morph_bkts, SFT, &kp LEFT_BRACKET, &kp RIGHT_BRACKET)
+SIMPLE_MORPH(morph_brcs, SFT, &kp LEFT_BRACE, &kp RIGHT_BRACE)
+
+SIMPLE_MORPH(morph_grave_at, SFT, &kp GRAVE, &kp AT)
+SIMPLE_MORPH(morph_dollar_percent, SFT, &kp DOLLAR, &kp PERCENT)
+
+SIMPLE_MORPH(morph_equal_tile, SFT, &kp EQUAL, &kp TILDE)
+SIMPLE_MORPH(morph_mul_div, SFT, &kp ASTERISK, &kp SLASH)
+SIMPLE_MORPH(morph_add_sub, SFT, &kp PLUS, &kp MINUS)
+
+SIMPLE_MORPH(morph_lt_gt, SFT, &kp LT, &kp GT)
+SIMPLE_MORPH(morph_and_or, SFT, &kp AMPERSAND, &kp PIPE)
+SIMPLE_MORPH(morph_us_caret, SFT, &kp UNDERSCORE, &kp CARET)
+
+SIMPLE_MORPH(morph_slash_backslash, SFT, &kp SLASH, &kp BACKSLASH)
+SIMPLE_MORPH(morph_underscore_minus, SFT, &kp UNDERSCORE, &kp MINUS)
+
+////////////////////////////////////////////////////////////////
 /* Homerow mods */
 
 #define KEYS_L LT0 LT1 LT2 LT3 LT4 LM0 LM1 LM2 LM3 LM4 LB0 LB1 LB2 LB3 LB4  // left hand
@@ -82,12 +114,56 @@
 MAKE_HRM(hml, &kp, &kp, KEYS_R THUMBS)  // left-hand HRMs
 MAKE_HRM(hmr, &kp, &kp, KEYS_L THUMBS)  // right-hand HRMs
 
-////////////////////////////////
-// used for HRM-combos
+////////////////////////////////////////////////////////////////
 
-MAKE_HRM(hmr_lpar_rpar, &kp, &lpar_rpar, KEYS_L THUMBS)
-MAKE_HRM(hmr_lbkt_rbkt, &kp, &lbkt_rbkt, KEYS_L THUMBS)
-MAKE_HRM(hmr_lbrc_rbrc, &kp, &lbrc_rbrc, KEYS_L THUMBS)
+/*    KEY POSITIONS
+  ╭─────────────────────╮ ╭─────────────────────╮
+  │ LT4 LT3 LT2 LT1 LT0 │ │ RT0 RT1 RT2 RT3 RT4 │
+  │ LM4 LM3 LM2 LM1 LM0 │ │ RM0 RM1 RM2 RM3 RM4 │
+  │ LB4 LB3 LB2 LB1 LB0 │ │ RB0 RB1 RB2 RB3 RB4 │
+  ╰───────╮ LH2 LH1 LH0 │ │ RH0 RH1 RH2 ╭───────╯
+          ╰─────────────╯ ╰─────────────╯
+*/
+
+#define COMBO_TERM_FAST 18
+#define COMBO_TERM_SLOW 30
+
+#define COMBO_IDLE_FAST 150
+#define COMBO_IDLE_SLOW 50
+
+////////////////////////////////
+/* Horizontal combos - left hand */
+
+ZMK_COMBO(lt110, &morph_grave_at, LT3 LT2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(lt011, &morph_dollar_percent, LT2 LT1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(lt101, &kp HASH, LT3 LT1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+
+// ZMK_COMBO(lm110, XXX, LM3 LM2, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(lm011, XXX, LM2 LM1, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(lm101, XXX, LM3 LM1, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+
+ZMK_COMBO(lb110, &kp LC(X),   LB3 LB2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(lb011, &kp LC(INS), LB2 LB1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(lb101, &kp LS(INS), LB3 LB1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+
+////////////////////////////////
+/* Horizontal combos - right hand */
+
+ZMK_COMBO(rt110, &morph_add_sub, RT1 RT2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(rt011, &morph_mul_div, RT2 RT3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(rt101, &morph_equal_tile, RT1 RT3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+
+MAKE_HRM(hmr_1100, &kp, &morph_pars, KEYS_L THUMBS)
+ZMK_COMBO(rm110, &hmr_1100 RS(LCTRL) 0, RM1 RM2, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+MAKE_HRM(hmr_0110, &kp, &morph_bkts, KEYS_L THUMBS)
+ZMK_COMBO(rm011, &hmr_0110 LC(LALT) 0,  RM2 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+MAKE_HRM(hmr_1010, &kp, &morph_brcs, KEYS_L THUMBS)
+ZMK_COMBO(rm101, &hmr_1010 RS(LALT) 0,  RM1 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+
+ZMK_COMBO(rb110, &morph_us_caret, RB1 RB2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(rb011, &morph_and_or, RB2 RB3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(rb101, &morph_lt_gt, RB1 RB3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+
 
 ////////////////////////////////////////////////////////////////
 /* Nav cluster */
@@ -174,26 +250,6 @@ ZMK_MACRO(uc_shift,
              , <&macro_release &mo UC &kp LSHFT>;
 )
 
-// reuse basic mod-morph scheme
-#define SIMPLE_MORPH(NAME, MOD, BINDING1, BINDING2) \
-    ZMK_MOD_MORPH(NAME, \
-        mods = <(MOD_L ## MOD|MOD_R ## MOD)>; \
-        bindings = <BINDING1>, <BINDING2>; \
-    )
-
-// tap: comma | shift + tap: semicolon
-SIMPLE_MORPH(comma_morph, SFT, &kp COMMA, &kp SEMICOLON)
-// tap: dot | shift + tap: colon
-SIMPLE_MORPH(dot_morph, SFT, &kp DOT, &kp COLON)
-// tap: qmark | shift + tap: excl
-SIMPLE_MORPH(qexcl, SFT, &kp EXCL, &kp QMARK)
-// tap: left parenthesis | shft + tap: right parenthesis
-SIMPLE_MORPH(lpar_rpar, SFT, &kp LPAR, &kp RPAR)
-// tap: left bracket | shft + tap: right bracket
-SIMPLE_MORPH(lbkt_rbkt, SFT, &kp LBKT, &kp RBKT)
-// tap: left brace | shft + tap: right brace
-SIMPLE_MORPH(lbrc_rbrc, SFT, &kp LBRC, &kp RBRC)
-
 // tap: space | shift + tap: dot -> space -> sticky shift | hold: activate layer
 ZMK_HOLD_TAP(lt_spc,
     flavor = "balanced";
@@ -242,19 +298,6 @@ ZMK_MACRO(win_sleep,
 
 /*                               GLOVE80 KEY MATRIX / LAYOUT MAPPING
  ╭────────────────────╮       ╭────────────────────╮ ╭────────────────────╮       ╭────────────────────╮
- │  0   1   2   3   4 ╰───┬───╯  5   6   7   8   9 │ │ LC5 LC4 LC3 LC2 LC1╰───┬───╯ RC1 RC2 RC3 RC4 RC5│
- │ 10  11  12  13  14  15 │ 16  17  18  19  20  21 │ │ LN5 LN4 LN3 LN2 LN1 LN0│ RN0 RN1 RN2 RN3 RN4 RN5│
- │ 22  23  24  25  26  27 │ 28  29  30  31  32  33 │ │ LT5 LT4 LT3 LT2 LT1 LT0│ RT0 RT1 RT2 RT3 RT4 RT5│
- │ 34  35  36  37  38  39 │ 40  41  42  43  44  45 │ │ LM5 LM4 LM3 LM2 LM1 LM0│ RM0 RM1 RM2 RM3 RM4 RM5│
- │ 46  47  48  49  50  51 │ 58  59  60  61  62  63 │ │ LB5 LB4 LB3 LB2 LB1 LB0│ RB0 RB1 RB2 RB3 RB4 RB5│
- │ 64  65  66  67  68 ╭───┴───╮ 75  76  77  78  79 │ │ LF5 LF4 LF3 LF2 LF1╭───┴───╮ RF1 RF2 RF3 RF4 RF5│
- ╰───────────┬────────┴───┬───┴────────┬───────────╯ ╰───────────┬────────┴───┬───┴────────┬───────────╯
-             │ 52  53  54 │ 55  56  57 │                         │ LH5 LH4 LH3│ RH3 RH4 RH5│
-             │ 69  70  71 │ 72  73  74 │                         │ LH2 LH1 LH0│ RH0 RH1 RH2│
-             ╰────────────┴────────────╯                         ╰────────────┴────────────╯
- */
-/*                               GLOVE80 KEY MATRIX / LAYOUT MAPPING
- ╭────────────────────╮       ╭────────────────────╮ ╭────────────────────╮       ╭────────────────────╮
  │ LT  LT  LT  LT  LT ╰───┬───╯ LT  LT  LT  LT  LT │ │ LC5 LC4 LC3 LC2 LC1╰───┬───╯ RC1 RC2 RC3 RC4 RC5│
  │ LT  LT  LT  LT  LT  LT │ LT  LT  LT  LT  LT  LT │ │ LN5 LN4 LN3 LN2 LN1 LN0│ RN0 RN1 RN2 RN3 RN4 RN5│
  │ LT  23  24  25  26  27 │ 28  29  30  31  32  RT │ │ LT5 LT4 LT3 LT2 LT1 LT0│ RT0 RT1 RT2 RT3 RT4 RT5│
@@ -265,18 +308,6 @@ ZMK_MACRO(win_sleep,
              │ MB  MB  MB │ MB  MB  MB │                         │ LH5 LH4 LH3│ RH3 RH4 RH5│
              │ 69  70  MH │ MH  73  74 │                         │ LH2 LH1 LH0│ RH0 RH1 RH2│
              ╰────────────┴────────────╯                         ╰────────────┴────────────╯
- */
-/*
-  ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
-    X_LT     &kp Q         &kp W         &kp E         &kp R         &kp T           X_MT     &kp Y         &kp U         &kp I         &kp O         &kp P           X_RT
-  ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &hml LGUI A   &hml LALT S   &hml LCTRL D  &hml LSHFT F  &kp G           X_MM     &kp H         &hmr RSHFT J  &hmr LCTRL K  &hmr LALT L   &hmr LGUI SQT   X_RM
-  ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LB     &kp Z         &kp X         &kp C         &kp V         &kp B           X_MB     &kp K         &kp H         &comma_morph  &dot_morph    &qexcl          X_RB
-  ├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
-    X_LH                                               &lt_spc NAV 0 &lt FN RET      X_MH     SMART_NUM     &smart_shft                                               X_RH
-  ╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
-)
  */
 
 /* map the Glove's extra keys */
@@ -297,7 +328,7 @@ ZMK_MACRO(win_sleep,
 
 #define X_MB    \
                 &smart_shft &kp LCTRL &kp LALT \
-                &kp RALT &kp SLASH &kp UNDER
+                &kp RALT &morph_slash_backslash &morph_underscore_minus
 #define X_MH    \
                 &kp LGUI \
                 &none
@@ -358,7 +389,7 @@ ZMK_LAYER(base,
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
     X_LM     &hml LGUI A   &hml LALT S   &hml LCTRL D  &hml LSHFT F  &kp G           X_MM     &kp H         &hmr RSHFT J  &hmr LCTRL K  &hmr LALT L   &hmr LGUI SQT   X_RM
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LB     &kp Z         &kp X         &kp C         &kp V         &kp B           X_MB     &kp N         &kp M         &comma_morph  &dot_morph    &qexcl          X_RB
+    X_LB     &kp Z         &kp X         &kp C         &kp V         &kp B           X_MB     &kp N         &kp M         &morph_comma  &morph_dot    &morph_excl     X_RB
 //├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
     X_LH                                               &lt NAV BSPC  SMART_NUM       X_MH     &lt MOUSE TAB &lt_spc FN 0                                              X_RH
 //╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
