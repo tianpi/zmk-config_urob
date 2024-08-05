@@ -82,9 +82,12 @@
 MAKE_HRM(hml, &kp, &kp, KEYS_R THUMBS)  // left-hand HRMs
 MAKE_HRM(hmr, &kp, &kp, KEYS_L THUMBS)  // right-hand HRMs
 
-MAKE_HRM(hml_repeat, &kp, &key_repeat, KEYS_R THUMBS)  // used for HRM-combo
-MAKE_HRM(hmr_lpar_lt, &kp, &lpar_lt, KEYS_L THUMBS)    // "    "   "   "
-MAKE_HRM(hmr_rpar_gt, &kp, &rpar_gt, KEYS_L THUMBS)    // "    "   "   "
+////////////////////////////////
+// used for HRM-combos
+
+MAKE_HRM(hmr_lpar_rpar, &kp, &lpar_rpar, KEYS_L THUMBS)
+MAKE_HRM(hmr_lbkt_rbkt, &kp, &lbkt_rbkt, KEYS_L THUMBS)
+MAKE_HRM(hmr_lbrc_rbrc, &kp, &lbrc_rbrc, KEYS_L THUMBS)
 
 ////////////////////////////////////////////////////////////////
 /* Nav cluster */
@@ -180,16 +183,16 @@ ZMK_MACRO(uc_shift,
 
 // tap: comma | shift + tap: semicolon
 SIMPLE_MORPH(comma_morph, SFT, &kp COMMA, &kp SEMICOLON)
-
 // tap: dot | shift + tap: colon
 SIMPLE_MORPH(dot_morph, SFT, &kp DOT, &kp COLON)
-
 // tap: qmark | shift + tap: excl
 SIMPLE_MORPH(qexcl, SFT, &kp EXCL, &kp QMARK)
-
-// tap: left/right parenthesis | shft + tap: less-than/greater-than
-SIMPLE_MORPH(lpar_lt, SFT, &kp LPAR, &kp LT)
-SIMPLE_MORPH(rpar_gt, SFT, &kp RPAR, &kp GT)
+// tap: left parenthesis | shft + tap: right parenthesis
+SIMPLE_MORPH(lpar_rpar, SFT, &kp LPAR, &kp RPAR)
+// tap: left bracket | shft + tap: right bracket
+SIMPLE_MORPH(lbkt_rbkt, SFT, &kp LBKT, &kp RBKT)
+// tap: left brace | shft + tap: right brace
+SIMPLE_MORPH(lbrc_rbrc, SFT, &kp LBRC, &kp RBRC)
 
 // tap: space | shift + tap: dot -> space -> sticky shift | hold: activate layer
 ZMK_HOLD_TAP(lt_spc,
@@ -294,7 +297,7 @@ ZMK_MACRO(win_sleep,
 
 #define X_MB    \
                 &smart_shft &kp LCTRL &kp LALT \
-                &kp UNDER &kp SLASH &none
+                &kp RALT &kp SLASH &kp UNDER
 #define X_MH    \
                 &kp LGUI \
                 &none
@@ -365,7 +368,7 @@ ZMK_LAYER(nav,
 //╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
     X_LT     ___           ___           &kp LS(TAB)   &swapper      ___             X_MT     &kp PG_UP     NAV_BSPC      NAV_UP        NAV_DEL       ___             X_RT
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &sk LGUI      &sk LALT      &sk LSHFT     &sk LCTRL     ___             X_MM     &kp PG_DN     NAV_LEFT      NAV_DOWN      NAV_RIGHT     &kp RET         X_RM
+    X_LM     &sk LGUI      &sk LALT      &sk LCTRL     &sk LSHFT     ___             X_MM     &kp PG_DN     NAV_LEFT      NAV_DOWN      NAV_RIGHT     &kp RET         X_RM
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
     X_LB     ___           ___           ___           ___           ___             X_MB     &kp INS       &kp TAB       &kp LT        &kp GT        ___             X_RB
 //├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
