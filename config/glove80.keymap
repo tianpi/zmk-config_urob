@@ -21,7 +21,6 @@
 #include "zmk-helpers/helper.h"
 #include "zmk-helpers/unicode-chars/greek.dtsi"
 #include "zmk-helpers/unicode-chars/german.dtsi"
-
 #include "zmk-helpers/key-labels/glove80.h"
 
 ////////////////////////////////
@@ -63,15 +62,15 @@
 
 ////////////////////////////////////////////////////////////////
 
-// #define ZMK_BEHAVIOR_CORE_auto_shift      compatible = "zmk,behavior-hold-tap";      #binding-cells = <2>
-// #define ZMK_AUTO_SHIFT(name, ...) ZMK_BEHAVIOR(name, auto_shift, __VA_ARGS__)
-// ZMK_AUTO_SHIFT(as,
-//     tapping_term_ms = <135>;
-//     quick_tap_ms = <0>;
-//     flavor = "tap-preferred";
-//     bindings = <&kp>, <&kp>;
-// }
-// #define AS(keycode) &as LS(keycode) keycode     // Autoshift Macro
+#define ZMK_BEHAVIOR_CORE_auto_shift      compatible = "zmk,behavior-hold-tap";      #binding-cells = <2>
+#define ZMK_AUTO_SHIFT(name, ...) ZMK_BEHAVIOR(name, auto_shift, __VA_ARGS__)
+ZMK_AUTO_SHIFT(as,
+    tapping_term_ms = <135>;
+    quick_tap_ms = <0>;
+    flavor = "tap-preferred";
+    bindings = <&kp>, <&kp>;
+)
+#define AS(keycode) &as LS(keycode) keycode     // Autoshift Macro
 
 ////////////////////////////////////////////////////////////////
 /* mod-morph's */
@@ -132,12 +131,8 @@ SIMPLE_MORPH(morph_underscore_minus, SFT, &kp UNDERSCORE, &kp MINUS)
 MAKE_HRM(hml, &kp, &kp, KEYS_R THUMBS)  // left-hand HRMs
 MAKE_HRM(hmr, &kp, &kp, KEYS_L THUMBS)  // right-hand HRMs
 
-#include <inttypes.h>
-
-uint16 MODS_HOMEROW_L[5] = { LGUI, LALT, LCTRL, LSHFT, NULL };
-uint16 MODFUNS_HOMEROW_L[5] = { LG, LA, LC, LS, NULL };
-uint16 MODS_HOMEROW_R[5] = { NULL, RSHFT, LCTRL, LALT, LGUI };
-uint16 MODFUNS_HOMEROW_R[5] = { NULL, RS, LC, LA, LG };
+uint16_t MODS_HOMEROW_L[5] = { LGUI, LALT, LCTRL, LSHFT, NULL };
+uint16_t MODS_HOMEROW_R[5] = { NULL, RSHFT, LCTRL, LALT, LGUI };
 
 ////////////////////////////////////////////////////////////////
 
@@ -179,11 +174,11 @@ ZMK_COMBO(combo_rt_00110, &morph_mul_div, RT2 RT3, DEF NAV NUM, COMBO_TERM_FAST,
 ZMK_COMBO(combo_rt_01010, &morph_equal_tile, RT1 RT3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 MAKE_HRM(_hmr_01100, &kp, &morph_pars, KEYS_L THUMBS)
-ZMK_COMBO(combo_rm_01100, &_hmr_01100 MODFUNS_HOMEROW_R[1](MODS_HOMEROW_R[2]) 0, RM1 RM2, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rm_01100, &_hmr_01100 RS(MODS_HOMEROW_R[2]) 0, RM1 RM2, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 MAKE_HRM(_hmr_00110, &kp, &morph_bkts, KEYS_L THUMBS)
-ZMK_COMBO(combo_rm_00110, &_hmr_00110 MODFUNS_HOMEROW_R[2](MODS_HOMEROW_R[3]) 0, RM2 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rm_00110, &_hmr_00110 LC(MODS_HOMEROW_R[3]) 0, RM2 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 MAKE_HRM(_hmr_01010, &kp, &morph_brcs, KEYS_L THUMBS)
-ZMK_COMBO(combo_rm_01010, &_hmr_01010 MODFUNS_HOMEROW_R[1](MODS_HOMEROW_R[3]) 0, RM1 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rm_01010, &_hmr_01010 RS(MODS_HOMEROW_R[3]) 0, RM1 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 ZMK_COMBO(combo_rb_01100, &morph_us_caret, RB1 RB2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 ZMK_COMBO(combo_rb_00110, &morph_and_or, RB2 RB3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
@@ -275,14 +270,14 @@ ZMK_MACRO(uc_shift,
 )
 
 // tap: space | shift + tap: dot -> space -> sticky shift | hold: activate layer
-ZMK_HOLD_TAP(lt_spc,
+ZMK_HOLD_TAP(hold_space_dotspace,
     flavor = "balanced";
     tapping-term-ms = <200>;
     quick-tap-ms = <QUICK_TAP_MS>;
-    bindings = <&mo>, <&spc_morph>;
+    bindings = <&mo>, <&morph_space_dotspace>;
 )
-SIMPLE_MORPH(spc_morph, SFT, &kp SPACE, &dot_spc)
-ZMK_MACRO(dot_spc,
+SIMPLE_MORPH(morph_space_dotspace, SFT, &kp SPACE, &macro_dot_space_shift)
+ZMK_MACRO(macro_dot_space_shift,
     wait-ms = <0>;
     tap-ms = <5>;
     bindings = <&kp DOT &kp SPACE &sk LSHFT>;
@@ -344,8 +339,8 @@ ZMK_MACRO(win_sleep,
 #define X_RH    &kp UP &kp DOWN &none &none &none
 
 #define X_MB    \
-                &morph_shift_capsword &kp LCTRL &kp LALT \
-                &kp RALT &morph_slash_backslash &morph_underscore_minus
+                &morph_shift_capsword   &kp LCTRL                                   &kp LALT \
+                &kp RALT                &as BACKSLASH &morph_slash_backslash        &as MINUS &morph_underscore_minus
 #define X_MH    \
                 &kp LGUI \
                 &none
@@ -400,8 +395,8 @@ ZMK_MACRO(win_sleep,
 
 ZMK_CONDITIONAL_LAYER(FN NUM, SYS)  // FN + NUM --> SYS
 
-uint16 *_L = MODS_HOMEROW_L;
-uint16 *_R = MODS_HOMEROW_R;
+uint16_t *_L = MODS_HOMEROW_L;
+uint16_t *_R = MODS_HOMEROW_R;
 
 ZMK_LAYER(base,
 //╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
@@ -412,7 +407,7 @@ ZMK_LAYER(base,
     X_LB     &kp Z         &kp X         &kp C         &kp V         &kp B           X_MB     &kp N         &kp M         &morph_comma  &morph_dot    &morph_excl     X_RB
 //├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
     X_LH                                               &lt NAV morph_bspc_del
-                                                                     &lt FN TAB      X_MH     &lt MOUSE TAB &lt_spc FN 0                                              X_RH
+                                                                     &lt FN TAB      X_MH     &kp MINUS     hold_space_dotspace                                       X_RH
 //╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
 )
 
