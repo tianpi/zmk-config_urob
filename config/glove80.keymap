@@ -140,17 +140,29 @@ SIMPLE_MORPH(morph_underscore_minus, SFT, &kp UNDERSCORE, &kp MINUS)
 MAKE_HRM(hml, &kp, &kp, KEYS_R THUMBS)  // left-hand HRMs
 MAKE_HRM(hmr, &kp, &kp, KEYS_L THUMBS)  // right-hand HRMs
 
-#define MOD_HOMEROW_L4    LGUI
-#define MOD_HOMEROW_L3    LALT
-#define MOD_HOMEROW_L2    LCTRL
-#define MOD_HOMEROW_L1    LSHFT
+#define KEY_HOMEROW_L4    LGUI
+#define KEY_HOMEROW_L3    LALT
+#define KEY_HOMEROW_L2    LCTRL
+#define KEY_HOMEROW_L1    LSHFT
+#define KEY_HOMEROW_L0    0
+
+#define MOD_HOMEROW_L4    LG
+#define MOD_HOMEROW_L3    LA
+#define MOD_HOMEROW_L2    LC
+#define MOD_HOMEROW_L1    LS
 #define MOD_HOMEROW_L0    0
 
+#define KEY_HOMEROW_R0    0
+#define KEY_HOMEROW_R1    RSHFT
+#define KEY_HOMEROW_R2    LCTRL
+#define KEY_HOMEROW_R3    LALT
+#define KEY_HOMEROW_R4    LGUI
+
 #define MOD_HOMEROW_R0    0
-#define MOD_HOMEROW_R1    RSHFT
-#define MOD_HOMEROW_R2    LCTRL
-#define MOD_HOMEROW_R3    LALT
-#define MOD_HOMEROW_R4    LGUI
+#define MOD_HOMEROW_R1    RS
+#define MOD_HOMEROW_R2    LC
+#define MOD_HOMEROW_R3    LA
+#define MOD_HOMEROW_R4    LG
 
 ////////////////////////////////////////////////////////////////
 
@@ -172,19 +184,17 @@ MAKE_HRM(hmr, &kp, &kp, KEYS_L THUMBS)  // right-hand HRMs
 ////////////////////////////////
 /* Horizontal combos - left hand */
 
-ZMK_COMBO(combo_lt_00110, &morph_grave_at, LT3 LT2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_lt_00011, &morph_dollar_percent, LT2 LT1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_lt_00101, &kp HASH, LT3 LT1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lt_01100, &morph_grave_at, LT3 LT2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lt_00110, &morph_dollar_percent, LT2 LT1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lt_01010, &kp HASH, LT3 LT1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-MAKE_HRM(_hml_01100, &kp, DELETE, KEYS_R THUMBS)
-ZMK_COMBO(combo_lm_00110, &_hml_01100 LC(MOD_HOMEROW_L3) 0, LM3 LM2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-MAKE_HRM(_hml_01010, &kp, BACKSPACE, KEYS_R THUMBS)
-ZMK_COMBO(combo_lm_00011, &_hml_01010 LS(MOD_HOMEROW_L2) 0, LM2 LM1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-// ZMK_COMBO(combo_lm_00101, XXX, LM3 LM1, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lm_01100, &hml MOD_HOMEROW_L3(KEY_HOMEROW_L2) DELETE, LM3 LM2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lm_00110, &hml MOD_HOMEROW_L2(KEY_HOMEROW_L1) BACKSPACE, LM2 LM1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lm_01010, &hml MOD_HOMEROW_L3(KEY_HOMEROW_L1) 0, LM3 LM1, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-ZMK_COMBO(combo_lb_00110, &kp LC(X),   LB3 LB2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_lb_00011, &kp LC(INS), LB2 LB1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_lb_00101, &kp LS(INS), LB3 LB1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lb_01100, &kp LC(X),   LB3 LB2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lb_00110, &kp LC(INS), LB2 LB1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lb_01010, &kp LS(INS), LB3 LB1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 ////////////////////////////////
 /* Horizontal combos - right hand */
@@ -194,11 +204,11 @@ ZMK_COMBO(combo_rt_00110, &morph_mul_div, RT2 RT3, DEF NAV NUM, COMBO_TERM_FAST,
 ZMK_COMBO(combo_rt_01010, &morph_equal_tile, RT1 RT3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 MAKE_HRM(_hmr_01100, &kp, &morph_pars, KEYS_L THUMBS)
-ZMK_COMBO(combo_rm_01100, &_hmr_01100 RS(MOD_HOMEROW_R2) 0, RM1 RM2, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rm_01100, &_hmr_01100 MOD_HOMEROW_R1(KEY_HOMEROW_R2) 0, RM1 RM2, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 MAKE_HRM(_hmr_00110, &kp, &morph_bkts, KEYS_L THUMBS)
-ZMK_COMBO(combo_rm_00110, &_hmr_00110 LC(MOD_HOMEROW_R3) 0, RM2 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rm_00110, &_hmr_00110 MOD_HOMEROW_R2(KEY_HOMEROW_R3) 0, RM2 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 MAKE_HRM(_hmr_01010, &kp, &morph_brcs, KEYS_L THUMBS)
-ZMK_COMBO(combo_rm_01010, &_hmr_01010 RS(MOD_HOMEROW_R3) 0, RM1 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rm_01010, &_hmr_01010 MOD_HOMEROW_R1(KEY_HOMEROW_R3) 0, RM1 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 ZMK_COMBO(combo_rb_01100, &morph_us_caret, RB1 RB2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 ZMK_COMBO(combo_rb_00110, &morph_and_or, RB2 RB3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
@@ -421,15 +431,15 @@ ZMK_LAYER(base,
 //╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
     X_LT     &kp Q         &kp W         &kp E         &kp R         &kp T           X_MT     &kp Y         &kp U         &kp I         &kp O         &kp P           X_RT
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &hml MOD_HOMEROW_L4 A
-                           &hml MOD_HOMEROW_L3 S
-                                         &hml MOD_HOMEROW_L2 D
-                                                      &hml MOD_HOMEROW_L1 F
+    X_LM     &hml KEY_HOMEROW_L4 A
+                           &hml KEY_HOMEROW_L3 S
+                                         &hml KEY_HOMEROW_L2 D
+                                                      &hml KEY_HOMEROW_L1 F
                                                                      &kp G           X_MM     &kp H
-                                                                                                            &hmr MOD_HOMEROW_R1 J
-                                                                                                                          &hmr MOD_HOMEROW_R2 K
-                                                                                                                                        &hmr MOD_HOMEROW_R3 L
-                                                                                                                                                      &hmr MOD_HOMEROW_R4 SQT
+                                                                                                            &hmr KEY_HOMEROW_R1 J
+                                                                                                                          &hmr KEY_HOMEROW_R2 K
+                                                                                                                                        &hmr KEY_HOMEROW_R3 L
+                                                                                                                                                      &hmr KEY_HOMEROW_R4 SQT
                                                                                                                                                                       X_RM
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
     X_LB     &kp Z         &kp X         &kp C         &kp V         &kp B           X_MB     &kp N         &kp M         &morph_comma  &morph_dot    &morph_excl     X_RB
@@ -443,10 +453,10 @@ ZMK_LAYER(nav,
 //╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
     X_LT     ___           ___           &kp LS(TAB)   &swapper      ___             X_MT     &kp PG_UP     NAV_BSPC      NAV_UP        NAV_DEL       ___             X_RT
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &sk MOD_HOMEROW_L4
-                           &sk MOD_HOMEROW_L3
-                                         &sk MOD_HOMEROW_L2
-                                                      &sk MOD_HOMEROW_L1
+    X_LM     &sk KEY_HOMEROW_L4
+                           &sk KEY_HOMEROW_L3
+                                         &sk KEY_HOMEROW_L2
+                                                      &sk KEY_HOMEROW_L1
                                                                      ___             X_MM     &kp PG_DN     NAV_LEFT      NAV_DOWN      NAV_RIGHT     &kp RET         X_RM
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
     X_LB     ___           ___           ___           ___           ___             X_MB     &kp INS       &kp TAB       &kp LT        &kp GT        ___             X_RB
@@ -459,10 +469,10 @@ ZMK_LAYER(fn,
 //╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
     X_LT     &kp F12       &kp F7        &kp F8        &kp F9        ___             X_MT     ___           &kp C_PREV    &kp C_VOL_UP  &kp C_NEXT    &win_sleep      X_RT
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &hml MOD_HOMEROW_L4 F11
-                           &hml MOD_HOMEROW_L3 F4
-                                         &hml MOD_HOMEROW_L2 F5
-                                                      &hml MOD_HOMEROW_L1 F6
+    X_LM     &hml KEY_HOMEROW_L4 F11
+                           &hml KEY_HOMEROW_L3 F4
+                                         &hml KEY_HOMEROW_L2 F5
+                                                      &hml KEY_HOMEROW_L1 F6
                                                                      ___            X_MM     ___           DSK_PREV      VOL_DOWN      DSK_NEXT      ___             X_RM
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
     X_LB     &kp F10       &kp F1        &kp F2        &kp F3        ___             X_MB     PIN_APP       PIN_WIN       DSK_MGR       ___           ___             X_RB
@@ -480,23 +490,23 @@ ZMK_LAYER(num,
 #endif
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
 #if NUM_BLOCK_LEFT
-    X_LM     &hml MOD_HOMEROW_L4 N0
-                           &hml MOD_HOMEROW_L3 N4
-                                         &hml MOD_HOMEROW_L2 N5
-                                                      &hml MOD_HOMEROW_L1 N6
+    X_LM     &hml KEY_HOMEROW_L4 N0
+                           &hml KEY_HOMEROW_L3 N4
+                                         &hml KEY_HOMEROW_L2 N5
+                                                      &hml KEY_HOMEROW_L1 N6
                                                                      ___             X_MM     ___           ___           ___           ___           ___             X_RM
 #else
     X_LM     ___           ___           ___           ___           ___             X_MM     &kp N0
-                                                                                                            &hmr MOD_HOMEROW_R1 N4
-                                                                                                                         &hmr MOD_HOMEROW_R2 N5
-                                                                                                                                       &hmr MOD_HOMEROW_R3 N6
+                                                                                                            &hmr KEY_HOMEROW_R1 N4
+                                                                                                                         &hmr KEY_HOMEROW_R2 N5
+                                                                                                                                       &hmr KEY_HOMEROW_R3 N6
                                                                                                                                                       ___             X_RM
 #endif
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
 #if NUM_BLOCK_LEFT
-    X_LB     ___           &kp N1        &kp N2        &kp N3        ___             X_MB     ___           ___           ___           ___           ___             X_RB
+    X_LB     &kp COMMA    &kp N1        &kp N2        &kp N3        &kp PERIOD       X_MB     ___           ___           ___           ___           ___             X_RB
 #else
-    X_LB     ___           ___           ___           ___           ___             X_MB     ___           &kp N1        &kp N2        &kp N3        ___             X_RB
+    X_LB     ___           ___           ___           ___           ___             X_MB     &kp COMMA    &kp N1        &kp N2        &kp N3        &kp PERIOD      X_RB
 #endif
 //├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
     X_LH                                               ___           ___             X_MH     ___           ___                                                       X_RH
