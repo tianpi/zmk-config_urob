@@ -36,7 +36,6 @@
 
 ////////////////////////////////
 
-//#include "combos.dtsi"  // requires layer aliases
 #include "mouse.dtsi"
 
 #define XXX &none
@@ -63,7 +62,26 @@
 };
 
 ////////////////////////////////////////////////////////////////
+
+// #define ZMK_BEHAVIOR_CORE_auto_shift      compatible = "zmk,behavior-hold-tap";      #binding-cells = <2>
+// #define ZMK_AUTO_SHIFT(name, ...) ZMK_BEHAVIOR(name, auto_shift, __VA_ARGS__)
+// ZMK_AUTO_SHIFT(as,
+//     tapping_term_ms = <135>;
+//     quick_tap_ms = <0>;
+//     flavor = "tap-preferred";
+//     bindings = <&kp>, <&kp>;
+// }
+// #define AS(keycode) &as LS(keycode) keycode     // Autoshift Macro
+
+////////////////////////////////////////////////////////////////
 /* mod-morph's */
+
+// tap: backspace | lshft + tap: delete | rshft + tap: shift-delete
+ZMK_MOD_MORPH(morph_bspc_del,
+    bindings = <&kp BSPC>, <&kp DEL>;
+    mods = <(MOD_LSFT|MOD_RSFT)>;
+    keep-mods = <MOD_RSFT>;
+)
 
 // reuse basic mod-morph scheme
 #define SIMPLE_MORPH(NAME, MOD, BINDING1, BINDING2) \
@@ -114,6 +132,13 @@ SIMPLE_MORPH(morph_underscore_minus, SFT, &kp UNDERSCORE, &kp MINUS)
 MAKE_HRM(hml, &kp, &kp, KEYS_R THUMBS)  // left-hand HRMs
 MAKE_HRM(hmr, &kp, &kp, KEYS_L THUMBS)  // right-hand HRMs
 
+#include <inttypes.h>
+
+uint16 MODS_HOMEROW_L[5] = { LGUI, LALT, LCTRL, LSHFT, NULL };
+uint16 MODFUNS_HOMEROW_L[5] = { LG, LA, LC, LS, NULL };
+uint16 MODS_HOMEROW_R[5] = { NULL, RSHFT, LCTRL, LALT, LGUI };
+uint16 MODFUNS_HOMEROW_R[5] = { NULL, RS, LC, LA, LG };
+
 ////////////////////////////////////////////////////////////////
 
 /*    KEY POSITIONS
@@ -134,36 +159,35 @@ MAKE_HRM(hmr, &kp, &kp, KEYS_L THUMBS)  // right-hand HRMs
 ////////////////////////////////
 /* Horizontal combos - left hand */
 
-ZMK_COMBO(lt110, &morph_grave_at, LT3 LT2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(lt011, &morph_dollar_percent, LT2 LT1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(lt101, &kp HASH, LT3 LT1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lt_00110, &morph_grave_at, LT3 LT2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lt_00011, &morph_dollar_percent, LT2 LT1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lt_00101, &kp HASH, LT3 LT1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-// ZMK_COMBO(lm110, XXX, LM3 LM2, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-// ZMK_COMBO(lm011, XXX, LM2 LM1, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-// ZMK_COMBO(lm101, XXX, LM3 LM1, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lm_00110, XXX, LM3 LM2, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lm_00011, XXX, LM2 LM1, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lm_00101, XXX, LM3 LM1, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-ZMK_COMBO(lb110, &kp LC(X),   LB3 LB2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(lb011, &kp LC(INS), LB2 LB1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(lb101, &kp LS(INS), LB3 LB1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lb_00110, &kp LC(X),   LB3 LB2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lb_00011, &kp LC(INS), LB2 LB1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lb_00101, &kp LS(INS), LB3 LB1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 ////////////////////////////////
 /* Horizontal combos - right hand */
 
-ZMK_COMBO(rt110, &morph_add_sub, RT1 RT2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(rt011, &morph_mul_div, RT2 RT3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(rt101, &morph_equal_tile, RT1 RT3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rt_01100, &morph_add_sub, RT1 RT2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rt_00110, &morph_mul_div, RT2 RT3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rt_01010, &morph_equal_tile, RT1 RT3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-MAKE_HRM(hmr_1100, &kp, &morph_pars, KEYS_L THUMBS)
-ZMK_COMBO(rm110, &hmr_1100 RS(LCTRL) 0, RM1 RM2, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-MAKE_HRM(hmr_0110, &kp, &morph_bkts, KEYS_L THUMBS)
-ZMK_COMBO(rm011, &hmr_0110 LC(LALT) 0,  RM2 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-MAKE_HRM(hmr_1010, &kp, &morph_brcs, KEYS_L THUMBS)
-ZMK_COMBO(rm101, &hmr_1010 RS(LALT) 0,  RM1 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+MAKE_HRM(_hmr_01100, &kp, &morph_pars, KEYS_L THUMBS)
+ZMK_COMBO(combo_rm_01100, &_hmr_01100 MODFUNS_HOMEROW_R[1](MODS_HOMEROW_R[2]) 0, RM1 RM2, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+MAKE_HRM(_hmr_00110, &kp, &morph_bkts, KEYS_L THUMBS)
+ZMK_COMBO(combo_rm_00110, &_hmr_00110 MODFUNS_HOMEROW_R[2](MODS_HOMEROW_R[3]) 0, RM2 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+MAKE_HRM(_hmr_01010, &kp, &morph_brcs, KEYS_L THUMBS)
+ZMK_COMBO(combo_rm_01010, &_hmr_01010 MODFUNS_HOMEROW_R[1](MODS_HOMEROW_R[3]) 0, RM1 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-ZMK_COMBO(rb110, &morph_us_caret, RB1 RB2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(rb011, &morph_and_or, RB2 RB3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(rb101, &morph_lt_gt, RB1 RB3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-
+ZMK_COMBO(combo_rb_01100, &morph_us_caret, RB1 RB2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rb_00110, &morph_and_or, RB2 RB3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rb_01010, &morph_lt_gt, RB1 RB3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 ////////////////////////////////////////////////////////////////
 /* Nav cluster */
@@ -199,7 +223,7 @@ MASK_MODS(masked_end,  (MOD_LCTL), &kp END)
 /* Caps-word, num-word and smart-mouse */
 
 // tap: sticky-shift | shift + tap/ double-tap: caps-word | hold: shift
-ZMK_MOD_MORPH(smart_shft,
+ZMK_MOD_MORPH(morph_shift_capsword,
     bindings = <&sk LSHFT>, <&caps_word>;
     mods = <(MOD_LSFT)>;
 )
@@ -264,13 +288,6 @@ ZMK_MACRO(dot_spc,
     bindings = <&kp DOT &kp SPACE &sk LSHFT>;
 )
 
-// tap: backspace | lshft + tap: delete | rshft + tap: shift-delete
-ZMK_MOD_MORPH(bs_del,
-    bindings = <&kp BSPC>, <&kp DEL>;
-    mods = <(MOD_LSFT|MOD_RSFT)>;
-    keep-mods = <MOD_RSFT>;
-)
-
 // tap: copy | double-tap: cut
 ZMK_TAP_DANCE(copy_cut,
     tapping-term-ms = <200>;
@@ -327,7 +344,7 @@ ZMK_MACRO(win_sleep,
 #define X_RH    &kp UP &kp DOWN &none &none &none
 
 #define X_MB    \
-                &smart_shft &kp LCTRL &kp LALT \
+                &morph_shift_capsword &kp LCTRL &kp LALT \
                 &kp RALT &morph_slash_backslash &morph_underscore_minus
 #define X_MH    \
                 &kp LGUI \
@@ -383,15 +400,19 @@ ZMK_MACRO(win_sleep,
 
 ZMK_CONDITIONAL_LAYER(FN NUM, SYS)  // FN + NUM --> SYS
 
+uint16 *_L = MODS_HOMEROW_L;
+uint16 *_R = MODS_HOMEROW_R;
+
 ZMK_LAYER(base,
 //╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
     X_LT     &kp Q         &kp W         &kp E         &kp R         &kp T           X_MT     &kp Y         &kp U         &kp I         &kp O         &kp P           X_RT
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &hml LGUI A   &hml LALT S   &hml LCTRL D  &hml LSHFT F  &kp G           X_MM     &kp H         &hmr RSHFT J  &hmr LCTRL K  &hmr LALT L   &hmr LGUI SQT   X_RM
+    X_LM     &hml _L[0] A  &hml _L[1] S  &hml _L[2] D  &hml _L[3] F  &kp G           X_MM     &kp H         &hmr _R[1] J  &hmr _R[2] K  &hmr _R[3] L  &hmr _R[4] SQT  X_RM
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
     X_LB     &kp Z         &kp X         &kp C         &kp V         &kp B           X_MB     &kp N         &kp M         &morph_comma  &morph_dot    &morph_excl     X_RB
 //├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
-    X_LH                                               &lt NAV BSPC  SMART_NUM       X_MH     &lt MOUSE TAB &lt_spc FN 0                                              X_RH
+    X_LH                                               &lt NAV morph_bspc_del
+                                                                     &lt FN TAB      X_MH     &lt MOUSE TAB &lt_spc FN 0                                              X_RH
 //╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
 )
 
@@ -399,7 +420,7 @@ ZMK_LAYER(nav,
 //╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
     X_LT     ___           ___           &kp LS(TAB)   &swapper      ___             X_MT     &kp PG_UP     NAV_BSPC      NAV_UP        NAV_DEL       ___             X_RT
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &sk LGUI      &sk LALT      &sk LCTRL     &sk LSHFT     ___             X_MM     &kp PG_DN     NAV_LEFT      NAV_DOWN      NAV_RIGHT     &kp RET         X_RM
+    X_LM     &sk _L[0]      &sk _L[1]      &sk _L[2]     &sk _L[3]   ___             X_MM     &kp PG_DN     NAV_LEFT      NAV_DOWN      NAV_RIGHT     &kp RET         X_RM
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
     X_LB     ___           ___           ___           ___           ___             X_MB     &kp INS       &kp TAB       &kp LT        &kp GT        ___             X_RB
 //├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
@@ -411,7 +432,7 @@ ZMK_LAYER(fn,
 //╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
     X_LT     &kp F12       &kp F7        &kp F8        &kp F9        ___             X_MT     ___           &kp C_PREV    &kp C_VOL_UP  &kp C_NEXT    &win_sleep      X_RT
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &hml LGUI F11 &hml LALT F4  &hml LSHFT F5 &hml LCTRL F6 ___             X_MM     ___           DSK_PREV      VOL_DOWN      DSK_NEXT      ___             X_RM
+    X_LM     &hml _L[0] F11 &hml _L[1] F4 &hml _L[2] F5 &hml _L[3] F6 ___            X_MM     ___           DSK_PREV      VOL_DOWN      DSK_NEXT      ___             X_RM
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
     X_LB     &kp F10       &kp F1        &kp F2        &kp F3        ___             X_MB     PIN_APP       PIN_WIN       DSK_MGR       ___           ___             X_RB
 //├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
@@ -423,7 +444,7 @@ ZMK_LAYER(num,
 //╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
     X_LT     ___           &kp N7        &kp N8        &kp N9        ___             X_MT     ___           ___           ___           ___           ___             X_RT
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &hml LGUI N0  &hml LALT N4  &hml LSHFT N5 &hml LCTRL N6 ___             X_MM     ___           ___           ___           ___           ___             X_RM
+    X_LM     &hml _L[0] N0  &hml _L[1] N4 &hml _L[2] N5 &hml _L[3] N6 ___            X_MM     ___           ___           ___           ___           ___             X_RM
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
     X_LB     ___           &kp N1        &kp N2        &kp N3        ___             X_MB     ___           ___           ___           ___           ___             X_RB
 //├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
