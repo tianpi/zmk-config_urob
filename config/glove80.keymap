@@ -62,6 +62,13 @@
 
 ////////////////////////////////////////////////////////////////
 
+#if 0
+
+// < > COMPILE ERROR
+// 'tapping_term_ms' is marked as deprecated in 'properties:' in /__w/zmk-config_urob/zmk-config_urob/zmk/app/dts/bindings/behaviors/zmk,behavior-hold-tap.yaml for node /behaviors/as.
+// 'quick_tap_ms' is marked as deprecated in 'properties:' in /__w/zmk-config_urob/zmk-config_urob/zmk/app/dts/bindings/behaviors/zmk,behavior-hold-tap.yaml for node /behaviors/as.
+// </> COMPILE ERROR
+
 #define ZMK_BEHAVIOR_CORE_auto_shift      compatible = "zmk,behavior-hold-tap";      #binding-cells = <2>
 #define ZMK_AUTO_SHIFT(name, ...) ZMK_BEHAVIOR(name, auto_shift, __VA_ARGS__)
 ZMK_AUTO_SHIFT(as,
@@ -71,6 +78,8 @@ ZMK_AUTO_SHIFT(as,
     bindings = <&kp>, <&kp>;
 )
 #define AS(keycode) &as LS(keycode) keycode     // Autoshift Macro
+
+#endif
 
 ////////////////////////////////////////////////////////////////
 /* mod-morph's */
@@ -351,7 +360,7 @@ ZMK_MACRO(win_sleep,
 
 #define X_MB    \
                 &morph_shift_capsword   SMART_NUM                  &kp LALT \
-                &kp RALT                &as BACKSLASH SLASH        &kp UNDERSCORE
+                &kp RALT                &mt BACKSLASH SLASH        &kp UNDERSCORE
 #define X_MH    \
                 &kp LGUI \
                 &none
