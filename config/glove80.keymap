@@ -348,8 +348,8 @@ ZMK_MACRO(win_sleep,
 #define X_RH    &kp UP &kp DOWN &none &none &none
 
 #define X_MB    \
-                &morph_shift_capsword   SMART_NUM                                   &kp LALT \
-                &kp RALT                &as BACKSLASH &morph_slash_backslash        &as MINUS &morph_underscore_minus
+                &morph_shift_capsword   SMART_NUM                  &kp LALT \
+                &kp RALT                &as BACKSLASH SLASH        &as MINUS UNDERSCORE
 #define X_MH    \
                 &kp LGUI \
                 &none
@@ -423,7 +423,7 @@ ZMK_LAYER(base,
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
     X_LB     &kp Z         &kp X         &kp C         &kp V         &kp B           X_MB     &kp N         &kp M         &morph_comma  &morph_dot    &morph_excl     X_RB
 //├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
-    X_LH                                               &lt NAV &morph_bspc_del
+    X_LH                                               &lt NAV BSPC
                                                                      &lt FN TAB      X_MH     &kp MINUS     &hold_space_dotspace                                      X_RH
 //╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
 )
