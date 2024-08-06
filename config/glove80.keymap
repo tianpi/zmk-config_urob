@@ -371,7 +371,7 @@ ZMK_MACRO(uc_shift,
 )
 
 // tap: space | shift + tap: dot -> space -> sticky shift | hold: activate layer
-ZMK_HOLD_TAP(hold_space_dotspace,
+ZMK_HOLD_TAP(lt_space_dotspace,
     flavor = "balanced";
     tapping-term-ms = <200>;
     quick-tap-ms = <QUICK_TAP_MS>;
@@ -516,7 +516,7 @@ ZMK_LAYER(base,
     X_LB     &kp Z         &kp X         &kp C         &kp V         &kp B           X_MB     &kp N         &kp M         &morph_comma  &morph_dot    &morph_excl     X_RB
 //├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
     X_LH                                               &lt NAV BSPC
-                                                                     &lt FN TAB      X_MH     &kp MINUS     &hold_space_dotspace                                      X_RH
+                                                                     &lt FN TAB      X_MH     &kp MINUS     &lt_space_dotspace FN 0                                   X_RH
 //╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
 )
 
