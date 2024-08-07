@@ -321,7 +321,7 @@ MASK_MODS(masked_end,  (MOD_LCTL), &kp END)
 // tap: sticky-shift | shift + tap/ double-tap: caps-word | hold: shift
 ZMK_MOD_MORPH(morph_shift_capsword,
     bindings = <&sk LSHFT>, <&caps_word>;
-    mods = <(MOD_LSFT)>;
+    mods = <(MOD_LSFT|MOD_RSFT)>;
 )
 &caps_word {  // mods deactivate caps-word, requires PR #1451
     /delete-property/ ignore-modifiers;
@@ -339,6 +339,10 @@ ZMK_TAP_DANCE(dance_numword_num,
     tapping-term-ms = <200>;
     bindings = <&num_word NUM>, <&sl NUM>;  // reverse this for sticky-num on single tap
 )
+&num_word {
+    continue-list = <BSPC DEL DOT COMMA COLON SEMICOLON PLUS MINUS STAR FSLH EQUAL KP_DOT KP_PLUS KP_MINUS KP_MULTIPLY KP_DIVIDE>;
+    ignore-modifiers;
+};
 
 // smart-mouse, requires PR #1366
 ZMK_TRI_STATE(smart_mouse,
@@ -404,7 +408,6 @@ ZMK_MACRO(win_sleep,
 #define PIN_WIN     &kp LG(LC(LS(Q)))        // pin window across desktops
 #define PIN_APP     &kp LG(LC(LS(A)))        // pin application across desktops
 #define DSK_MGR     &kp LA(GRAVE)            // desktop manager
-#define VOL_DOWN    &hmr RSHFT C_VOL_DN
 
 ////////////////////////////////////////////////////////////////
 /* map the Glove's extra keys */
@@ -496,8 +499,6 @@ ZMK_MACRO(win_sleep,
 
 ZMK_CONDITIONAL_LAYER(FN NUM, SYS)  // FN + NUM --> SYS
 
-#define NUM_BLOCK_LEFT 0
-
 ZMK_LAYER(base,
 //╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
     X_LT     &kp Q         &kp W         &kp E         &kp R         &kp T           X_MT     &kp Y         &kp U         &kp I         &kp O         &kp P           X_RT
@@ -538,15 +539,16 @@ ZMK_LAYER(nav,
 
 ZMK_LAYER(fn,
 //╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
-    X_LT     XXX           &kp F7        &kp F8        &kp F9        &kp F10     X_MT     ___           &kp C_PREV    &kp C_VOL_UP  &kp C_NEXT    &win_sleep      X_RT
+    X_LT     &kp SCROLLLOCK  &kp F7      &kp F8        &kp F9        &kp F10         X_MT     ___           &kp C_PREV    &kp C_VOL_UP  &kp C_NEXT    ___             X_RT
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &sk KEY_HOMEROW_L4
+    X_LM     &hml KEY_HOMEROW_L4 PAUSE_BREAK
                            &hml KEY_HOMEROW_L3 F4
                                          &hml KEY_HOMEROW_L2 F5
                                                       &hml KEY_HOMEROW_L1 F6
-                                                                     &kp F11         X_MM     ___           DSK_PREV      VOL_DOWN      DSK_NEXT      ___             X_RM
+                                                                     &kp F11         X_MM     ___           ___           &hmr KEY_HOMEROW_R2 C_VOL_DN
+                                                                                                                                        ___           ___             X_RM
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LB     XXX           &kp F1        &kp F2        &kp F3        &kp F12         X_MB     PIN_APP       PIN_WIN       DSK_MGR       ___           ___             X_RB
+    X_LB     &kp PSCRN     &kp F1        &kp F2        &kp F3        &kp F12         X_MB     ___           ___           ___           ___           ___             X_RB
 //├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
     X_LH                                               ___           ___             X_MH     &kp C_MUTE    &kp C_PP                                                  X_RH
 //╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
@@ -554,31 +556,19 @@ ZMK_LAYER(fn,
 
 ZMK_LAYER(num,
 //╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
-#if NUM_BLOCK_LEFT
-    X_LT     ___           &kp N7        &kp N8        &kp N9        ___             X_MT     ___           ___           ___           ___           ___             X_RT
-#else
-    X_LT     ___           ___           ___           ___           ___             X_MT     ___           &kp N7        &kp N8        &kp N9        ___             X_RT
-#endif
+    X_LT     &kp KP_NUMLOCK  ___         ___           ___           ___             X_MT     ___           &kp KP_N7    &kp KP_N8     &kp KP_N9      &kp SEMICOLON   X_RT
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-#if NUM_BLOCK_LEFT
-    X_LM     &hml KEY_HOMEROW_L4 N0
-                           &hml KEY_HOMEROW_L3 N4
-                                         &hml KEY_HOMEROW_L2 N5
-                                                      &hml KEY_HOMEROW_L1 N6
-                                                                     ___             X_MM     ___           ___           ___           ___           ___             X_RM
-#else
-    X_LM     ___           ___           ___           ___           ___             X_MM     &kp N0
-                                                                                                            &hmr KEY_HOMEROW_R1 N4
-                                                                                                                         &hmr KEY_HOMEROW_R2 N5
-                                                                                                                                       &hmr KEY_HOMEROW_R3 N6
-                                                                                                                                                      &kp PERIOD     X_RM
-#endif
+    X_LM     &hml KEY_HOMEROW_L4 KP_PLUS
+                           &hml KEY_HOMEROW_L3 KP_MINUS
+                                         &hml KEY_HOMEROW_L2 KP_MULTIPLY
+                                                      &hml KEY_HOMEROW_L1 KP_DIVIDE
+                                                                     ___             X_MM     &kp KP_N0
+                                                                                                            &kp KP_N4
+                                                                                                                          &kp KP_N5
+                                                                                                                                        &kp KP_N6
+                                                                                                                                                      &kp KP_DOT      X_RM
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-#if NUM_BLOCK_LEFT
-    X_LB     ___           &kp N1        &kp N2        &kp N3        ___             X_MB     ___           ___           ___           ___           ___             X_RB
-#else
-    X_LB     ___           ___           ___           ___           ___             X_MB     ___           &kp N1        &kp N2        &kp N3        &kp COMMA      X_RB
-#endif
+    X_LB     &kp KP_PLUS   &kp KP_MINUS  &kp KP_MULTIPLY  &kp KP_DIVIDE  ___         X_MB     ___           &kp KP_N1     &kp KP_N2     &kp KP_N3     &kp COMMA       X_RB
 //├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
     X_LH                                               ___           ___             X_MH     ___           ___                                                       X_RH
 //╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
