@@ -255,35 +255,35 @@ MAKE_HRM(hmr, &kp, &kp, KEYS_L THUMBS)  // right-hand HRMs
 ////////////////////////////////
 /* Horizontal combos - left hand */
 
-ZMK_COMBO(combo_lt_01100, &morph_grave_at, LT3 LT2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_lt_00110, &morph_dollar_percent, LT2 LT1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_lt_01010, &kp HASH, LT3 LT1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lt_01100, &morph_grave_at, LT3 LT2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lt_00110, &morph_dollar_percent, LT2 LT1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lt_01010, &kp HASH, LT3 LT1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-ZMK_COMBO(combo_lm_01100, &hml MOD_HOMEROW_L3(KEY_HOMEROW_L2) DELETE, LM3 LM2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_lm_00110, &hml MOD_HOMEROW_L2(KEY_HOMEROW_L1) BACKSPACE, LM2 LM1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-// ZMK_COMBO(combo_lm_01010, &hml MOD_HOMEROW_L3(KEY_HOMEROW_L1) 0, LM3 LM1, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lm_01100, &hml MOD_HOMEROW_L3(KEY_HOMEROW_L2) DELETE, LM3 LM2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lm_00110, &hml MOD_HOMEROW_L2(KEY_HOMEROW_L1) BACKSPACE, LM2 LM1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lm_01010, &hml MOD_HOMEROW_L3(KEY_HOMEROW_L1) 0, LM3 LM1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-ZMK_COMBO(combo_lb_01100, &kp LC(X),   LB3 LB2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_lb_00110, &kp LC(INS), LB2 LB1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_lb_01010, &kp LS(INS), LB3 LB1, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lb_01100, &kp LC(X),   LB3 LB2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lb_00110, &kp LC(INS), LB2 LB1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lb_01010, &kp LS(INS), LB3 LB1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 ////////////////////////////////
 /* Horizontal combos - right hand */
 
-ZMK_COMBO(combo_rt_01100, &morph_add_sub, RT1 RT2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_rt_00110, &morph_mul_div, RT2 RT3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_rt_01010, &morph_equal_tile, RT1 RT3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rt_01100, &morph_add_sub, RT1 RT2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rt_00110, &morph_mul_div, RT2 RT3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rt_01010, &morph_equal_tile, RT1 RT3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 MAKE_HRM(_hmr_01100, &kp, &morph_pars, KEYS_L THUMBS)
-ZMK_COMBO(combo_rm_01100, &_hmr_01100 MOD_HOMEROW_R1(KEY_HOMEROW_R2) 0, RM1 RM2, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rm_01100, &_hmr_01100 MOD_HOMEROW_R1(KEY_HOMEROW_R2) 0, RM1 RM2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 MAKE_HRM(_hmr_00110, &kp, &morph_bkts, KEYS_L THUMBS)
-ZMK_COMBO(combo_rm_00110, &_hmr_00110 MOD_HOMEROW_R2(KEY_HOMEROW_R3) 0, RM2 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rm_00110, &_hmr_00110 MOD_HOMEROW_R2(KEY_HOMEROW_R3) 0, RM2 RM3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 MAKE_HRM(_hmr_01010, &kp, &morph_brcs, KEYS_L THUMBS)
-ZMK_COMBO(combo_rm_01010, &_hmr_01010 MOD_HOMEROW_R1(KEY_HOMEROW_R3) 0, RM1 RM3, DEF     NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rm_01010, &_hmr_01010 MOD_HOMEROW_R1(KEY_HOMEROW_R3) 0, RM1 RM3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-ZMK_COMBO(combo_rb_01100, &morph_us_caret, RB1 RB2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_rb_00110, &morph_and_or, RB2 RB3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_rb_01010, &morph_lt_gt, RB1 RB3, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rb_01100, &morph_us_caret, RB1 RB2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rb_00110, &morph_and_or, RB2 RB3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_rb_01010, &morph_lt_gt, RB1 RB3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 ////////////////////////////////////////////////////////////////
 /* Nav cluster */
@@ -571,13 +571,13 @@ ZMK_LAYER(num,
                                                                                                             &hmr KEY_HOMEROW_R1 N4
                                                                                                                          &hmr KEY_HOMEROW_R2 N5
                                                                                                                                        &hmr KEY_HOMEROW_R3 N6
-                                                                                                                                                      ___             X_RM
+                                                                                                                                                      &kp PERIOD     X_RM
 #endif
 //├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
 #if NUM_BLOCK_LEFT
-    X_LB     &kp COMMA    &kp N1        &kp N2        &kp N3        &kp PERIOD       X_MB     ___           ___           ___           ___           ___             X_RB
+    X_LB     ___           &kp N1        &kp N2        &kp N3        ___             X_MB     ___           ___           ___           ___           ___             X_RB
 #else
-    X_LB     ___           ___           ___           ___           ___             X_MB     &kp COMMA    &kp N1        &kp N2        &kp N3        &kp PERIOD      X_RB
+    X_LB     ___           ___           ___           ___           ___             X_MB     ___           &kp N1        &kp N2        &kp N3        &kp COMMA      X_RB
 #endif
 //├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
     X_LH                                               ___           ___             X_MH     ___           ___                                                       X_RH
