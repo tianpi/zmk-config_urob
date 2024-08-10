@@ -29,26 +29,27 @@
 
 ////////////////////////////////
 
-#define DEF 0
-#define NAV 1
-#define FN 2
-#define NUM 3
-#define SYS 4
-#define UC 5
-#define MOUSE 6
-#define FACTORY 7
-#define MAGIC 8
-#define SYM 9
+#define ___LAYERS
+
+#define DEF         0
+#define NAV         1
+#define FN          2
+#define NUM         3
+#define SYS         4
+#define MOUSE       5
+#define FACTORY     6
+#define MAGIC       7
+#define SYM         8
+#define TEMPLATE    9
 
 ////////////////////////////////
 
 #include "mouse.dtsi"
 
-#define XXX &none
-#define ___ &trans
-
 ////////////////////////////////////////////////////////////////
 /* Global settings */
+
+#define ___GLOBALS
 
 #define QUICK_TAP_MS 175
 
@@ -67,15 +68,20 @@
     quick-tap-ms = <QUICK_TAP_MS>;
 };
 
-#define COPY    LC(C)
-#define CUT     LC(X)
-#define PASTE   LC(V)
+#define XXX &none
+#define ___ &trans
 
-#define UNDO    LC(Z)
-#define REDO    LC(Y)
+#define MACRO_COPY    LC(C)
+#define MACRO_CUT     LC(X)
+#define MACRO_PASTE   LC(V)
+
+#define MACRO_UNDO    LC(Z)
+#define MACRO_REDO    LC(Y)
 
 ////////////////////////////////
 // https://github.com/moergo-sc/glove80-zmk-config/blob/main/config/glove80.keymap
+
+#define ___GLOVE80
 
 #define RGB_STATUS_CMD 15
 #define RGB_STATUS RGB_STATUS_CMD 0
@@ -163,6 +169,8 @@ ZMK_AUTO_SHIFT(as,
 ////////////////////////////////////////////////////////////////
 /* mod-morph's */
 
+#define ___MOD_MORPHS
+
 // tap: backspace | lshft + tap: delete | rshft + tap: shift-delete
 ZMK_MOD_MORPH(morph_bspc_del,
     bindings = <&kp BSPC>, <&kp DEL>;
@@ -202,9 +210,19 @@ SIMPLE_MORPH(morph_underscore_minus, SFT, &kp UNDERSCORE, &kp MINUS)
 ////////////////////////////////////////////////////////////////
 /* Homerow mods */
 
-#define KEYS_L LT0 LT1 LT2 LT3 LT4 LM0 LM1 LM2 LM3 LM4 LB0 LB1 LB2 LB3 LB4  // left hand
-#define KEYS_R RT0 RT1 RT2 RT3 RT4 RM0 RM1 RM2 RM3 RM4 RB0 RB1 RB2 RB3 RB4  // right hand
-#define THUMBS LH2 LH1 LH0 RH0 RH1 RH2                                      // thumbs
+#define ___HOMEROW_MODS
+
+#define KEYS_L  \
+        LT0 LT1 LT2 LT3 LT4 \
+        LM0 LM1 LM2 LM3 LM4 \
+        LB0 LB1 LB2 LB3 LB4
+#define KEYS_R \
+        RT0 RT1 RT2 RT3 RT4 \
+        RM0 RM1 RM2 RM3 RM4 \
+        RB0 RB1 RB2 RB3 RB4
+#define THUMBS \
+        LH2 LH1 LH0 \
+        RH0 RH1 RH2
 
 #define MAKE_HRM(NAME, HOLD, TAP, TRIGGER_POS) \
     ZMK_HOLD_TAP(NAME, \
@@ -252,7 +270,6 @@ MAKE_HRM(hmr_kp_morph_bkts, &kp, &morph_bkts, KEYS_L THUMBS)
 #define MOD_HOMEROW_R4    LG
 
 ////////////////////////////////////////////////////////////////
-
 /*    KEY POSITIONS
   ╭─────────────────────╮ ╭─────────────────────╮
   │ LT4 LT3 LT2 LT1 LT0 │ │ RT0 RT1 RT2 RT3 RT4 │
@@ -261,6 +278,8 @@ MAKE_HRM(hmr_kp_morph_bkts, &kp, &morph_bkts, KEYS_L THUMBS)
   ╰───────╮ LH2 LH1 LH0 │ │ RH0 RH1 RH2 ╭───────╯
           ╰─────────────╯ ╰─────────────╯
 */
+
+#define ___COMBOS
 
 #define COMBO_TERM_FAST 18
 #define COMBO_TERM_SLOW 30
@@ -279,13 +298,13 @@ ZMK_COMBO(combo_lm_01100, &hml MOD_HOMEROW_L3(KEY_HOMEROW_L2) DELETE, LM3 LM2, D
 // ZMK_COMBO(combo_lm_00110, &hml MOD_HOMEROW_L2(KEY_HOMEROW_L1) BACKSPACE, LM2 LM1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 // // ZMK_COMBO(combo_lm_01010, &hml MOD_HOMEROW_L3(KEY_HOMEROW_L1) 0, LM3 LM1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-// ZMK_COMBO(combo_lb_01100, &kp CUT, LB3 LB2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-// ZMK_COMBO(combo_lb_00110, &kp COPY, LB2 LB1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-// ZMK_COMBO(combo_lb_01010, &kp PASTE, LB3 LB1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lb_01100, &kp MACRO_CUT, LB3 LB2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lb_00110, &kp MACRO_COPY, LB2 LB1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lb_01010, &kp MACRO_PASTE, LB3 LB1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-ZMK_COMBO(combo_lt_00011, &kp COPY, LT1 LT0, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_lm_00011, &hml KEY_HOMEROW_L1 PASTE, LM1 LM0, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_lb_00011, &kp CUT, LB1 LB0, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lt_00011, &kp MACRO_COPY, LT1 LT0, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lm_00011, &hml KEY_HOMEROW_L1 MACRO_PASTE, LM1 LM0, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+ZMK_COMBO(combo_lb_00011, &kp MACRO_CUT, LB1 LB0, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 ////////////////////////////////
 /* Horizontal combos - right hand */
@@ -304,6 +323,8 @@ ZMK_COMBO(combo_rb_01010, &morph_lt_gt, RB1 RB3, DEF NUM, COMBO_TERM_FAST, COMBO
 
 ////////////////////////////////////////////////////////////////
 /* Nav cluster */
+
+#define ___NAV
 
 // long-tap action on hold, short-tap action on all interrupts
 #define MT_CORE \
@@ -335,6 +356,10 @@ MASK_MODS(masked_end,  (MOD_LCTL), &kp END)
 ////////////////////////////////////////////////////////////////
 /* Caps-word, num-word and smart-mouse */
 
+#define ___CAPS_WORD___NUM_WORD___MOUSE
+
+////////////////////////////////
+
 // tap: sticky-shift | shift + tap/ double-tap: caps-word | hold: shift
 ZMK_MOD_MORPH(morph_shift_capsword,
     bindings = <&sk LSHFT>, <&caps_word>;
@@ -343,6 +368,8 @@ ZMK_MOD_MORPH(morph_shift_capsword,
 &caps_word {  // mods deactivate caps-word, requires PR #1451
     /delete-property/ ignore-modifiers;
 };
+
+////////////////////////////////
 
 // tap: num-word | double-tap: sticky num-layer | hold: num-layer
 #define SMART_NUM &hold_numlayer_numdance NUM 0
@@ -361,6 +388,8 @@ ZMK_TAP_DANCE(dance_numword_num,
     ignore-modifiers;
 };
 
+////////////////////////////////
+
 // smart-mouse, requires PR #1366
 ZMK_TRI_STATE(smart_mouse,
     bindings = <&tog MOUSE>, <&none>, <&tog MOUSE>;
@@ -371,19 +400,25 @@ ZMK_TRI_STATE(smart_mouse,
 ////////////////////////////////////////////////////////////////
 /* Custom behaviors */
 
+#define ___VARIOUS
+
+////////////////////////////////
+
 // Sticky layer + sticky shift (workaround for issue #1421)
-ZMK_STICKY_KEY(sls,
+ZMK_STICKY_KEY(sk_sym,
     release-after-ms = <1000>;
-    bindings = <&uc_shift>;
+    bindings = <&macro_mo_sym_shift>;
     ignore-modifiers;
 )
-ZMK_MACRO(uc_shift,
+ZMK_MACRO(macro_mo_sym_shift,
     wait-ms = <0>;
     tap-ms = <1>;
-    bindings = <&macro_press &mo UC &kp LSHFT>
+    bindings = <&macro_press &mo SYM &kp LSHFT>
              , <&macro_pause_for_release>
-             , <&macro_release &mo UC &kp LSHFT>;
+             , <&macro_release &mo SYM &kp LSHFT>;
 )
+
+////////////////////////////////
 
 // tap: space | shift + tap: dot -> space -> sticky shift | hold: activate layer
 ZMK_HOLD_TAP(lt_space_dotspace,
@@ -399,6 +434,8 @@ ZMK_MACRO(macro_dot_space_shift,
     bindings = <&kp DOT &kp SPACE &sk LSHFT>;
 )
 
+////////////////////////////////
+
 // tap: copy | double-tap: cut
 ZMK_TAP_DANCE(copy_cut,
     tapping-term-ms = <200>;
@@ -412,6 +449,8 @@ ZMK_MACRO(win_sleep,
     bindings = <&kp LG(X) &kp U &kp S>;
 )
 
+////////////////////////////////
+
 // misc aliases
 #define CANCEL      &kp K_CANCEL             // cancel caps-word, num-word and smart-mouse
 #define DSK_PREV    &hmr LCTRL LG(LC(LEFT))   // previous desktop
@@ -421,193 +460,153 @@ ZMK_MACRO(win_sleep,
 #define DSK_MGR     &kp LA(GRAVE)            // desktop manager
 
 ////////////////////////////////////////////////////////////////
-/* map the Glove's extra keys */
 
-/*                               GLOVE80 KEY MATRIX / LAYOUT MAPPING
- ╭────────────────────╮       ╭────────────────────╮ ╭────────────────────╮       ╭────────────────────╮
- │ LT  LT  LT  LT  LT ╰───┬───╯ LT  LT  LT  LT  LT │ │ LC5 LC4 LC3 LC2 LC1╰───┬───╯ RC1 RC2 RC3 RC4 RC5│
- │ LT  LT  LT  LT  LT  LT │ LT  LT  LT  LT  LT  LT │ │ LN5 LN4 LN3 LN2 LN1 LN0│ RN0 RN1 RN2 RN3 RN4 RN5│
- │ LT  23  24  25  26  27 │ 28  29  30  31  32  RT │ │ LT5 LT4 LT3 LT2 LT1 LT0│ RT0 RT1 RT2 RT3 RT4 RT5│
- │ LM  35  36  37  38  39 │ 40  41  42  43  44  RM │ │ LM5 LM4 LM3 LM2 LM1 LM0│ RM0 RM1 RM2 RM3 RM4 RM5│
- │ LB  47  48  49  50  51 │ 58  59  60  61  62  RB │ │ LB5 LB4 LB3 LB2 LB1 LB0│ RB0 RB1 RB2 RB3 RB4 RB5│
- │ LH  LH  LH  LH  LH ╭───┴───╮ RH  RH  RH  RH  RH │ │ LF5 LF4 LF3 LF2 LF1╭───┴───╮ RF1 RF2 RF3 RF4 RF5│
- ╰───────────┬────────┴───┬───┴────────┬───────────╯ ╰───────────┬────────┴───┬───┴────────┬───────────╯
-             │ MB  MB  MB │ MB  MB  MB │                         │ LH5 LH4 LH3│ RH3 RH4 RH5│
-             │ 69  70  MH │ MH  73  74 │                         │ LH2 LH1 LH0│ RH0 RH1 RH2│
-             ╰────────────┴────────────╯                         ╰────────────┴────────────╯
- */
+#define ___KEYMAPS
 
-/* map the Glove's extra keys */
-#define X_LT  \
-                &kp F1 &kp F2 &kp F3 &kp F4 &kp F5                 &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 \
-                &kp EQUAL    &kp N1 &kp N2 &kp N3 &kp N4 &kp N5   &kp N6 &kp N7 &kp N8 &kp N9 &kp N0 &kp MINUS \
-                &kp TAB
-#define X_RT    &kp BSPC
+//
+// ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+// ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
+// ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
+// ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
+// │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
+// ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
+// │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
+// ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
+//
+//       ╭─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────╮
+//       │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │
+//       ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+//       │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │
+//       ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+//       │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │
+//       ├─────┼─────┼─────┴─────┴─────┴─────┴─────┴─────┼─────┼─────┤
+//       │ LH1 │ LH0 │                                   │ RH0 │ RH1 │
+//       ╰─────┴─────╯                                   ╰─────┴─────╯
 
-#define X_LM    &kp ESC
-#define X_RM    &kp RET
+#define ___KEYMAP_BASE
 
-#define X_LB    &kp UNDO
-#define X_RB    &kp REDO
+GLV80_LAYER(base,
+// ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+    &kp F1
+    &kp F2
+    &kp F3
+    &kp F4
+    &kp F5
 
-#define X_LH    &magic MAGIC 0  &kp HOME    &kp END     &kp LEFT    &kp RIGHT
-#define X_RH    &kp UP          &kp DOWN    &kp LBKT    &kp RBKT    &kp DEL
+    &kp F6
+    &kp F7
+    &kp F8
+    &kp F9
+    &kp F10
+// ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
+    &kp EQUAL
+    &kp N1
+    &kp N2
+    &kp N3
+    &kp N4
+    &kp N5
 
-#define X_MB    \
-                &morph_shift_capsword   SMART_NUM                  &kp LALT \
-                &kp RALT                &mt BACKSLASH SLASH        &kp UNDERSCORE
-#define X_MH    \
-                &kp LCTRL \
-                &kp LGUI
-// //  ╭───┬───┬───┬───╮           ╭───┬───┬───┬───╮
-// //  ├───┼───┼───┼───┼───┬───┬───┼───┼───┼───┼───┤
-// //  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// //  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// //  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// //  ├───┼───┼───┼───┼───┴───┴───┼───┼───┼───┼───┤
-// //  ├───┼───┼───┼───┼───┬───┬───┼───┼───┼───┼───┤
-// //  ╰───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───╯
+    &kp N6
+    &kp N7
+    &kp N8
+    &kp N9
+    &kp N0
+    &kp MINUS
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
+    &kp TAB
+    &kp Q
+    &kp W
+    &kp E
+    &kp R
+    &kp T
 
-// //  ╭───┬───┬───┬───╮           ╭───┬───┬───┬───╮
-//     &kp F1
-//         &kp F2
-//             &kp F3
-//                 &kp F4
-//                     &kp F5
-//                                 &kp F6
-//                                     &kp F7
-//                                         &kp F8
-//                                             &kp F9
-//                                                 &kp F10
-// //  ├───┼───┼───┼───┼───┬───┬───┼───┼───┼───┼───┤
-//     &kp EQUAL
-//         &kp N1
-//             &kp N2
-//                 &kp N3
-//                     &kp N4
-//                         &kp N5
-//                             &kp N6
-//                                 &kp N7
-//                                     &kp N8
-//                                         &kp N9
-//                                             &kp N0
-//                                                 &kp MINUS
-// //  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-//     &kp TAB
-//                                                 &kp BSPC
-// //  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-//     &kp ESC
-//                                                 &kp RET
-// //  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-//     &kp UNDO
-//                                                 &kp REDO
-// //  ├───┼───┼───┼───┼───┴───┴───┼───┼───┼───┼───┤
-//     &magic MAGIC 0
-//         &kp HOME
-//             &kp END
-//                 &kp LEFT
-//                     &kp RIGHT
-//                                 &kp UP
-//                                     &kp DOWN
-//                                         &kp LBKT
-//                                             &kp RBKT
-//                                                 &kp DEL
-// //  ├───┼───┼───┼───┼───┬───┬───┼───┼───┼───┼───┤
-//     &morph_shift_capsword
-//         SMART_NUM
-//             &kp LALT
-//                         &kp LCTRL
-//                             &kp LGUI
-//                                         &kp RALT
-//                                             &mt BACKSLASH SLASH
-//                                                 &kp UNDERSCORE
-// //  ╰───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───╯
+    &kp Y
+    &kp U
+    &kp I
+    &kp O
+    &kp P
+    &kp BSPC
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
+    &mt K_CANCEL ESC
+    &hml_mo_kp SYM A
+    &hml KEY_HOMEROW_L3 S
+    &hml KEY_HOMEROW_L2 D
+    &hml KEY_HOMEROW_L1 F
+    &kp G
 
-// //  ╭───┬───┬───┬───┬───╮       ╭───┬───┬───┬───┬───╮
-// //  ├───┼───┼───┼───┼───┼───┬───┼───┼───┼───┼───┼───┤
-// //  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// //  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// //  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// //  ├───┼───┼───┼───┼───┼───┴───┼───┼───┼───┼───┼───┤
-// //  ├───┼───┼───┼───┴───╯       ╰───┴───┼───┼───┼───┤
-// //  ├───┼───┼───┤                       ├───┼───┼───┤
-// //  ╰───┴───┴───╯                       ╰───┴───┴───╯
+    &kp H
+    &hmr KEY_HOMEROW_R1 J
+    &hmr KEY_HOMEROW_R2 K
+    &hmr KEY_HOMEROW_R3 L
+    &hmr_mo_kp SYM SQT
+    &kp RET
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
+    &kp MACRO_UNDO
+    &kp Z
+    &kp X
+    &kp C
+    &kp V
+    &kp B
+    ,
+    &kp N
+    &kp M
+    &morph_comma
+    &morph_dot
+    &morph_excl
+    &kp MACRO_REDO
+// ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
+    &magic MAGIC 0
+    &kp HOME
+    &kp END
+    &kp LEFT
+    &kp RIGHT
+    ,
+    &kp UP
+    &kp DOWN
+    &kp LBKT
+    &kp RBKT
+    &kp DEL
+    ,
+// ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
+// │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
+    &morph_shift_capsword
+    SMART_NUM
+    XXX
 
-////////////////////////////////////////////////////////////////
-/* source the main keymap */
+    XXX
+    &morph_slash_backslash
+    &kp UNDERSCORE
+    ,
+// ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
+// │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
+    &lt NAV BSPC
+    &lt FN TAB
+    XXX
 
-// The default layout has 34 keys. Additional keys can be added by pre-setting any of
-// the macros defined in this file to one or more keys before sourcing this file.
-
-/* left of left half */
-#if !defined X_LT  // top row, left
-    #define X_LT
-#endif
-#if !defined X_LM  // middle row, left
-    #define X_LM
-#endif
-#if !defined X_LB  // bottom row, left
-    #define X_LB
-#endif
-#if !defined X_LH  // thumb row, left
-    #define X_LH
-#endif
-
-/* between left and right half */
-#if !defined X_MT  // top row, middle
-    #define X_MT
-#endif
-#if !defined X_MM  // middle row, middle
-    #define X_MM
-#endif
-#if !defined X_MB  // bottom row, middle
-    #define X_MB
-#endif
-#if !defined X_MH  // thumb row, middle
-    #define X_MH
-#endif
-
-/* right of right half */
-#if !defined X_RT  // top row, right
-    #define X_RT
-#endif
-#if !defined X_RM  // middle row, right
-    #define X_RM
-#endif
-#if !defined X_RB  // bottom row, right
-    #define X_RB
-#endif
-#if !defined X_RH  // thumb row, right
-    #define X_RH
-#endif
-
-// //   ╭─╮╭───┬───┬───┬───┬───╮╭─╮╭───┬───┬───┬───┬───╮╭─╮
-// //   ├─┤├───┼───┼───┼───┼───┤├─┤├───┼───┼───┼───┼───┤├─┤
-// //   ├─┤├───┼───┼───┼───┼───┤├─┤├───┼───┼───┼───┼───┤├─┤
-// //   ├─┤╰───┴───┴───┼───┼───┤├─┤├───┼───┼───┴───┴───╯├─┤
-// //   ╰─╯            ╰───┴───╯╰─╯╰───┴───╯            ╰─╯
-
-ZMK_LAYER(base,
-//╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
-    X_LT     &kp Q         &kp W         &kp E         &kp R         &kp T           X_MT     &kp Y         &kp U         &kp I         &kp O         &kp P           X_RT
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &hml_mo_kp SYM A
-                           &hml KEY_HOMEROW_L3 S
-                                         &hml KEY_HOMEROW_L2 D
-                                                      &hml KEY_HOMEROW_L1 F
-                                                                     &kp G           X_MM     &kp H
-                                                                                                            &hmr KEY_HOMEROW_R1 J
-                                                                                                                          &hmr KEY_HOMEROW_R2 K
-                                                                                                                                        &hmr KEY_HOMEROW_R3 L
-                                                                                                                                                      &hmr_mo_kp SYM SQT
-                                                                                                                                                                      X_RM
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LB     &kp Z         &kp X         &kp C         &kp V         &kp B           X_MB     &kp N         &kp M         &morph_comma  &morph_dot    &morph_excl     X_RB
-//├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
-    X_LH                                               &lt NAV BSPC
-                                                                     &lt FN TAB      X_MH     &kp MINUS     &lt_space_dotspace FN 0                                   X_RH
-//╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
+    &kp LGUI
+    &kp MINUS
+    &lt_space_dotspace FN 0
+// ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
+
+////////////////////////////////
+
+#define ___KEYMAP_NAV
 
 // Alt+Tab swapper, requires PR #1366
 ZMK_TRI_STATE(swapper,
@@ -615,94 +614,348 @@ ZMK_TRI_STATE(swapper,
     ignored-key-positions = <LT2>;
 )
 
-ZMK_LAYER(nav,
-//╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
-    X_LT     ___           ___           &kp LS(TAB)   &swapper      ___             X_MT     &kp PG_UP     NAV_BSPC      NAV_UP        NAV_DEL       ___             X_RT
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &sk KEY_HOMEROW_L4
-                           &sk KEY_HOMEROW_L3
-                                         &sk KEY_HOMEROW_L2
-                                                      &sk KEY_HOMEROW_L1
-                                                                     ___             X_MM     &kp PG_DN     NAV_LEFT      NAV_DOWN      NAV_RIGHT     &kp RET         X_RM
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LB     ___           &kp CUT       &kp COPY      &kp PASTE     ___             X_MB     &kp INS       &kp TAB       &kp LT        &kp GT        ___             X_RB
-//├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
-    X_LH                                               ___           ___             X_MH     ___           CANCEL                                                    X_RH
-//╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
+GLV80_LAYER(nav,
+// ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+    ___   ___   ___   ___   ___               ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
+    ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
+    ___
+    XXX
+    XXX
+    &kp LS(TAB)
+    &swapper
+    XXX
+
+    &kp PG_UP
+    NAV_BSPC
+    NAV_UP
+    NAV_DEL
+    XXX
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
+    ___
+    &sk KEY_HOMEROW_L4
+    &sk KEY_HOMEROW_L3
+    &sk KEY_HOMEROW_L2
+    &sk KEY_HOMEROW_L1
+    XXX
+
+    &kp PG_DN
+    NAV_LEFT
+    NAV_DOWN
+    NAV_RIGHT
+    &kp RET
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
+    ___
+    XXX
+    &kp MACRO_CUT
+    &kp MACRO_COPY
+    &kp MACRO_PASTE
+    XXX
+    ,
+    &kp INS
+    &kp TAB
+    &kp LT
+    &kp GT
+    XXX
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
+     ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
+// ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
+// │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
+     ___   ___   ___                                       ___   ___   ___,
+// ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
+// │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
+     ___   ___   ___                                       ___   ___   ___
 )
 
-ZMK_LAYER(fn,
-//╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
-    X_LT     &kp SCROLLLOCK  &kp F7      &kp F8        &kp F9        &kp F10         X_MT     ___           &kp C_PREV    &kp C_VOL_UP  &kp C_NEXT    ___             X_RT
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &hml KEY_HOMEROW_L4 PAUSE_BREAK
-                           &hml KEY_HOMEROW_L3 F4
-                                         &hml KEY_HOMEROW_L2 F5
-                                                      &hml KEY_HOMEROW_L1 F6
-                                                                     &kp F11         X_MM     ___           ___           &hmr KEY_HOMEROW_R2 C_VOL_DN
-                                                                                                                                        ___           ___             X_RM
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LB     &kp PSCRN     &kp F1        &kp F2        &kp F3        &kp F12         X_MB     ___           ___           ___           ___           ___             X_RB
-//├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
-    X_LH                                               ___           ___             X_MH     &kp C_MUTE    &kp C_PP                                                  X_RH
-//╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
+////////////////////////////////
+
+#define ___KEYMAP_FN
+
+GLV80_LAYER(fn,
+// ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+     ___   ___   ___   ___   ___               ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
+     ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
+    ___
+    &kp SCROLLLOCK
+    &kp F7
+    &kp F8
+    &kp F9
+    &kp F10
+
+    XXX
+    &kp C_PREV
+    &kp C_VOL_UP
+    &kp C_NEXT
+    XXX
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
+    ___
+    &hml KEY_HOMEROW_L4 PAUSE_BREAK
+    &hml KEY_HOMEROW_L3 F4
+    &hml KEY_HOMEROW_L2 F5
+    &hml KEY_HOMEROW_L1 F6
+    &kp F11
+
+    XXX
+    &sk KEY_HOMEROW_R1
+    &hmr KEY_HOMEROW_R2 C_VOL_DN
+    &sk KEY_HOMEROW_R3
+    &sk KEY_HOMEROW_R4
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
+    ___
+    &kp PSCRN
+    &kp F1
+    &kp F2
+    &kp F3
+    &kp F12
+    ,
+    XXX
+    XXX
+    XXX
+    XXX
+    XXX
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
+     ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
+// ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
+// │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
+     ___   ___   ___                                       ___   ___   ___,
+// ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
+// │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
+     ___   ___   ___                                       ___   ___   ___
+// ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
 
-ZMK_LAYER(num,
-//╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
-    X_LT     &kp KP_NUMLOCK  ___         ___           ___           ___             X_MT     ___           &kp KP_N7    &kp KP_N8     &kp KP_N9      &kp SEMICOLON   X_RT
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &hml KEY_HOMEROW_L4 KP_PLUS
-                           &hml KEY_HOMEROW_L3 KP_MINUS
-                                         &hml KEY_HOMEROW_L2 KP_MULTIPLY
-                                                      &hml KEY_HOMEROW_L1 KP_DIVIDE
-                                                                     ___             X_MM     &kp KP_N0
-                                                                                                            &kp KP_N4
-                                                                                                                          &kp KP_N5
-                                                                                                                                        &kp KP_N6
-                                                                                                                                                      &kp KP_DOT      X_RM
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LB     &kp KP_PLUS   &kp KP_MINUS  &kp KP_MULTIPLY  &kp KP_DIVIDE  ___         X_MB     ___           &kp KP_N1     &kp KP_N2     &kp KP_N3     &kp COMMA       X_RB
-//├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
-    X_LH                                               ___           ___             X_MH     ___           ___                                                       X_RH
-//╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
+////////////////////////////////
+
+#define ___KEYMAP_NUM
+
+GLV80_LAYER(num,
+// ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+     ___   ___   ___   ___   ___               ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
+     ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
+    ___
+    &kp KP_NUMLOCK
+    XXX
+    XXX
+    XXX
+    XXX
+
+    XXX
+    &kp KP_N7
+    &kp KP_N8
+    &kp KP_N9
+    &kp SEMICOLON
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
+    ___
+    &hml KEY_HOMEROW_L4 KP_PLUS
+    &hml KEY_HOMEROW_L3 KP_MINUS
+    &hml KEY_HOMEROW_L2 KP_MULTIPLY
+    &hml KEY_HOMEROW_L1 KP_DIVIDE
+    XXX
+
+    &kp KP_N0
+    &kp KP_N4
+    &kp KP_N5
+    &kp KP_N6
+    &kp KP_DOT
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
+    ___
+    XXX
+    XXX
+    XXX
+    XXX
+    XXX
+    ,
+    XXX
+    &kp KP_N1
+    &kp KP_N2
+    &kp KP_N3
+    &kp COMMA
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
+     ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
+// ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
+// │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
+     ___   ___   ___                                       ___   ___   ___,
+// ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
+// │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
+    ___
+    ___
+    ___
+
+    ___
+    &kp C_MUTE
+    &kp C_PP
+// ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
 
-ZMK_LAYER(sys,
-//╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
-    X_LT                                _BT_SEL_KEYS_                                X_MT     ___           ___           ___           ___           ___             X_RT
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     ___           ___           ___           ___           &bootloader     X_MM     &bootloader   ___           ___           ___           ___             X_RM
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LB     ___           ___           ___           ___           &sys_reset      X_MB     &sys_reset    ___           ___           ___           ___             X_RB
-//├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
-    X_LH                                               ___           ___             X_MH     ___           ___                                                       X_RH
-//╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
+////////////////////////////////
+
+#define ___KEYMAP_SYS
+
+GLV80_LAYER(sys,
+// ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+     ___   ___   ___   ___   ___               ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
+     ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
+    ___
+    _BT_SEL_KEYS_
+
+    XXX   XXX   XXX   XXX   XXX
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
+    ___
+    XXX
+    XXX
+    XXX
+    XXX
+    &bootloader
+
+    &bootloader
+    XXX
+    XXX
+    XXX
+    XXX
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
+    ___
+    XXX
+    XXX
+    XXX
+    XXX
+    &sys_reset
+    ,
+    &sys_reset
+    XXX
+    XXX
+    XXX
+    XXX
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
+     ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
+// ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
+// │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
+     ___   ___   ___                                       ___   ___   ___,
+// ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
+// │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
+     ___   ___   ___                                       ___   ___   ___
+// ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
 
-ZMK_LAYER(uc,
-//╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
-    X_LT     ___           &el_omega     &el_phi       &el_pi        &el_beta        X_MT     ___           &el_lambda    &el_upsilon   &el_psi       &de_eszett      X_RT
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     &el_alpha     &el_rho       &el_sigma     &el_tau       &el_gamma       X_MM     &el_mu        &el_nu        &el_epsilon   &el_iota      &el_omikron     X_RM
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LB     &el_zeta      &el_xi        &el_chi       &el_delta     &el_theta       X_MB     &el_kappa     &el_eta       &de_ae        &de_oe        &de_ue          X_RB
-//├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
-    X_LH                                               ___           ___             X_MH     ___           ___                                                       X_RH
-//╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰───────────────────────────╯                                           ╰──────╯
+////////////////////////////////
+
+#define ___KEYMAP_MOUSE
+
+GLV80_LAYER(mouse,
+// ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+     ___   ___   ___   ___   ___               ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
+     ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
+    ___
+    XXX
+    XXX
+    XXX
+    XXX
+    XXX
+
+    U_WH_L
+    U_WH_D
+    U_MS_U
+    U_WH_U
+    U_WH_R
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
+    ___
+    XXX
+    XXX
+    XXX
+    XXX
+    XXX
+
+    XXX
+    U_MS_L
+    U_MS_D
+    U_MS_R
+    XXX
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
+    ___
+    XXX
+    XXX
+    XXX
+    XXX
+    XXX
+    ,
+    XXX
+    &mkp MB4
+    &mkp MCLK
+    &mkp MB5
+    XXX
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
+     ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
+// ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
+// │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
+     ___   ___   ___                                       ___   ___   ___,
+// ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
+// │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
+     ___
+     ___
+     ___
+
+     ___
+     &mkp RCLK
+     &mkp LCLK
+// ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
 
-ZMK_LAYER(mouse,
-//╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
-    X_LT     ___           ___           ___           ___           ___             X_MT     U_WH_L        U_WH_D        U_MS_U         U_WH_U       U_WH_R          X_RT
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM     ___           ___           ___           ___           ___             X_MM     ___           U_MS_L        U_MS_D         U_MS_R       ___             X_RM
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LB     ___           ___           ___           ___           ___             X_MB     ___           &mkp MB4      &mkp MCLK      &mkp MB5     ___             X_RB
-//├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
-    X_LH                                               ___           ___             X_MH     &mkp LCLK     &mkp RCLK                                                 X_RH
-//╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
-)
+////////////////////////////////
+
+#define ___KEYMAP_FACTORY
 
 ZMK_LAYER(factory,
     &kp N0   &kp N6   &kp N2   &kp N8   &kp N4                                                                              &kp N4   &kp N8   &kp N2   &kp N6   &kp N0
@@ -713,6 +966,10 @@ ZMK_LAYER(factory,
     &kp N5   &kp N1   &kp N7   &kp N3   &kp N9            &kp N7   &kp N8   &kp N9      &kp N9   &kp N8   &kp N7            &kp N9   &kp N3   &kp N7   &kp N1   &kp N5
 )
 
+////////////////////////////////
+
+#define ___KEYMAP_MAGIC
+
 ZMK_LAYER(magic,
     &bt BT_CLR        &none               &none           &none           &none                                                                                                           &none      &none      &none      &none      &bt BT_CLR_ALL
     &none             &none               &none           &none           &none           &none                                                                                &none      &none      &none      &none      &none      &none
@@ -722,55 +979,109 @@ ZMK_LAYER(magic,
     &none             &none               &none           &none           &none                           &bt_0     &bt_1     &out OUT_USB     &none     &none     &none                  &none      &none      &none      &none      &to FACTORY
 )
 
-ZMK_LAYER(sym,
-//╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭──────╮
-    X_LT
-             XXX
-                           &morph_grave_at
-                                        &kp HASH
-                                                       &morph_dollar_percent
-                                                                     XXX
-                                                                                     X_MT
-                                                                                              XXX
-                                                                                                            &morph_equal_tile
-                                                                                                                          &morph_add_sub
-                                                                                                                                        &morph_mul_div
-                                                                                                                                                      XXX
-                                                                                                                                                                     X_RT
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LM
-            XXX
-                           &hml KEY_HOMEROW_L3 CUT
-                                         &hml KEY_HOMEROW_L2 COPY
-                                                      &hml KEY_HOMEROW_L1 PASTE
-                                                                     XXX
-                                                                                     X_MM
-                                                                                              XXX
-                                                                                                            &hmr_kp_morph_pars KEY_HOMEROW_R1 0
-                                                                                                                          &hmr_kp_morph_bkts KEY_HOMEROW_R2 0
-                                                                                                                                        &hmr_kp_morph_brcs KEY_HOMEROW_R3 0
-                                                                                                                                                      XXX
-                                                                                                                                                                      X_RM
-//├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├──────┤
-    X_LB
-             XXX
-                           XXX
-                                        XXX
-                                                       XXX
-                                                                     XXX
-                                                                                     X_MB
-                                                                                              XXX
-                                                                                                            &morph_us_caret
-                                                                                                                          &morph_lt_gt
-                                                                                                                                        &morph_and_or
-                                                                                                                                                      XXX
-                                                                                                                                                                      X_RB
-//├──────┤ ╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├──────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯ ├──────┤
-    X_LH                                               ___           ___             X_MH     ___           ___                                                       X_RH
-//╰──────╯                                           ╰─────────────┴─────────────╯ ╰──────╯ ╰─────────────┴─────────────╯                                           ╰──────╯
+////////////////////////////////
+
+#define ___KEYMAP_SYM
+
+GLV80_LAYER(sym,
+// ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+     ___   ___   ___   ___   ___               ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
+     ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
+    ___
+    XXX
+    &kp AT_SIGN
+    &kp HASH
+    &kp DOLLAR
+    &kp PERCENT
+
+    &kp SLASH
+    &kp BACKSLASH
+    &kp MINUS
+    &kp UNDERSCORE
+    XXX
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
+    ___
+    &hmr KEY_HOMEROW_L4 CARET
+    &morph_mul_div
+    &morph_add_sub
+    &hmr KEY_HOMEROW_L1 EQUAL
+    XXX
+
+    &kp PIPE
+    &hmr_kp_morph_pars KEY_HOMEROW_R1 0
+    &hmr_kp_morph_bkts KEY_HOMEROW_R2 0
+    &hmr_kp_morph_brcs KEY_HOMEROW_R3 0
+    &kp DOUBLE_QUOTES
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
+    ___
+    &kp EXCLAMATION
+    &morph_and_or
+    &morph_lt_gt
+    &kp TILDE
+    XXX
+    ,
+    XXX
+    &kp GRAVE
+    &kp SEMICOLON
+    &kp COLON
+    &kp QUESTION
+    ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
+     ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
+// ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
+// │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
+     ___   ___   ___                                       ___   ___   ___,
+// ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
+// │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
+     ___   ___   ___                                       ___   ___   ___
+// ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
 
-ZMK_CONDITIONAL_LAYER(FN NUM, SYS)  // FN + NUM --> SYS
+////////////////////////////////
+
+#define ___KEYMAP_TEMPLATE
+
+GLV80_LAYER(_template,
+// ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+     ___   ___   ___   ___   ___               ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
+     ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
+     ___   XXX   XXX   XXX   XXX   XXX   XXX   XXX   XXX   XXX   XXX   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
+     ___   XXX   XXX   XXX   XXX   XXX   XXX   XXX   XXX   XXX   XXX   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
+     ___   XXX   XXX   XXX   XXX   XXX , XXX   XXX   XXX   XXX   XXX   ___
+// ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
+     ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
+// ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
+// │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
+     ___   ___   ___                                       ___   ___   ___,
+// ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
+// │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
+     ___   ___   ___                                       ___   ___   ___
+// ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
+)
+
+////////////////////////////////
+
+ZMK_CONDITIONAL_LAYER(FN, NUM, SYS)  // FN + NUM --> SYS
 
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////
