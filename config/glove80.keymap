@@ -235,39 +235,84 @@ SIMPLE_MORPH(morph_underscore_minus, SFT, &kp UNDERSCORE, &kp MINUS)
         hold-trigger-on-release; \
     )
 
-MAKE_HRM(hml, &kp, &kp, KEYS_R THUMBS)  // left-hand HRMs
-MAKE_HRM(hmr, &kp, &kp, KEYS_L THUMBS)  // right-hand HRMs
+MAKE_HRM(hrml, &kp, &kp, KEYS_R THUMBS)  // left-hand HRMs
+MAKE_HRM(hrmr, &kp, &kp, KEYS_L THUMBS)  // right-hand HRMs
 
-MAKE_HRM(hml_mo_kp, &mo, &kp, KEYS_R THUMBS)
-MAKE_HRM(hmr_mo_kp, &mo, &kp, KEYS_L THUMBS)
+#define HRML_KP_KP(key_on_hold, key_on_tap) hrml key_on_hold key_on_tap
+#define HRMR_KP_KP(key_on_hold, key_on_tap) hrmr key_on_hold key_on_tap
 
-MAKE_HRM(hmr_kp_morph_pars, &kp, &morph_pars, KEYS_L THUMBS)
-MAKE_HRM(hmr_kp_morph_brcs, &kp, &morph_brcs, KEYS_L THUMBS)
-MAKE_HRM(hmr_kp_morph_bkts, &kp, &morph_bkts, KEYS_L THUMBS)
+MAKE_HRM(hrml_mo_kp, &mo, &kp, KEYS_R THUMBS)
+MAKE_HRM(hrmr_mo_kp, &mo, &kp, KEYS_L THUMBS)
 
-#define KEY_HOMEROW_L4    LGUI
-#define KEY_HOMEROW_L3    LALT
-#define KEY_HOMEROW_L2    LCTRL
-#define KEY_HOMEROW_L1    LSHFT
-#define KEY_HOMEROW_L0    0
+#define HRML_MO_KP(layer_on_hold, key_on_tab) hrml_mo_kp layer_on_hold key_on_tab
+#define HRMR_MO_KP(layer_on_hold, key_on_tab) hrmr_mo_kp layer_on_hold key_on_tab
 
-#define MOD_HOMEROW_L4    LG
-#define MOD_HOMEROW_L3    LA
-#define MOD_HOMEROW_L2    LC
-#define MOD_HOMEROW_L1    LS
-#define MOD_HOMEROW_L0    0
+MAKE_HRM(hrml_kp_morph_add_sub, &kp, &morph_add_sub, KEYS_R THUMBS)
+MAKE_HRM(hrml_kp_morph_mul_div, &kp, &morph_mul_div, KEYS_R THUMBS)
 
-#define KEY_HOMEROW_R0    0
-#define KEY_HOMEROW_R1    RSHFT
-#define KEY_HOMEROW_R2    LCTRL
-#define KEY_HOMEROW_R3    LALT
-#define KEY_HOMEROW_R4    LGUI
+MAKE_HRM(hrmr_kp_morph_pars, &kp, &morph_pars, KEYS_L THUMBS)
+MAKE_HRM(hrmr_kp_morph_bkts, &kp, &morph_bkts, KEYS_L THUMBS)
+MAKE_HRM(hrmr_kp_morph_brcs, &kp, &morph_brcs, KEYS_L THUMBS)
 
-#define MOD_HOMEROW_R0    0
-#define MOD_HOMEROW_R1    RS
-#define MOD_HOMEROW_R2    LC
-#define MOD_HOMEROW_R3    LA
-#define MOD_HOMEROW_R4    LG
+#define MAKE_HRML_KP_MORPH(morph_on_tap) \
+    MAKE_HRM(hrml_kp_morph_ ## morph_on_tab, &kp, &morph_on_tap, KEYS_R THUMBS)
+
+#define HRML_KP_MORPH(key_on_hold, morph_on_tap) \
+    hrml_kp_morph_ ## morph_on_tab key_on_hold 0
+
+////////////////////////////////
+
+#define KEY_HRM_M4    LALT
+#define KEY_HRM_M3    SYM
+#define KEY_HRM_M2    LSHFT
+#define KEY_HRM_M1    LCTRL
+#define KEY_HRM_M0    0
+
+#define MOD_HRM_M4    LA
+#define MOD_HRM_M3    0
+#define MOD_HRM_M2    LS
+#define MOD_HRM_M1    LC
+#define MOD_HRM_M0    0
+
+#define HRML_M4_HOLD_TAP(key_on_tap) HRML_KP_KP(KEY_HRM_M4, key_on_tap)
+#define HRML_M3_HOLD_TAP(key_on_tap) HRML_MO_KP(KEY_HRM_M3, key_on_tap)
+#define HRML_M2_HOLD_TAP(key_on_tap) HRML_KP_KP(KEY_HRM_M2, key_on_tap)
+#define HRML_M1_HOLD_TAP(key_on_tap) HRML_KP_KP(KEY_HRM_M1, key_on_tap)
+#define HRML_M0_HOLD_TAP(key_on_tap) kp key_on_tap
+
+#define HRMR_M0_HOLD_TAP(key_on_tap) kp key_on_tap
+#define HRMR_M1_HOLD_TAP(key_on_tap) HRMR_KP_KP(KEY_HRM_M1, key_on_tap)
+#define HRMR_M2_HOLD_TAP(key_on_tap) HRMR_KP_KP(KEY_HRM_M2, key_on_tap)
+#define HRMR_M3_HOLD_TAP(key_on_tap) HRMR_MO_KP(KEY_HRM_M3, key_on_tap)
+#define HRMR_M4_HOLD_TAP(key_on_tap) HRMR_KP_KP(KEY_HRM_M4, key_on_tap)
+
+#define HRML_M4_TAP() kp KEY_HRM_M4
+#define HRML_M3_TAP() mo KEY_HRM_M3
+#define HRML_M2_TAP() kp KEY_HRM_M2
+#define HRML_M1_TAP() kp KEY_HRM_M1
+#define HRML_M0_TAP() none
+
+#define HRMR_M0_TAP() none
+#define HRMR_M1_TAP() kp KEY_HRM_M1
+#define HRMR_M2_TAP() kp KEY_HRM_M2
+#define HRMR_M3_TAP() mo KEY_HRM_M3
+#define HRMR_M4_TAP() kp KEY_HRM_M4
+
+#define HRML_M2_HOLD_MORPH(morph_on_tap) HRML_KP_MORPH(KEY_HRM_M2, morph_on_tap)
+
+////////////////////////////////
+
+#define HRML_B4(key) kp key
+#define HRML_B3(key) HRML_KP_KP(LGUI, key)
+#define HRML_B2(key) kp key
+#define HRML_B1(key) kp key
+#define HRML_B0(key) HRML_MO_KP(NUM, key)
+
+#define HRMR_B4(key) kp key
+#define HRMR_B3(key) HRMR_KP_KP(LGUI, key)
+#define HRMR_B2(key) kp key
+#define HRMR_B1(key) kp key
+#define HRMR_B0(key) HRMR_MO_KP(NUM, key)
 
 ////////////////////////////////////////////////////////////////
 /*    KEY POSITIONS
@@ -294,64 +339,32 @@ MAKE_HRM(hmr_kp_morph_bkts, &kp, &morph_bkts, KEYS_L THUMBS)
 // ZMK_COMBO(combo_lt_00110, &morph_dollar_percent, LT2 LT1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 // ZMK_COMBO(combo_lt_01010, &kp HASH, LT3 LT1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-ZMK_COMBO(combo_lm_01100, &hml MOD_HOMEROW_L3(KEY_HOMEROW_L2) DELETE, LM3 LM2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-// ZMK_COMBO(combo_lm_00110, &hml MOD_HOMEROW_L2(KEY_HOMEROW_L1) BACKSPACE, LM2 LM1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-// // ZMK_COMBO(combo_lm_01010, &hml MOD_HOMEROW_L3(KEY_HOMEROW_L1) 0, LM3 LM1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lm_01100, &hrml MOD_HRM_M3(KEY_HRM_M2) DELETE, LM3 LM2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lm_00110, &hrml MOD_HRM_M2(KEY_HRM_M1) BACKSPACE, LM2 LM1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lm_01010, &hrml MOD_HRM_M3(KEY_HRM_M1) 0, LM3 LM1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 // ZMK_COMBO(combo_lb_01100, &kp MACRO_CUT, LB3 LB2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 // ZMK_COMBO(combo_lb_00110, &kp MACRO_COPY, LB2 LB1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 // ZMK_COMBO(combo_lb_01010, &kp MACRO_PASTE, LB3 LB1, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-ZMK_COMBO(combo_lt_00011, &kp MACRO_COPY, LT1 LT0, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_lm_00011, &hml KEY_HOMEROW_L1 MACRO_PASTE, LM1 LM0, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_lb_00011, &kp MACRO_CUT, LB1 LB0, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lt_00011, &kp MACRO_COPY, LT1 LT0, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lm_00011, &hrml KEY_HRM_M1 MACRO_PASTE, LM1 LM0, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lb_00011, &kp MACRO_CUT, LB1 LB0, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 ////////////////////////////////
 /* Horizontal combos - right hand */
 
-ZMK_COMBO(combo_rt_01100, &morph_add_sub, RT1 RT2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_rt_00110, &morph_mul_div, RT2 RT3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_rt_01010, &morph_equal_tile, RT1 RT3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_rt_01100, &morph_add_sub, RT1 RT2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_rt_00110, &morph_mul_div, RT2 RT3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_rt_01010, &morph_equal_tile, RT1 RT3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-ZMK_COMBO(combo_rm_01100, &hmr_kp_morph_pars MOD_HOMEROW_R1(KEY_HOMEROW_R2) 0, RM1 RM2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_rm_00110, &hmr_kp_morph_bkts MOD_HOMEROW_R2(KEY_HOMEROW_R3) 0, RM2 RM3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_rm_01010, &hmr_kp_morph_brcs MOD_HOMEROW_R1(KEY_HOMEROW_R3) 0, RM1 RM3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_rm_01100, &hrmr_kp_morph_pars MOD_HRM_M1(KEY_HRM_M2) 0, RM1 RM2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_rm_00110, &hrmr_kp_morph_bkts MOD_HRM_M2(KEY_HRM_M3) 0, RM2 RM3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_rm_01010, &hrmr_kp_morph_brcs MOD_HRM_M1(KEY_HRM_M3) 0, RM1 RM3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
-ZMK_COMBO(combo_rb_01100, &morph_us_caret, RB1 RB2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_rb_00110, &morph_and_or, RB2 RB3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-ZMK_COMBO(combo_rb_01010, &morph_lt_gt, RB1 RB3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-
-////////////////////////////////////////////////////////////////
-/* Nav cluster */
-
-#define ___NAV
-
-// long-tap action on hold, short-tap action on all interrupts
-#define MT_CORE \
-    flavor = "tap-preferred"; \
-    tapping-term-ms = <220>; \
-    quick-tap-ms = <220>; \
-    hold-trigger-key-positions = <0>;
-
-&mt { MT_CORE };
-ZMK_HOLD_TAP(mt_home, bindings = <&masked_home>, <&kp>; MT_CORE)
-ZMK_HOLD_TAP(mt_end, bindings = <&masked_end>, <&kp>; MT_CORE)
-
-#define NAV_LEFT  &mt_home 0   LEFT    // tap: left  | long-tap: beginning of line
-#define NAV_RIGHT &mt_end 0    RIGHT   // tap: right | long-tap: end       of line
-#define NAV_UP    &mt LC(HOME) UP      // tap: up    | long-tap: beginning of document
-#define NAV_DOWN  &mt LC(END)  DOWN    // tap: down  | long-tap: end       of document
-#define NAV_BSPC  &mt LC(BSPC) BSPC    // tap: bspc  | long-tap: delete word backward
-#define NAV_DEL   &mt LC(DEL)  DEL     // tap: del   | long-tap: delete word forward
-
-// mask CTRL when holding left/right to avoid accidental jumps to beginning/end of document
-#define MASK_MODS(NAME, MODS, BINDING) \
-    ZMK_MOD_MORPH(NAME, \
-        bindings = <BINDING>, <BINDING>; \
-        mods = <MODS>; \
-    )
-MASK_MODS(masked_home, (MOD_LCTL), &kp HOME)
-MASK_MODS(masked_end,  (MOD_LCTL), &kp END)
+// ZMK_COMBO(combo_rb_01100, &morph_us_caret, RB1 RB2, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_rb_00110, &morph_and_or, RB2 RB3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_rb_01010, &morph_lt_gt, RB1 RB3, DEF NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
 
 ////////////////////////////////////////////////////////////////
 /* Caps-word, num-word and smart-mouse */
@@ -453,8 +466,8 @@ ZMK_MACRO(win_sleep,
 
 // misc aliases
 #define CANCEL      &kp K_CANCEL             // cancel caps-word, num-word and smart-mouse
-#define DSK_PREV    &hmr LCTRL LG(LC(LEFT))   // previous desktop
-#define DSK_NEXT    &hmr LALT LG(LC(RIGHT)) // next     desktop
+#define DSK_PREV    &hrmr LCTRL LG(LC(LEFT))   // previous desktop
+#define DSK_NEXT    &hrmr LALT LG(LC(RIGHT)) // next     desktop
 #define PIN_WIN     &kp LG(LC(LS(Q)))        // pin window across desktops
 #define PIN_APP     &kp LG(LC(LS(A)))        // pin application across desktops
 #define DSK_MGR     &kp LA(GRAVE)            // desktop manager
@@ -511,6 +524,7 @@ GLV80_LAYER(base,
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
     &kp EQUAL
+
     &kp N1
     &kp N2
     &kp N3
@@ -522,10 +536,12 @@ GLV80_LAYER(base,
     &kp N8
     &kp N9
     &kp N0
+
     &kp MINUS
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
-    &kp TAB
+    &morph_shift_capsword
+
     &kp Q
     &kp W
     &kp E
@@ -537,25 +553,29 @@ GLV80_LAYER(base,
     &kp I
     &kp O
     &kp P
+
     &kp BSPC
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     &mt K_CANCEL ESC
-    &hml_mo_kp SYM A
-    &hml KEY_HOMEROW_L3 S
-    &hml KEY_HOMEROW_L2 D
-    &hml KEY_HOMEROW_L1 F
-    &kp G
 
-    &kp H
-    &hmr KEY_HOMEROW_R1 J
-    &hmr KEY_HOMEROW_R2 K
-    &hmr KEY_HOMEROW_R3 L
-    &hmr_mo_kp SYM SQT
+    &HRML_M4_HOLD_TAP(A)
+    &HRML_M3_HOLD_TAP(S)
+    &HRML_M2_HOLD_TAP(D)
+    &HRML_M1_HOLD_TAP(F)
+    &HRML_M0_HOLD_TAP(G)
+
+    &HRMR_M0_HOLD_TAP(H)
+    &HRMR_M1_HOLD_TAP(J)
+    &HRMR_M2_HOLD_TAP(K)
+    &HRMR_M3_HOLD_TAP(L)
+    &HRMR_M4_HOLD_TAP(SQT)
+
     &kp RET
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
     &kp MACRO_UNDO
+
     &kp Z
     &kp X
     &kp C
@@ -567,6 +587,7 @@ GLV80_LAYER(base,
     &morph_comma
     &morph_dot
     &morph_excl
+
     &kp MACRO_REDO
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
@@ -584,22 +605,22 @@ GLV80_LAYER(base,
     ,
 // ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
 // │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
-    &morph_shift_capsword
+    &kp DELETE
     SMART_NUM
     XXX
 
     XXX
-    &morph_slash_backslash
+    &kp MINUS
     &kp UNDERSCORE
     ,
 // ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
 // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
     &lt NAV BSPC
     &lt FN TAB
-    XXX
+    &kp RALT
 
     &kp LGUI
-    &kp MINUS
+    &morph_slash_backslash
     &lt_space_dotspace FN 0
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
@@ -607,6 +628,33 @@ GLV80_LAYER(base,
 ////////////////////////////////
 
 #define ___KEYMAP_NAV
+
+// long-tap action on hold, short-tap action on all interrupts
+#define MT_CORE \
+    flavor = "tap-preferred"; \
+    tapping-term-ms = <220>; \
+    quick-tap-ms = <220>; \
+    hold-trigger-key-positions = <0>;
+
+&mt { MT_CORE };
+ZMK_HOLD_TAP(mt_home, bindings = <&masked_home>, <&kp>; MT_CORE)
+ZMK_HOLD_TAP(mt_end, bindings = <&masked_end>, <&kp>; MT_CORE)
+
+#define NAV_LEFT  &mt_home 0   LEFT    // tap: left  | long-tap: beginning of line
+#define NAV_RIGHT &mt_end 0    RIGHT   // tap: right | long-tap: end       of line
+#define NAV_UP    &mt LC(HOME) UP      // tap: up    | long-tap: beginning of document
+#define NAV_DOWN  &mt LC(END)  DOWN    // tap: down  | long-tap: end       of document
+#define NAV_BSPC  &mt LC(BSPC) BSPC    // tap: bspc  | long-tap: delete word backward
+#define NAV_DEL   &mt LC(DEL)  DEL     // tap: del   | long-tap: delete word forward
+
+// mask CTRL when holding left/right to avoid accidental jumps to beginning/end of document
+#define MASK_MODS(NAME, MODS, BINDING) \
+    ZMK_MOD_MORPH(NAME, \
+        bindings = <BINDING>, <BINDING>; \
+        mods = <MODS>; \
+    )
+MASK_MODS(masked_home, (MOD_LCTL), &kp HOME)
+MASK_MODS(masked_end,  (MOD_LCTL), &kp END)
 
 // Alt+Tab swapper, requires PR #1366
 ZMK_TRI_STATE(swapper,
@@ -624,47 +672,53 @@ GLV80_LAYER(nav,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     ___
+
     XXX
     XXX
     &kp LS(TAB)
     &swapper
     XXX
 
-    &kp PG_UP
+    XXX
     NAV_BSPC
     NAV_UP
     NAV_DEL
     XXX
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     ___
-    &sk KEY_HOMEROW_L4
-    &sk KEY_HOMEROW_L3
-    &sk KEY_HOMEROW_L2
-    &sk KEY_HOMEROW_L1
-    XXX
 
-    &kp PG_DN
+    &HRML_M4_TAP()
+    XXX
+    &HRML_M2_TAP()
+    &HRML_M1_TAP()
+    &HRML_M0_TAP()
+
+    XXX
     NAV_LEFT
     NAV_DOWN
     NAV_RIGHT
-    &kp RET
+    XXX
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
     ___
+
     XXX
     &kp MACRO_CUT
     &kp MACRO_COPY
     &kp MACRO_PASTE
     XXX
     ,
-    &kp INS
-    &kp TAB
-    &kp LT
-    &kp GT
+    &kp INSERT
+    &kp PAGE_UP
     XXX
+    &kp PAGE_DOWN
+    XXX
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
@@ -691,6 +745,7 @@ GLV80_LAYER(fn,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     ___
+
     &kp SCROLLLOCK
     &kp F7
     &kp F8
@@ -702,25 +757,29 @@ GLV80_LAYER(fn,
     &kp C_VOL_UP
     &kp C_NEXT
     XXX
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     ___
-    &hml KEY_HOMEROW_L4 PAUSE_BREAK
-    &hml KEY_HOMEROW_L3 F4
-    &hml KEY_HOMEROW_L2 F5
-    &hml KEY_HOMEROW_L1 F6
-    &kp F11
 
-    XXX
-    &sk KEY_HOMEROW_R1
-    &hmr KEY_HOMEROW_R2 C_VOL_DN
-    &sk KEY_HOMEROW_R3
-    &sk KEY_HOMEROW_R4
+    &HRML_M4_HOLD_TAP(PAUSE_BREAK)
+    &HRML_M3_HOLD_TAP(F4)
+    &HRML_M2_HOLD_TAP(F5)
+    &HRML_M1_HOLD_TAP(F6)
+    &HRML_M0_HOLD_TAP(F11)
+
+    &HRMR_M0_TAP()
+    &HRMR_M1_TAP()
+    &HRMR_M2_HOLD_TAP(C_VOL_DN)
+    &HRMR_M3_TAP()
+    &HRMR_M4_TAP()
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
     ___
+
     &kp PSCRN
     &kp F1
     &kp F2
@@ -732,6 +791,7 @@ GLV80_LAYER(fn,
     XXX
     XXX
     XXX
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
@@ -759,6 +819,7 @@ GLV80_LAYER(num,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     ___
+
     &kp KP_NUMLOCK
     XXX
     XXX
@@ -770,25 +831,29 @@ GLV80_LAYER(num,
     &kp KP_N8
     &kp KP_N9
     &kp SEMICOLON
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     ___
-    &hml KEY_HOMEROW_L4 KP_PLUS
-    &hml KEY_HOMEROW_L3 KP_MINUS
-    &hml KEY_HOMEROW_L2 KP_MULTIPLY
-    &hml KEY_HOMEROW_L1 KP_DIVIDE
-    XXX
+
+    &HRML_M4_HOLD_TAP(KP_PLUS)
+    &HRML_M3_HOLD_TAP(KP_MINUS)
+    &HRML_M2_HOLD_TAP(KP_MULTIPLY)
+    &HRML_M1_HOLD_TAP(KP_DIVIDE)
+    &HRML_M0_TAP()
 
     &kp KP_N0
     &kp KP_N4
     &kp KP_N5
     &kp KP_N6
     &kp KP_DOT
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
     ___
+
     XXX
     XXX
     XXX
@@ -800,6 +865,7 @@ GLV80_LAYER(num,
     &kp KP_N2
     &kp KP_N3
     &kp COMMA
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
@@ -840,6 +906,7 @@ GLV80_LAYER(sys,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     ___
+
     XXX
     XXX
     XXX
@@ -851,10 +918,12 @@ GLV80_LAYER(sys,
     XXX
     XXX
     XXX
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
     ___
+
     XXX
     XXX
     XXX
@@ -866,6 +935,7 @@ GLV80_LAYER(sys,
     XXX
     XXX
     XXX
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
@@ -893,6 +963,7 @@ GLV80_LAYER(mouse,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     ___
+
     XXX
     XXX
     XXX
@@ -904,10 +975,12 @@ GLV80_LAYER(mouse,
     U_MS_U
     U_WH_U
     U_WH_R
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     ___
+
     XXX
     XXX
     XXX
@@ -919,10 +992,12 @@ GLV80_LAYER(mouse,
     U_MS_D
     U_MS_R
     XXX
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
     ___
+
     XXX
     XXX
     XXX
@@ -934,6 +1009,7 @@ GLV80_LAYER(mouse,
     &mkp MCLK
     &mkp MB5
     XXX
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
@@ -983,6 +1059,9 @@ ZMK_LAYER(magic,
 
 #define ___KEYMAP_SYM
 
+MAKE_HRML_KP_MORPH(morph_add_sub)
+MAKE_HRML_KP_MORPH(morph_add_sub)
+
 GLV80_LAYER(sym,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
 // │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
@@ -993,6 +1072,7 @@ GLV80_LAYER(sym,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     ___
+
     XXX
     &kp AT_SIGN
     &kp HASH
@@ -1004,25 +1084,31 @@ GLV80_LAYER(sym,
     &kp MINUS
     &kp UNDERSCORE
     XXX
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     ___
-    &hmr KEY_HOMEROW_L4 CARET
-    &morph_mul_div
-    &morph_add_sub
-    &hmr KEY_HOMEROW_L1 EQUAL
-    XXX
 
-    &kp PIPE
-    &hmr_kp_morph_pars KEY_HOMEROW_R1 0
-    &hmr_kp_morph_bkts KEY_HOMEROW_R2 0
-    &hmr_kp_morph_brcs KEY_HOMEROW_R3 0
-    &kp DOUBLE_QUOTES
+    &HRML_M4_HOLD_TAP(CARET)
+    &morph_mul_div
+    &HRML_M2_HOLD_MORPH(morph_add_sub)
+    //&HRML_KP_MORPH(KEY_HRM_M2, morph_add_sub)
+    //&hrml_kp_morph_add_sub KEY_HRM_M2 0
+    &HRML_M1_HOLD_TAP(EQUAL)
+    &HRML_M0_TAP()
+
+    &HRMR_M0_HOLD_TAP(PIPE)
+    &morph_pars
+    &hrmr_kp_morph_bkts KEY_HRM_M2 0
+    &hrmr_kp_morph_brcs KEY_HRM_M3 0
+    &HRMR_M4_HOLD_TAP(DOUBLE_QUOTES)
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
     ___
+
     &kp EXCLAMATION
     &morph_and_or
     &morph_lt_gt
@@ -1034,6 +1120,7 @@ GLV80_LAYER(sym,
     &kp SEMICOLON
     &kp COLON
     &kp QUESTION
+
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
