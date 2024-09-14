@@ -524,7 +524,7 @@ GLV80_LAYER(base,
     &LHRM_M0(G)
 
     &RHRM_M0(H)
-    &RHRM_M1(J)
+    &RHRM_M1(N)
     &RHRM_M2(K)
     &RHRM_M3(L)
     &RHRM_M4(SINGLE_QUOTE)
@@ -540,7 +540,7 @@ GLV80_LAYER(base,
     &LHRM_MO_KP(NUMKP, V)
     &kp B
     ,
-    &kp N
+    &kp J
     &RHRM_MO_KP(NUMKP, M)
     &mm_comma_semicolon /* mm_comma_semicolon | mm_comma_singlequote */
     &RHRM_KP_MM(LEFT_META, mm_dot_colon) /* mm_dot_colon | mm_dot_doublequotes */
@@ -793,7 +793,7 @@ GLV80_LAYER(num,
     &LHRM_M1_TAP()
     &LHRM_M0_TAP()
 
-    &RHRM_M0_TAP()
+    &RHRM_M0(MINUS)
     &RHRM_M1(N4)
     &RHRM_M2(N5)
     &RHRM_M3(N6)
@@ -810,7 +810,7 @@ GLV80_LAYER(num,
     XXX
     XXX
     ,
-    XXX
+    &kp COMMA
     &kp N1
     &kp N2
     &kp N3
@@ -867,7 +867,7 @@ GLV80_LAYER(numkp,
     &LHRM_M1_TAP()
     &LHRM_M0_TAP()
 
-    &RHRM_M0_TAP()
+    &RHRM_M0(KP_MINUS)
     &RHRM_M1(KP_N4)
     &RHRM_M2(KP_N5)
     &RHRM_M3(KP_N6)
@@ -884,7 +884,7 @@ GLV80_LAYER(numkp,
     XXX
     XXX
     ,
-    XXX
+    &kp KP_COMMA
     &kp KP_N1
     &kp KP_N2
     &kp KP_N3
