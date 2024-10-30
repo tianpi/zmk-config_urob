@@ -64,7 +64,7 @@
 &num_word {
     continue-list = <
         BSPC DEL
-        MINUS
+        MINUS PLUS
         COMMA
         DOT
     >;
@@ -101,13 +101,17 @@
 #define XXX &none
 #define ___ &trans
 
-#define KEY_CUT     APPLY_MODS(MOD_LCTL, X)
-#define KEY_COPY    APPLY_MODS(MOD_LCTL, C)
-#define KEY_PASTE   APPLY_MODS(MOD_LCTL, V)
+#define KEY_CUT         APPLY_MODS(MOD_LCTL, X)
+#define KEY_COPY        APPLY_MODS(MOD_LCTL, C)
+#define KEY_PASTE       APPLY_MODS(MOD_LCTL, V)
 
 #define KEY_UNDO        APPLY_MODS(MOD_LCTL, Z)
 #define KEY_UNDO_ALT    APPLY_MODS(MOD_LSFT, APPLY_MODS(MOD_LCTL, Y))
 #define KEY_REDO        APPLY_MODS(MOD_LCTL, Y)
+
+#define KEY_MEH         APPLY_MODS(MOD_LSFT, APPLY_MODS(MOD_LCTL, LALT))
+#define KEY_HYPER       APPLY_MODS(MOD_LSFT, APPLY_MODS(MOD_LCTL, APPLY_MODS(MOD_LALT, LMETA)))
+#define KEY_META_CTRL   APPLY_MODS(MOD_LGUI, LCTRL)
 
 ////////////////////////////////////////////////////////////////
 
@@ -223,6 +227,8 @@ ZMK_HOLD_TAP_HRM(ht_rhrm_mo_kp, &mo, &kp, KEYS_L THUMBS)
 #define LHRM_KP_KP(key_on_hold, key_on_tap) ht_lhrm_kp_kp key_on_hold key_on_tap
 #define RHRM_KP_KP(key_on_hold, key_on_tap) ht_rhrm_kp_kp key_on_hold key_on_tap
 
+////////////////
+
 #define LHRM_MO_KP(layer_on_hold, key_on_tab) ht_lhrm_mo_kp layer_on_hold key_on_tab
 #define RHRM_MO_KP(layer_on_hold, key_on_tab) ht_rhrm_mo_kp layer_on_hold key_on_tab
 
@@ -257,47 +263,14 @@ ZMK_HOLD_TAP_HRM(ht_rhrm_mo_kp, &mo, &kp, KEYS_L THUMBS)
 #define LHRM_MACRO_KP(macro_on_hold, key_on_tap) \
     ht_lhrm_macro_kp_ ## macro_on_hold 0 key_on_tap
 
-////////////////////////////////
-
-#define KEY_HRM_M4    LALT
-#define KEY_HRM_M3    0
-#define KEY_HRM_M2    LSHFT
-#define KEY_HRM_M1    LEFT_CONTROL
-#define KEY_HRM_M0    0
-
-#define LAYER_HRM_M4    -1
-#define LAYER_HRM_M3    SYM
-#define LAYER_HRM_M2    -1
-#define LAYER_HRM_M1    -1
-#define LAYER_HRM_M0    -1
-
 ////////////////
 
-#define LHRM_M4(key_on_tap) LHRM_KP_KP(KEY_HRM_M4, key_on_tap)
-#define LHRM_M3(key_on_tap) LHRM_MO_KP(LAYER_HRM_M3, key_on_tap)
-#define LHRM_M2(key_on_tap) LHRM_KP_KP(KEY_HRM_M2, key_on_tap)
-#define LHRM_M1(key_on_tap) LHRM_KP_KP(KEY_HRM_M1, key_on_tap)
-#define LHRM_M0(key_on_tap) kp key_on_tap
+#define ZMK_HOLD_TAP_HRM_EXTRAS(NAME) \
+    ZMK_HOLD_TAP_LHRM_KP_MM(NAME) \
+    ZMK_HOLD_TAP_RHRM_KP_MM(NAME) \
+    ZMK_HOLD_TAP_LHRM_MO_MM(NAME) \
+    ZMK_HOLD_TAP_RHRM_MO_MM(NAME)
 
-#define RHRM_M0(key_on_tap) kp key_on_tap
-#define RHRM_M1(key_on_tap) RHRM_KP_KP(KEY_HRM_M1, key_on_tap)
-#define RHRM_M2(key_on_tap) RHRM_KP_KP(KEY_HRM_M2, key_on_tap)
-#define RHRM_M3(key_on_tap) RHRM_MO_KP(LAYER_HRM_M3, key_on_tap)
-#define RHRM_M4(key_on_tap) RHRM_KP_KP(KEY_HRM_M4, key_on_tap)
-
-////////////////
-
-#define LHRM_M4_TAP() kp KEY_HRM_M4
-#define LHRM_M3_TAP() mo LAYER_HRM_M3
-#define LHRM_M2_TAP() kp KEY_HRM_M2
-#define LHRM_M1_TAP() kp KEY_HRM_M1
-#define LHRM_M0_TAP() none
-
-#define RHRM_M0_TAP() none
-#define RHRM_M1_TAP() kp KEY_HRM_M1
-#define RHRM_M2_TAP() kp KEY_HRM_M2
-#define RHRM_M3_TAP() mo LAYER_HRM_M3
-#define RHRM_M4_TAP() kp KEY_HRM_M4
 
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/keymaps/behaviors/macros
@@ -306,17 +279,17 @@ ZMK_HOLD_TAP_HRM(ht_rhrm_mo_kp, &mo, &kp, KEYS_L THUMBS)
 
 ////////////////////////////////
 
-ZMK_MACRO(macro_cancel,
+ZMK_MACRO(macro_gohome,
     wait-ms = <0>;
     tap-ms = <5>;
     bindings = <&kp K_CANCEL>, <&to BASE>;
 )
 
-ZMK_HOLD_TAP(ht__mc_cancel_and_go_home__kp,
+ZMK_HOLD_TAP(ht_gohome_kp,
     flavor = "balanced";
     tapping-term-ms = <200>;
     quick-tap-ms = <175>;
-    bindings = <&macro_cancel>, <&kp>;
+    bindings = <&macro_gohome>, <&kp>;
 )
 
 ////////////////
@@ -378,6 +351,8 @@ ZMK_MOD_MORPH(mm_bspc_del,
     keep-mods = <MOD_RSFT>;
 )
 
+ZMK_HOLD_TAP_HRM_EXTRAS(mm_bspc_del)
+
 ////////////////
 
 ZMK_MOD_MORPH(mm_capsword_capslock,
@@ -399,8 +374,8 @@ ZMK_MOD_MORPH(mm_numword_numlock,
         mods = <(MOD_L ## MOD|MOD_R ## MOD)>; \
         bindings = <BINDING1>, <BINDING2>; \
     ) \
-    ZMK_HOLD_TAP_LHRM_KP_MM(NAME) \
-    ZMK_HOLD_TAP_RHRM_KP_MM(NAME)
+    ZMK_HOLD_TAP_HRM_EXTRAS(NAME) \
+
 
 ZMK_MOD_MORPH_SIMPLE(mm_comma_semicolon, SFT, &kp COMMA, &kp SEMICOLON)
 ZMK_MOD_MORPH_SIMPLE(mm_comma_singlequote, SFT, &kp COMMA, &kp SINGLE_QUOTE)
@@ -411,9 +386,7 @@ ZMK_MOD_MORPH_SIMPLE(mm_brackets, SFT, &kp LEFT_BRACKET, &kp RIGHT_BRACKET)
 ZMK_MOD_MORPH_SIMPLE(mm_braces, SFT, &kp LEFT_BRACE, &kp RIGHT_BRACE)
 ZMK_MOD_MORPH_SIMPLE(mm_equal_equal, SFT, &kp EQUAL, &kp EQUAL)
 ZMK_MOD_MORPH_SIMPLE(mm_add_sub, SFT, &kp PLUS, &kp MINUS)
-ZMK_MOD_MORPH_SIMPLE(mm_add_sub_kp, SFT, &kp KP_PLUS, &kp KP_MINUS)
 ZMK_MOD_MORPH_SIMPLE(mm_mul_div, SFT, &kp ASTERISK, &kp SLASH)
-ZMK_MOD_MORPH_SIMPLE(mm_mul_div_kp, SFT, &kp KP_ASTERISK, &kp KP_SLASH)
 ZMK_MOD_MORPH_SIMPLE(mm_and_or, SFT, &kp AMPERSAND, &kp PIPE)
 ZMK_MOD_MORPH_SIMPLE(mm_lt_gt, SFT, &kp LESS_THAN, &kp GREATER_THAN)
 ZMK_MOD_MORPH_SIMPLE(mm_excl_qmark, SFT, &kp EXCLAMATION, &kp QMARK)
@@ -426,15 +399,23 @@ ZMK_MOD_MORPH_SIMPLE(mm_doublequotes_singlequote, SFT, &kp DOUBLE_QUOTES, &kp SI
 ZMK_MOD_MORPH_SIMPLE(mm_pointer_reference, SFT, &kp ASTERISK, &kp AMPERSAND)
 ZMK_MOD_MORPH_SIMPLE(mm_caret_underscore, SFT, &kp CARET, &kp UNDERSCORE)
 
-////////////////////////////////
+ZMK_MOD_MORPH_SIMPLE(mm_keypad_add_sub, SFT, &kp KP_PLUS, &kp KP_MINUS)
+ZMK_MOD_MORPH_SIMPLE(mm_keypad_mul_div, SFT, &kp KP_ASTERISK, &kp KP_SLASH)
+ZMK_MOD_MORPH_SIMPLE(mm_keypad_dot_comma, SFT, &kp KP_DOT, &kp KP_COMMA)
+ZMK_MOD_MORPH_SIMPLE(mm_keypad_parenthesis, SFT, &kp KP_LEFT_PARENTHESIS, &kp KP_RIGHT_PARENTHESIS)
 
-ZMK_HOLD_TAP_LHRM_MO_MM(mm_bspc_del)
+ZMK_MOD_MORPH_SIMPLE(mm_n9_, SFT, &kp N9, &kp RIGHT_BRACE)
+ZMK_MOD_MORPH_SIMPLE(mm_n8_, SFT, &kp N8, &kp CARET)
+ZMK_MOD_MORPH_SIMPLE(mm_n7_, SFT, &kp N7, &kp LEFT_BRACE)
+ZMK_MOD_MORPH_SIMPLE(mm_n6_, SFT, &kp N6, &kp RIGHT_PARENTHESIS)
+ZMK_MOD_MORPH_SIMPLE(mm_n5_, SFT, &kp N5, &kp N5)
+ZMK_MOD_MORPH_SIMPLE(mm_n4_, SFT, &kp N4, &kp LEFT_PARENTHESIS)
+ZMK_MOD_MORPH_SIMPLE(mm_n3_, SFT, &kp N3, &kp RIGHT_BRACKET)
+ZMK_MOD_MORPH_SIMPLE(mm_n2_, SFT, &kp N2, &kp N2)
+ZMK_MOD_MORPH_SIMPLE(mm_n1_, SFT, &kp N1, &kp LEFT_BRACKET)
+ZMK_MOD_MORPH_SIMPLE(mm_n0_, SFT, &kp N0, &kp SEMICOLON)
 
-////////////////
-
-ZMK_HOLD_TAP_RHRM_MO_MM(mm_underscore_minus)
-ZMK_HOLD_TAP_RHRM_MO_MM(mm_slash_backslash)
-
+ZMK_MOD_MORPH_SIMPLE(mm_space_, SFT, &kp SPACE, &kp MINUS)
 
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/config/combos
@@ -541,62 +522,62 @@ GLV80_LAYER(base,
 
     &kp Q
     &LHRM_KP_KP(LEFT_META, W)
-    &kp E
-    &LHRM_MO_KP(NUM, R)
-    &kp F /* T */
+    &LHRM_MO_KP(NUM, E)
+    &kp R
+    &kp F
 
     &kp Y
     &kp U
-    &kp I
+    &RHRM_MO_KP(NUMNAV, I)
     &RHRM_KP_KP(LEFT_META, O)
     &kp P
 
-    &mm_numword_numlock
+    &tog NUM
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     &kp ENTER
 
-    &LHRM_M4(A)
-    &LHRM_M3(S)
-    &LHRM_M2(D)
-    &LHRM_M1(T) /* F */
-    &LHRM_M0(G) /* G */
+    &LHRM_KP_KP(LALT, A)
+    &LHRM_KP_KP(LCTL, S)
+    &LHRM_MO_KP(SYM, D)
+    &LHRM_KP_KP(LSFT, T)
+    &LHRM_KP_KP(KEY_MEH, G)
 
-    &RHRM_M0(K) /* H */
-    &RHRM_M1(N) /* J */
-    &RHRM_M2(H) /* K */
-    &RHRM_M3(L)
-    &RHRM_M4(SINGLE_QUOTE) /* SEMICOLON / COLON */
+    &RHRM_KP_KP(KEY_MEH, K)
+    &RHRM_KP_KP(LSFT, N)
+    &RHRM_MO_KP(SYM, H)
+    &RHRM_KP_KP(LCTL, L)
+    &RHRM_KP_KP(LALT, SINGLE_QUOTE)
 
-    &mm_undo_redo
+    &ht_gohome_kp 0 ESCAPE
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
-    &ht__mc_cancel_and_go_home__kp 0 ESCAPE
+    &mm_undo_redo
 
     &LHRM_KP_KP(RIGHT_ALT, Z)
-    &LHRM_KP_KP(LEFT_META, X)
+    &LHRM_KP_KP(KEY_META_CTRL, X)
     &kp C
-    &LHRM_MO_KP(NUM, V) /* V */
-    &kp B
+    &kp V
+    &LHRM_KP_KP(KEY_HYPER, B)
     ,
-    &kp J /* N */
+    &RHRM_KP_KP(KEY_HYPER, J)
     &kp M
-    &mm_comma_semicolon /* mm_comma_singlequote */
-    &RHRM_KP_MM(LEFT_META, mm_dot_colon) /* mm_dot_doublequotes */
+    &mm_comma_semicolon
+    &RHRM_KP_MM(KEY_META_CTRL, mm_dot_colon)
     &RHRM_KP_MM(RIGHT_ALT, mm_excl_qmark)
 
-    XXX
+    &tog SYM
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
     &kp HOME
     &kp END
-    &kp KEY_CUT
-    &kp KEY_COPY
-    &kp KEY_PASTE
-    ,
+    &kp LEFT_ARROW
     &kp PRINTSCREEN
+    &kp RIGHT_ARROW
+    ,
+    &kp UP_ARROW
     XXX
-    XXX
+    &kp DOWN_ARROW
     &kp PAGE_UP
     &kp PAGE_DOWN
     ,
@@ -606,19 +587,19 @@ GLV80_LAYER(base,
     &RHRM_KP_KP(LEFT_CONTROL, TAB)
     XXX
 
-    &mo SYS
+    XXX
     &RHRM_MO_MM(FUNFUN, mm_underscore_minus)
     &RHRM_MO_KP(FUN, SPACE)
     ,
 // ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
 // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
-    &RHRM_MO_KP(FUNMAC, ENTER)
+    &RHRM_MO_KP(FUNMAC, ESCAPE)
     &kp LEFT_SHIFT
-    &mo MAGIC
+    XXX
 
-    &mo FACTORY
+    XXX
     &kp RIGHT_SHIFT
-    &RHRM_MO_MM(NUMNAV, mm_slash_backslash)
+    &RHRM_MO_MM(FUNMAC, mm_slash_backslash)
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
 
@@ -629,72 +610,73 @@ GLV80_LAYER(base,
 GLV80_LAYER(num,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
 // │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
-     ___   ___   ___   ___   ___               ___   ___   ___   ___   ___
+	___   ___   ___   ___   ___               ___   ___   ___   ___   ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
-     ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___
+	___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
-    ___
+	___
 
-    XXX
-    XXX
-    XXX
-    XXX
-    XXX
+    &kp LEFT_BRACKET
+    &kp DOT
+    XXX /* LAYER -> THIS */
+    &kp COMMA
+    &kp RIGHT_BRACKET
 
-    &mm_mul_div
+    &kp STAR
     &kp N7
     &kp N8
     &kp N9
-    &mm_comma_semicolon
+    &kp PLUS
 
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     ___
 
-    &LHRM_M4_TAP()
-    &LHRM_M3_TAP()
-    &LHRM_M2_TAP()
-    &LHRM_M1_TAP()
-    &LHRM_M0_TAP()
+    &kp LEFT_PARENTHESIS
+    &kp COLON
+    XXX
+    &kp SEMICOLON
+    &kp RIGHT_PARENTHESIS
 
-    &RHRM_KP_MM(KEY_HRM_M0, mm_add_sub)
-    &RHRM_M1(N4)
-    &RHRM_M2(N5)
-    &RHRM_M3(N6)
-    &RHRM_M4(N0)
+    &kp EQUAL
+    &kp N4
+    &kp N5
+    &kp N6
+    &kp N0
 
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
     ___
 
+    &kp LEFT_BRACE
     XXX
-    &mm_dot_colon
-    &mm_comma_semicolon
-    &kp KEY_PASTE
     XXX
+    XXX
+    &kp RIGHT_BRACE
     ,
-    &mm_parenthesis
+    &kp SLASH
     &kp N1
     &kp N2
     &kp N3
-    &mm_dot_colon
+    &kp MINUS
 
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
-     ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
+	___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
 // ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
 // │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
-     ___   ___   ___                                       ___   ___   ___,
+	___   ___   ___                                       ___   ___   ___,
 // ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
 // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
-     ___   ___   ___                                       ___   ___   ___
+	___   ___   ___                                       ___   ___   ___
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
+
 
 ////////////////////////////////////////////////////////////////
 
@@ -711,16 +693,16 @@ GLV80_LAYER(numnav,
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     ___
 
-    &kp KP_COMMA
+    &kp KP_PLUS
     &kp KP_N7
     &kp KP_N8
     &kp KP_N9
-    &mm_mul_div_kp
+    &kp KP_ASTERISK
 
     XXX
-    XXX
-    XXX
-    XXX
+    &kp KP_COMMA
+    XXX /* LAYER -> THIS */
+    &kp KP_DOT
     XXX
 
     ___
@@ -732,24 +714,24 @@ GLV80_LAYER(numnav,
     &kp KP_N4
     &kp KP_N5
     &kp KP_N6
-    &mm_add_sub_kp
+    &kp KP_EQUAL
 
-    &RHRM_M0_TAP()
-    &RHRM_M1_TAP()
-    &RHRM_M2_TAP()
-    &RHRM_M3_TAP()
-    &RHRM_M4_TAP()
+    XXX
+    &kp KP_LEFT_PARENTHESIS
+    XXX
+    &kp KP_RIGHT_PARENTHESIS
+    XXX
 
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
     ___
 
-    &kp KP_DOT
+    &kp KP_MINUS
     &kp KP_N1
     &kp KP_N2
     &kp KP_N3
-    &mm_parenthesis
+    &kp KP_SLASH
     ,
     XXX
     XXX
@@ -777,72 +759,73 @@ GLV80_LAYER(numnav,
 GLV80_LAYER(sym,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
 // │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
-     ___   ___   ___   ___   ___               ___   ___   ___   ___   ___
+	___   ___   ___   ___   ___               ___   ___   ___   ___   ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
-     ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___
+	___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     ___
 
-    &kp TILDE
     &kp AT_SIGN
-    &kp HASH
-    &kp DOLLAR
-    &kp PERCENT
+    &kp AMPERSAND
+    &LHRM_MO_KP(NUM, PLUS)
+    &kp ASTERISK
+    &kp BACKSLASH
 
-    &mm_pointer_reference
-    &kp MINUS /* aka, DASH + LOW DASH */
-    &mm_slash_backslash
-    &kp PIPE
-    &mm_equal_equal
+    &kp SINGLE_QUOTE
+    &kp LEFT_BRACE
+    &kp HASH
+    &kp RIGHT_BRACE
+    &mm_doublequotes_singlequote
 
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     ___
 
-    &LHRM_KP_MM(KEY_HRM_M4, mm_grave_caret)
-    &LHRM_KP_MM(KEY_HRM_M3, mm_mul_div)
-    &LHRM_KP_MM(KEY_HRM_M2, mm_add_sub)
-    &LHRM_KP_MM(KEY_HRM_M1, mm_equal_equal)
-    &LHRM_KP_MM(KEY_HRM_M0, mm_dot_colon)
+    &mm_grave_caret
+    &kp LESS_THAN
+    &mm_equal_equal
+    &LHRM_KP_KP(LSFT, GREATER_THAN)
+    &kp CARET
 
-    &RHRM_KP_KP(KEY_HRM_M0, SEMICOLON)
-    &RHRM_KP_MM(KEY_HRM_M1, mm_parenthesis)
-    &RHRM_KP_MM(KEY_HRM_M2, mm_brackets)
-    &RHRM_KP_MM(KEY_HRM_M3, mm_braces)
-    &RHRM_KP_MM(KEY_HRM_M4, mm_lt_gt)
+    &kp COLON
+    &RHRM_KP_KP(LSFT, LEFT_PARENTHESIS)
+    &kp DOLLAR
+    &kp RIGHT_PARENTHESIS
+    &kp SEMICOLON
 
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
     ___
 
-    &mm_excl_qmark
-    &mm_lt_gt
-    &mm_and_or
-    &mm_caret_underscore
-    &mm_comma_semicolon
+    &kp TILDE
+    &kp PIPE
+    &kp MINUS
+    &mm_slash_backslash
+    &kp UNDERSCORE
     ,
-    &mm_doublequotes_singlequote
-    &kp RIGHT_PARENTHESIS
+    &kp QUESTION
+    &kp LEFT_BRACKET
+    &kp PERCENT
     &kp RIGHT_BRACKET
-    &kp RIGHT_BRACE
-    &kp GREATER_THAN
+    &mm_excl_qmark
 
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
-     ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
+	___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
 // ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
 // │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
-     ___   ___   ___                                       ___   ___   ___,
+	___   ___   ___                                       ___   ___   ___,
 // ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
 // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
-     ___   ___   ___                                       ___   ___   ___
+	___   ___   ___                                       ___   ___   ___
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
+
 
 ////////////////////////////////////////////////////////////////
 
@@ -865,8 +848,8 @@ GLV80_LAYER(fun,
     &kp F10
     &kp F13
 
+    &kp CAPSLOCK
     &kp INSERT
-    &kp PAUSE_BREAK
     &kp C_NEXT
     &kp C_VOLUME_UP
     &kp C_BRIGHTNESS_INC
@@ -876,17 +859,17 @@ GLV80_LAYER(fun,
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     ___
 
-    &LHRM_M4(F2)
-    &LHRM_M3(F5)
-    &LHRM_M2(F8)
-    &LHRM_M1(F11)
-    &LHRM_M0(F14)
+    &kp F2
+    &kp F5
+    &kp F8
+    &kp F11
+    &kp F14
 
-    &RHRM_M0(KP_NUMLOCK)
-    &RHRM_M1(PRINTSCREEN)
-    &RHRM_M2(C_PLAY_PAUSE)
-    &RHRM_M3(C_MUTE)
-    &RHRM_M4_TAP()
+    &kp KP_NUMLOCK
+    &kp PRINTSCREEN
+    &kp C_PLAY_PAUSE
+    &kp C_MUTE
+    XXX
 
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
@@ -900,7 +883,7 @@ GLV80_LAYER(fun,
     &kp F15
     ,
     &kp SCROLLLOCK
-    XXX
+    &kp PAUSE_BREAK
     &kp C_PREVIOUS
     &kp C_VOLUME_DOWN
     &kp C_BRIGHTNESS_DEC
@@ -1085,25 +1068,25 @@ GLV80_LAYER(nav,
     XXX
     XXX
     XXX
-    &LHRM_MO_KP(NUM, 0)
+    XXX
     XXX
 
     &kp KEY_CUT
     &kp DELETE
     &kp UP_ARROW
     &kp BACKSPACE
-    &kp PAGE_UP
+    &kp TAB
 
     ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     ___
 
-    &LHRM_M4_TAP()
-    &LHRM_M3_TAP()
-    &LHRM_M2_TAP()
-    &LHRM_M1_TAP()
-    &LHRM_M0_TAP()
+    &kp LALT
+    &kp LCTL
+    XXX
+    &kp LSFT
+    XXX
 
     &kp KEY_COPY
     &kp LEFT_ARROW
@@ -1119,10 +1102,10 @@ GLV80_LAYER(nav,
     XXX
     XXX
     XXX
-    &LHRM_MO_KP(NUM, 0)
+    XXX
     XXX
     ,
-    &kp TAB
+    &kp PAGE_UP
     &kp HOME
     &kp K_CONTEXT_MENU
     &kp END
