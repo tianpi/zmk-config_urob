@@ -46,7 +46,7 @@
 #define SYS         8
 #define FACTORY     9
 #define MAGIC       10
-#define _TEMPLATE   11
+#define _TEMPLATE   12
 
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/keymaps/behaviors
@@ -488,34 +488,32 @@ ZMK_COMBO(combo_lm4_rm4, &to SYS, LM4 RM4, ALL, COMBO_TERM_FAST, COMBO_IDLE_FAST
 GLV80_LAYER(base,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
 // │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
-    &kp F1
-    &kp F2
-    &kp F3
-    &kp F4
-    &kp F5
+    XXX
+    XXX
+    XXX
+    XXX
+    XXX
 
-    &kp F6
-    &kp F7
-    &kp F8
-    &kp F9
-    &kp F10
+    XXX
+    XXX
+    XXX
+    XXX
+    XXX
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
-    &kp EQUAL
+    XXX
+    XXX
+    XXX
+    XXX
+    XXX
+    &kp ENTER
 
-    &kp N1
-    &kp N2
-    &kp N3
-    &kp N4
-    &kp N5
-
-    &kp N6
-    &kp N7
-    &kp N8
-    &kp N9
-    &kp N0
-
-    &kp MINUS /* aka, DASH + LOW DASH */
+    &ht_gohome_kp 0 ESCAPE
+    XXX
+    &ht_gohome_kp 0 ESCAPE
+    XXX
+    XXX
+    XXX
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     &mm_capsword_capslock
@@ -530,7 +528,7 @@ GLV80_LAYER(base,
     &kp U
     &RHRM_MO_KP(NUMNAV, I)
     &RHRM_KP_KP(LEFT_META, O)
-    &kp P
+    &kp SINGLE_QUOTE
 
     &tog NUM
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
@@ -547,7 +545,7 @@ GLV80_LAYER(base,
     &RHRM_KP_KP(LSFT, N)
     &RHRM_MO_KP(SYM, H)
     &RHRM_KP_KP(LCTL, L)
-    &RHRM_KP_KP(LALT, SINGLE_QUOTE)
+    &RHRM_KP_KP(LALT, P)
 
     &ht_gohome_kp 0 ESCAPE
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
@@ -566,7 +564,7 @@ GLV80_LAYER(base,
     &RHRM_KP_MM(KEY_META_CTRL, mm_dot_colon)
     &RHRM_KP_MM(RIGHT_ALT, mm_excl_qmark)
 
-    &tog SYM
+    XXX
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
     &kp HOME
