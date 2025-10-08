@@ -106,7 +106,6 @@
 #define KEY_PASTE       APPLY_MODS(MOD_LCTL, V)
 
 #define KEY_UNDO        APPLY_MODS(MOD_LCTL, Z)
-#define KEY_UNDO_ALT    APPLY_MODS(MOD_LSFT, APPLY_MODS(MOD_LCTL, Y))
 #define KEY_REDO        APPLY_MODS(MOD_LCTL, Y)
 
 #define KEY_MEH         APPLY_MODS(MOD_LSFT, APPLY_MODS(MOD_LCTL, LALT))
@@ -263,13 +262,18 @@ ZMK_HOLD_TAP_HRM(ht_rhrm_mo_kp, &mo, &kp, KEYS_L THUMBS)
 #define LHRM_MACRO_KP(macro_on_hold, key_on_tap) \
     ht_lhrm_macro_kp_ ## macro_on_hold 0 key_on_tap
 
+#define ZMK_HOLD_TAP_RHRM_MACRO_KP(macro_on_hold) \
+    ZMK_HOLD_TAP_HRM(ht_rhrm_macro_kp_ ## macro_on_hold, &macro_on_hold, &kp, KEYS_L THUMBS)
+#define RHRM_MACRO_KP(macro_on_hold, key_on_tap) \
+    ht_rhrm_macro_kp_ ## macro_on_hold 0 key_on_tap
+
 ////////////////
 
-#define ZMK_HOLD_TAP_HRM_EXTRAS(NAME) \
-    ZMK_HOLD_TAP_LHRM_KP_MM(NAME) \
-    ZMK_HOLD_TAP_RHRM_KP_MM(NAME) \
-    ZMK_HOLD_TAP_LHRM_MO_MM(NAME) \
-    ZMK_HOLD_TAP_RHRM_MO_MM(NAME)
+#define ZMK_HOLD_TAP_xHRM_xx_MM(MM_NAME) \
+    ZMK_HOLD_TAP_LHRM_KP_MM(MM_NAME) \
+    ZMK_HOLD_TAP_RHRM_KP_MM(MM_NAME) \
+    ZMK_HOLD_TAP_LHRM_MO_MM(MM_NAME) \
+    ZMK_HOLD_TAP_RHRM_MO_MM(MM_NAME)
 
 
 ////////////////////////////////////////////////////////////////
@@ -351,7 +355,7 @@ ZMK_MOD_MORPH(mm_bspc_del,
     keep-mods = <MOD_RSFT>;
 )
 
-ZMK_HOLD_TAP_HRM_EXTRAS(mm_bspc_del)
+ZMK_HOLD_TAP_xHRM_xx_MM(mm_bspc_del)
 
 ////////////////
 
@@ -374,7 +378,7 @@ ZMK_MOD_MORPH(mm_numword_numlock,
         mods = <(MOD_L ## MOD|MOD_R ## MOD)>; \
         bindings = <BINDING1>, <BINDING2>; \
     ) \
-    ZMK_HOLD_TAP_HRM_EXTRAS(NAME) \
+    ZMK_HOLD_TAP_xHRM_xx_MM(NAME) \
 
 
 ZMK_MOD_MORPH_SIMPLE(mm_comma_semicolon, SFT, &kp COMMA, &kp SEMICOLON)
@@ -393,7 +397,6 @@ ZMK_MOD_MORPH_SIMPLE(mm_excl_qmark, SFT, &kp EXCLAMATION, &kp QMARK)
 ZMK_MOD_MORPH_SIMPLE(mm_slash_backslash, SFT, &kp SLASH, &kp BACKSLASH)
 ZMK_MOD_MORPH_SIMPLE(mm_underscore_minus, SFT, &kp UNDERSCORE, &kp MINUS)
 ZMK_MOD_MORPH_SIMPLE(mm_grave_caret, SFT, &kp GRAVE, &kp CARET)
-ZMK_MOD_MORPH_SIMPLE(mm_undo_redo, SFT, &kp KEY_UNDO, &kp KEY_REDO)
 ZMK_MOD_MORPH_SIMPLE(mm_semicolon_semicolon, SFT, &kp SEMICOLON, &kp SEMICOLON)
 ZMK_MOD_MORPH_SIMPLE(mm_doublequotes_singlequote, SFT, &kp DOUBLE_QUOTES, &kp SINGLE_QUOTE)
 ZMK_MOD_MORPH_SIMPLE(mm_pointer_reference, SFT, &kp ASTERISK, &kp AMPERSAND)
@@ -446,6 +449,31 @@ ZMK_COMBO(combo_lm4_rm4, &to SYS, LM4 RM4, ALL, COMBO_TERM_FAST, COMBO_IDLE_FAST
 
 #define __VARIOUS
 
+#define ZMK_TRI_STATE_ALT_TAB(NAME, ...) \
+    ZMK_TRI_STATE( \
+        NAME, \
+        bindings = <&kt LALT>, <&kp TAB>, <&kt LALT>; \
+        __VA_ARGS__ \
+    )
+
+
+ZMK_TRI_STATE_ALT_TAB(
+    tri_alt_tab__base,
+    ignored-key-positions =
+    <
+        LC3
+    >;
+)
+
+ZMK_TRI_STATE_ALT_TAB(
+    tri_alt_tab__nav,
+    ignored-key-positions =
+    <
+        RT1 RT3
+        RM1 RM3
+        RB1 RB3
+    >;
+)
 
 ////////////////////////////////////////////////////////////////
 
@@ -488,11 +516,11 @@ ZMK_COMBO(combo_lm4_rm4, &to SYS, LM4 RM4, ALL, COMBO_TERM_FAST, COMBO_IDLE_FAST
 GLV80_LAYER(base,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
 // │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
-    XXX
-    XXX
-    XXX
-    XXX
-    XXX
+    &kp LA(F4)
+    &kp LC(F4)
+    &kp LS(TAB) // tri_alt_tab__base
+    &kp LC(TAB)
+    &tri_alt_tab__base
 
     XXX
     XXX
@@ -502,17 +530,19 @@ GLV80_LAYER(base,
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
     XXX
-    XXX
-    XXX
-    XXX
-    XXX
-    &kp ENTER
 
-    &ht_gohome_kp 0 ESCAPE
-    XXX
-    &ht_gohome_kp 0 ESCAPE
-    XXX
-    XXX
+    &kp DEL
+    &kp LC(PAGE_UP)
+    &kp LA(TAB)
+    &kp LC(PAGE_DOWN)
+    &kp KEY_UNDO
+
+    &kp KEY_REDO
+    &kp LA(LEFT_ARROW)
+    &kp LC(SPACE)
+    &kp LA(RIGHT_ARROW)
+    &kp BSPC
+
     XXX
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
@@ -530,7 +560,7 @@ GLV80_LAYER(base,
     &RHRM_KP_KP(LEFT_META, O)
     &kp SINGLE_QUOTE
 
-    &tog NUM
+    &mm_capsword_capslock
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     &kp ENTER
@@ -550,7 +580,7 @@ GLV80_LAYER(base,
     &ht_gohome_kp 0 ESCAPE
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
-    &mm_undo_redo
+    &kp LEFT_SHIFT
 
     &LHRM_KP_KP(RIGHT_ALT, Z)
     &LHRM_KP_KP(KEY_META_CTRL, X)
@@ -564,26 +594,26 @@ GLV80_LAYER(base,
     &RHRM_KP_MM(KEY_META_CTRL, mm_dot_colon)
     &RHRM_KP_MM(RIGHT_ALT, mm_excl_qmark)
 
-    XXX
+    &kp RIGHT_SHIFT
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
-    &kp HOME
-    &kp END
-    &kp LEFT_ARROW
-    &kp PRINTSCREEN
-    &kp RIGHT_ARROW
-    ,
-    &kp UP_ARROW
     XXX
-    &kp DOWN_ARROW
-    &kp PAGE_UP
     &kp PAGE_DOWN
+    &kp LEFT_ARROW
+    &kp RIGHT_ARROW
+    &kp PAGE_UP
+    ,
+    XXX
+    &kp UP_ARROW
+    &kp DOWN_ARROW
+    XXX
+    XXX
     ,
 // ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
 // │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
     &LHRM_MO_MM(NAV, mm_bspc_del)
     &RHRM_KP_KP(LEFT_CONTROL, TAB)
-    XXX
+    &kp PRINTSCREEN
 
     XXX
     &RHRM_MO_MM(FUNFUN, mm_underscore_minus)
@@ -592,11 +622,11 @@ GLV80_LAYER(base,
 // ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
 // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
     &RHRM_MO_KP(FUNMAC, ESCAPE)
-    &kp LEFT_SHIFT
-    XXX
+    &kp HOME
+    &kp END
 
     XXX
-    &kp RIGHT_SHIFT
+    XXX
     &RHRM_MO_MM(FUNMAC, mm_slash_backslash)
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
@@ -1058,7 +1088,14 @@ GLV80_LAYER(nav,
     ___   ___   ___   ___   ___               ___   ___   ___   ___   ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
-    ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___   ___
+    ___   ___   ___   ___   ___   ___
+
+    ___
+    ___
+    &tri_alt_tab__nav
+    ___
+    ___
+    ___
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     ___
