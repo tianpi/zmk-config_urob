@@ -101,16 +101,16 @@
 #define XXX &none
 #define ___ &trans
 
-#define KEY_CUT         APPLY_MODS(MOD_LCTL, X)
-#define KEY_COPY        APPLY_MODS(MOD_LCTL, C)
-#define KEY_PASTE       APPLY_MODS(MOD_LCTL, V)
+#define KEY_CUT         LC(X)
+#define KEY_COPY        LC(C)
+#define KEY_PASTE       LC(V)
 
-#define KEY_UNDO        APPLY_MODS(MOD_LCTL, Z)
-#define KEY_REDO        APPLY_MODS(MOD_LCTL, Y)
+#define KEY_UNDO        LC(Z)
+#define KEY_REDO        LC(Y)
 
-#define KEY_MEH         APPLY_MODS(MOD_LSFT, APPLY_MODS(MOD_LCTL, LALT))
-#define KEY_HYPER       APPLY_MODS(MOD_LSFT, APPLY_MODS(MOD_LCTL, APPLY_MODS(MOD_LALT, LMETA)))
-#define KEY_META_CTRL   APPLY_MODS(MOD_LGUI, LCTRL)
+#define KEY_MEH         LS(LC(LALT))
+#define KEY_HYPER       LS(LC(LA(LMETA)))
+#define KEY_META_CTRL   LG(LCTRL)
 
 ////////////////////////////////////////////////////////////////
 
@@ -300,8 +300,8 @@ ZMK_HOLD_TAP(ht_gohome_kp,
 
 ZMK_MACRO(macro_browser_new_search_tab,
     bindings
-        = <&kp APPLY_MODS(MOD_LCTL, T)>
-        , <&kp APPLY_MODS(MOD_LCTL, K)>
+        = <&kp LC(T)>
+        , <&kp LC(K)>
         , <&kp KEY_PASTE>
         ;
 )
@@ -310,13 +310,22 @@ ZMK_MACRO(macro_browser_new_search_tab,
 
 ZMK_MACRO(macro_save_in_dir_from_totalcmd,
     bindings
-        = <&kp APPLY_MODS(MOD_LCTL, L)>
+        = <&kp LC(L)>
         , <&kp KEY_COPY>
-        , <&kp APPLY_MODS(MOD_LALT, TAB)>
+        , <&kp LA(TAB)>
         , <&kp HOME>
         , <&kp KEY_PASTE>
         ;
 )
+
+////////////////
+
+ZMK_MACRO(macro_std_cpp,
+    bindings
+        = <&kp S &kp T &kp D &kp COLON &kp COLON>
+        ;
+)
+
 
 ////////////////
 
@@ -461,7 +470,9 @@ ZMK_TRI_STATE_ALT_TAB(
     tri_alt_tab__base,
     ignored-key-positions =
     <
-        LC3
+        LF3 LF1
+        LF4 LH1
+        LF5 LH0
     >;
 )
 
@@ -518,12 +529,12 @@ GLV80_LAYER(base,
 // │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
     &kp LA(F4)
     &kp LC(F4)
-    &kp LS(TAB) // tri_alt_tab__base
+    &kp LC(LS(TAB))
+    &tri_alt_tab__base // &kp LS(TAB) // tri_alt_tab__base
     &kp LC(TAB)
-    &tri_alt_tab__base
 
     XXX
-    XXX
+    &macro_std_cpp
     XXX
     XXX
     XXX
