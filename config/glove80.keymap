@@ -562,11 +562,11 @@ GLV80_LAYER(base,
     &kp Q
     &LHRM_KP_KP(LEFT_META, W)
     &LHRM_MO_KP(NUM, E)
-    &kp R
+    &LHRM_MO_KP(SYM, R)
     &kp F
 
     &kp Y
-    &kp U
+    &RHRM_MO_KP(SYM, U)
     &RHRM_MO_KP(NUMNAV, I)
     &RHRM_KP_KP(LEFT_META, O)
     &kp SINGLE_QUOTE
@@ -632,7 +632,7 @@ GLV80_LAYER(base,
     ,
 // ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
 // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
-    &RHRM_MO_KP(FUNMAC, ESCAPE)
+    &RHRM_MO_KP(NUM, ESCAPE)
     &kp PAGE_DOWN
     &kp END
 
@@ -657,11 +657,11 @@ GLV80_LAYER(num,
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
 	___
 
-    &kp LEFT_BRACKET
-    &kp DOT
+    XXX
+    XXX
     XXX /* LAYER -> THIS */
-    &kp COMMA
-    &kp RIGHT_BRACKET
+    &mo SYM
+    XXX
 
     &kp STAR
     &kp N7
@@ -674,11 +674,11 @@ GLV80_LAYER(num,
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     ___
 
-    &kp LEFT_PARENTHESIS
-    &kp COLON
-    XXX
     &kp SEMICOLON
-    &kp RIGHT_PARENTHESIS
+    &kp COMMA
+    XXX
+    &kp DOT
+    &kp COLON
 
     &kp EQUAL
     &kp N4
@@ -691,11 +691,11 @@ GLV80_LAYER(num,
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
     ___
 
-    &kp LEFT_BRACE
     XXX
     XXX
     XXX
-    &kp RIGHT_BRACE
+    XXX
+    XXX
     ,
     &kp SLASH
     &kp N1
@@ -739,9 +739,9 @@ GLV80_LAYER(numnav,
     &kp KP_ASTERISK
 
     XXX
-    &kp KP_COMMA
+    &mo SYM
     XXX /* LAYER -> THIS */
-    &kp KP_DOT
+    XXX
     XXX
 
     ___
@@ -756,9 +756,9 @@ GLV80_LAYER(numnav,
     &kp KP_EQUAL
 
     XXX
-    &kp KP_LEFT_PARENTHESIS
+    &kp KP_DOT
     XXX
-    &kp KP_RIGHT_PARENTHESIS
+    &kp KP_COMMA
     XXX
 
     ___
