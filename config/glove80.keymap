@@ -540,7 +540,7 @@ GLV80_LAYER(base,
     XXX
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
-    XXX
+    &kp ESCAPE
 
     &kp DEL
     &kp LC(PAGE_UP)
@@ -554,7 +554,7 @@ GLV80_LAYER(base,
     &kp LA(RIGHT_ARROW)
     &kp BSPC
 
-    XXX
+    &kp ENTER
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     &mm_capsword_capslock
@@ -611,7 +611,7 @@ GLV80_LAYER(base,
     &kp HOME
     &kp PAGE_UP
     &kp LEFT_ARROW
-    XXX
+    &kp DOWN_ARROW
     &kp RIGHT_ARROW
     ,
     &kp UP_ARROW
@@ -889,7 +889,7 @@ GLV80_LAYER(fun,
 
     &kp CAPSLOCK
     &kp INSERT
-    &kp C_NEXT
+    &kp C_PREVIOUS
     &kp C_VOLUME_UP
     &kp C_BRIGHTNESS_INC
 
@@ -923,7 +923,7 @@ GLV80_LAYER(fun,
     ,
     &kp SCROLLLOCK
     &kp PAUSE_BREAK
-    &kp C_PREVIOUS
+    &kp C_NEXT
     &kp C_VOLUME_DOWN
     &kp C_BRIGHTNESS_DEC
 
