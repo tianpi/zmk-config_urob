@@ -632,7 +632,7 @@ GLV80_LAYER(base,
     ,
 // ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
 // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
-    &RHRM_MO_KP(NUM, UP_ARROW)
+    &RHRM_MO_KP(NUM, ESCAPE)
     &kp PAGE_DOWN
     &kp END
 
@@ -889,7 +889,7 @@ GLV80_LAYER(fun,
 
     &kp CAPSLOCK
     &kp INSERT
-    &kp C_NEXT
+    &kp C_PREVIOUS
     &kp C_VOLUME_UP
     &kp C_BRIGHTNESS_INC
 
@@ -923,7 +923,7 @@ GLV80_LAYER(fun,
     ,
     &kp SCROLLLOCK
     &kp PAUSE_BREAK
-    &kp C_PREVIOUS
+    &kp C_NEXT
     &kp C_VOLUME_DOWN
     &kp C_BRIGHTNESS_DEC
 
