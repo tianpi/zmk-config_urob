@@ -618,7 +618,7 @@ GLV80_LAYER(base,
     XXX
     &kp DOWN_ARROW
     XXX
-    XXX
+    &magic MAGIC 0
     ,
 // ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
 // │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │

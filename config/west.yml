@@ -24,12 +24,20 @@ manifest:
   remotes:
     - name: urob
       url-base: https://github.com/urob
-    - name: zmkfirmware
+    - name: zmk_zmkfirmware
       url-base: https://github.com/zmkfirmware
+    - name: zmk_moergo
+      url-base: https://github.com/moergo-sc
 
   projects:
+
+    # - name: zmk
+    #   remote: zmk_zmkfirmware
+    #   import: app/west.yml
+
     - name: zmk
-      remote: zmkfirmware
+      remote: zmk_moergo
+      revision: main
       import: app/west.yml
 
     # ZMK modules
@@ -49,7 +57,7 @@ manifest:
     # Only source necessary Zephyr modules. Remove this entire section to restore
     # the default (needed for less common hardware).
     - name: zephyr
-      remote: zmkfirmware
+      remote: zmk_zmkfirmware
       revision: v3.5.0+zmk-fixes
       clone-depth: 1
       import:
