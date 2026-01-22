@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/keymaps#multiple-layers
 
-#define __LAYERS
+#define __KEYMAP_LAYERS
 
 #define BASE        0
 #define NUM         1
@@ -350,7 +350,7 @@ ZMK_MOD_MORPH_SIMPLE(mm_space_, SFT, &kp SPACE, &kp MINUS)
 
 ////////////////
 
-ZMK_COMBO(combo_lm4_rm4, &to SYS, LM4 RM4, ALL, COMBO_TERM_FAST, COMBO_IDLE_FAST)
+// ZMK_COMBO(combo_lm4_rm4, &to SYS, LM4 RM4, ALL, COMBO_TERM_FAST, COMBO_IDLE_FAST)  // switch to SYS layer
 
 
 ////////////////////////////////////////////////////////////////
@@ -367,12 +367,14 @@ ZMK_COMBO(combo_lm4_rm4, &to SYS, LM4 RM4, ALL, COMBO_TERM_FAST, COMBO_IDLE_FAST
 
 ZMK_TRI_STATE_ALT_TAB(
     tri_alt_tab__base,
-    // ignored-key-positions =
-    // <
-    //     LF3 LF1
-    //     LF4 LH1
-    //     LF5 LH0
-    // >;
+#if MOERGO_DEVICE == MOERGO_DEVICE_GLOVE80
+    ignored-key-positions =
+    <
+        LF3 LF1
+        LF4 LH1
+        LF5 LH0
+    >;
+#endif
 )
 
 ZMK_TRI_STATE_ALT_TAB(
@@ -387,11 +389,11 @@ ZMK_TRI_STATE_ALT_TAB(
 
 ////////////////////////////////////////////////////////////////
 
-#define __KEYMAPS
+#define __KEYMAP
 
 //
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
-// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
@@ -407,34 +409,28 @@ ZMK_TRI_STATE_ALT_TAB(
 // ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
 // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
+//
 // ╭───────────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬───────────╮
 // │           │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │           │
 // ├─────┬─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┬─────┤
 // │ LH5 │ LH4 │ LH2 │                                   │ RH2 │ RH4 │ RH5 │
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
-//       ╭─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────╮
-//       │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │
-//       ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-//       │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │
-//       ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-//       │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │
-//       ├─────┼─────┼─────┴─────┴─────┴─────┴─────┴─────┼─────┼─────┤
-//       │ LH1 │ LH0 │                                   │ RH0 │ RH1 │
-//       ╰─────┴─────╯                                   ╰─────┴─────╯
-
+//
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_BASE
+#define ____KEYMAP_LAYER_BASE
 
 MOERGO_LAYER(base,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
-// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
-    &kp LA(F4)
-    &kp LC(F4)
-    &kp LC(LS(TAB))
-    &tri_alt_tab__base // &kp LS(TAB) // tri_alt_tab__base
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
+#define KEYS_LAYER_BASE_LC \
+    &kp LA(F4) \
+    &kp LC(F4) \
+    &kp LC(LS(TAB)) \
+    &tri_alt_tab__base \
     &kp LC(TAB)
+    KEYS_LAYER_BASE_LC
     ,
     XXX
     &macro_std_cpp
@@ -519,19 +515,13 @@ MOERGO_LAYER(base,
     &kp HOME
     &kp PAGE_UP
     ,
-#if MOERGO_DEVICE == MOERGO_DEVICE_GO60
     &kp LEFT_ARROW
     &kp DOWN_ARROW
     &kp RIGHT_ARROW
-#elif MOERGO_DEVICE == MOERGO_DEVICE_GLOVE80
-    &kp LEFT_ARROW
-    &kp DOWN_ARROW
-    &kp RIGHT_ARROW
-#endif
     ,
     XXX
     XXX
-    &magic MAGIC 0
+    XXX
     ,
     XXX
     XXX
@@ -550,7 +540,7 @@ MOERGO_LAYER(base,
     ,
 // ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
 // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
-    &RHRM_MO_KP(NUM, ESCAPE)
+    &RHRM_MO_KP(FUN, ESCAPE)
     ,
     &kp PAGE_DOWN
     &kp END
@@ -564,11 +554,11 @@ MOERGO_LAYER(base,
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_NUM
+#define ____KEYMAP_LAYER_NUM
 
 MOERGO_LAYER(num,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
-// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
@@ -642,11 +632,11 @@ MOERGO_LAYER(num,
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_NUMNAV
+#define ____KEYMAP_LAYER_NUMNAV
 
 MOERGO_LAYER(numnav,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
-// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
@@ -719,11 +709,11 @@ MOERGO_LAYER(numnav,
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_SYM
+#define ____KEYMAP_LAYER_SYM
 
 MOERGO_LAYER(sym,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
-// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
@@ -797,15 +787,18 @@ MOERGO_LAYER(sym,
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_FUN
+#define ____KEYMAP_LAYER_FUN
 
 MOERGO_LAYER(fun,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
-// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
-     ___   ___   ___   ___   ___   ___ , ___   ___   ___   ___   ___   ___,
+    ___   ___   ___   ___   ___   ___
+    ,
+    ___   ___   ___   ___   ___   &to SYS
+    ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     ___
@@ -844,7 +837,7 @@ MOERGO_LAYER(fun,
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
-    ___
+    &kp PRINTSCREEN
 
     &kp F3
     &kp F6
@@ -858,7 +851,7 @@ MOERGO_LAYER(fun,
     &kp C_VOLUME_DOWN
     &kp C_BRIGHTNESS_DEC
 
-    ___
+    &magic MAGIC 0
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
@@ -874,11 +867,11 @@ MOERGO_LAYER(fun,
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_FUNMAC
+#define ____KEYMAP_LAYER_FUNMAC
 
 MOERGO_LAYER(funmac,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
-// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
@@ -951,11 +944,11 @@ MOERGO_LAYER(funmac,
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_FUNFUN
+#define ____KEYMAP_LAYER_FUNFUN
 
 MOERGO_LAYER(funfun,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
-// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
@@ -1029,15 +1022,16 @@ MOERGO_LAYER(funfun,
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_NAV
+#define ____KEYMAP_LAYER_NAV
 
 MOERGO_LAYER(nav,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
-// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
-     ___   ___   ___   ___   ___   ___
+    KEYS_LAYER_BASE_LC
+    ___
     ,
     ___
     ___
@@ -1050,8 +1044,8 @@ MOERGO_LAYER(nav,
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     ___
 
-    &kp LA(F4)
-    &kp LC(F4)
+    XXX
+    XXX
     XXX
     XXX
     XXX
@@ -1087,10 +1081,10 @@ MOERGO_LAYER(nav,
     ___
 
     &kp HOME
+    &kp END
     &kp PAGE_UP
-    &kp LEFT_ARROW
-    &kp DOWN_ARROW
-    &kp RIGHT_ARROW
+    &kp PAGE_DOWN
+    XXX
     ,
     &kp PAGE_UP
     &kp HOME
@@ -1114,11 +1108,11 @@ MOERGO_LAYER(nav,
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_SYS
+#define ____KEYMAP_LAYER_SYS
 
 MOERGO_LAYER(sys,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
-// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
@@ -1135,9 +1129,9 @@ MOERGO_LAYER(sys,
     ,
     XXX
 #if CONFIG_WIRELESS
-    &bt BT_PRV
+    &bt BT_PRV // switch to previous BT device
     XXX
-    &bt BT_NXT
+    &bt BT_NXT // switch to next BT device
 #else
     XXX
     XXX
@@ -1153,16 +1147,17 @@ MOERGO_LAYER(sys,
 
     XXX
 #if CONFIG_WIRELESS
-    &out OUT_BLE
+    &out OUT_BLE // switch to BLE
 #else
     XXX
 #endif
-    &out OUT_TOG
-    &out OUT_USB
+    &out OUT_TOG  // toggle USB/BLE
+    &out OUT_USB  // switch to USB
     XXX
     ,
     XXX
 #if CONFIG_WIRELESS
+    // switch to BT device 0, 1, 2, 3
     &bt BT_SEL 0
     &bt BT_SEL 1
     &bt BT_SEL 2
@@ -1187,7 +1182,7 @@ MOERGO_LAYER(sys,
     XXX
     ,
 #if CONFIG_WIRELESS
-    &bt BT_CLR
+    &bt BT_CLR // clear all paired BT devices
 #else
     XXX
 #endif
@@ -1212,23 +1207,23 @@ MOERGO_LAYER(sys,
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_FACTORY
+#define ____KEYMAP_LAYER_FACTORY
 
-LAYER_FACTORY
-
-////////////////////////////////////////////////////////////////
-
-#define ____KEYMAP_MAGIC
-
-LAYER_MAGIC
+KEYMAP_LAYER_FACTORY
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_TEMPLATE
+#define ____KEYMAP_LAYER_MAGIC
+
+KEYMAP_LAYER_MAGIC
+
+////////////////////////////////////////////////////////////////
+
+#define ____KEYMAP_LAYER_TEMPLATE
 
 MOERGO_LAYER(_template,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
-// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ LC5 │ LC3 │ LC5 │ LC5 │ LC5 │
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
@@ -1252,23 +1247,6 @@ MOERGO_LAYER(_template,
 // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
      ___ , ___   ___                   ,                   ___   ___ , ___
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
-// // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
-//      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
-// // ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
-// // │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
-//      ___   ___   ___                   ,                   ___   ___   ___,
-// // ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
-// // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
-//      ___   ___   ___                   ,                   ___   ___   ___
-// // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
-//     ,
-// // ╭───────────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬───────────╮
-// // │           │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │           │
-//                  ___   ___   ___       ,       ___   ___   ___            ,
-// // ├─────┬─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┬─────┤
-// // │ LH5 │ LH4 │ LH2 │                                   │ LH2 │ RH4 │ RH5 │
-//      ___   ___   ___                   ,                   ___   ___   ___,
-// // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
 
 ////////////////////////////////////////////////////////////////

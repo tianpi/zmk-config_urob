@@ -35,7 +35,7 @@
 
 ////////////////////////////////////////////////////////////////
 
-#define LAYER_FACTORY \
+#define KEYMAP_LAYER_FACTORY \
 ZMK_LAYER(factory, \
     &kp N0   &kp N6   &kp N2   &kp N8   &kp N4                                                                              &kp N4   &kp N8   &kp N2   &kp N6   &kp N0 \
     &kp N1   &kp N7   &kp N3   &kp N9   &kp N5   &kp N0                                                            &kp N0   &kp N5   &kp N9   &kp N3   &kp N7   &kp N1 \
@@ -45,7 +45,7 @@ ZMK_LAYER(factory, \
     &kp N5   &kp N1   &kp N7   &kp N3   &kp N9            &kp N7   &kp N8   &kp N9      &kp N9   &kp N8   &kp N7            &kp N9   &kp N3   &kp N7   &kp N1   &kp N5 \
 )
 
-#define LAYER_MAGIC \
+#define KEYMAP_LAYER_MAGIC \
 ZMK_LAYER(magic, \
     &bt BT_CLR        &none               &none           &none           &none                                                                                                           &none      &none      &none      &none      &bt BT_CLR_ALL    \
     &none             &none               &none           &none           &none           &none                                                                                &none      &none      &none      &none      &none      &none             \
