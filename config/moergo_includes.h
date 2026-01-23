@@ -33,6 +33,14 @@
 #define MOERGO_DEVICE_GLOVE80   0
 #define MOERGO_DEVICE_GO60      1
 
+#define MOERGO_OS_WINDOWS_OR_LINUX  1
+#define MOERGO_OS_MACOS             2
+#define MOERGO_OS                   MOERGO_OS_WINDOWS_OR_LINUX
+
+#define MOERGO_HOLD_TAP__TAPPING_TERM_MS        200
+#define MOERGO_HOLD_TAP__QUICK_TAP_MS           175
+#define MOERGO_HOLD_TAP__REQUIRE_PRIOR_IDLE_MS  150
+
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////
 ////////////////

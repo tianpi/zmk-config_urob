@@ -292,7 +292,7 @@
 ////////////////////////////////
 
 #ifndef MOERGO_LAYER
-#define MOERGO_LAYER(name, start, mid, end, thumb_row_1, thumb_row_2)
+#define MOERGO_LAYER
 #endif
 
 ////////////////////////////////////////////////////////////////
