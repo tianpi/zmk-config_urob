@@ -91,9 +91,13 @@
 #define KEY_PASTE       LC(V)
 
 #if MOERGO_OS == MOERGO_OS_WINDOWS_OR_LINUX
-#define KEY_TOGGLE_APP  LA(TAB)
+#define KEY_MOD_APP_TOGGLE  LALT
+#define KEY_APP_TOGGLE      LA(TAB)
+#define KEY_APP_QUIT        LA(F4)
 #elif MOERGO_OS == MOERGO_OS_MACOS
-#define KEY_TOGGLE_APP  LG(TAB)
+#define KEY_MOD_APP_TOGGLE  LGUI
+#define KEY_APP_TOGGLE      LG(TAB)
+#define KEY_APP_QUIT        LG(Q)
 #endif
 
 #define KEY_MEH         LS(LC(LALT))
@@ -192,7 +196,7 @@ ZMK_HOLD_TAP_HRM(ht_rhrm_mo_kp, &mo, &kp, KEYS_L THUMBS)
 ZMK_MACRO(macro_reset_keyboard_and_switch_to_base_layer,
     wait-ms = <0>;
     tap-ms = <5>;
-    bindings = <&kp K_CANCEL>, <&to BASE>;
+    bindings = <&kp K_CANCEL>, <&to BASE>; // reset keyboard and switch to base layer
 )
 
 ZMK_HOLD_TAP(ht__reset_keyboard_and_go_to_base_layer__kp,
@@ -206,9 +210,9 @@ ZMK_HOLD_TAP(ht__reset_keyboard_and_go_to_base_layer__kp,
 
 ZMK_MACRO(macro_browser_new_search_tab,
     bindings
-        = <&kp LC(T)>
-        , <&kp LC(K)>
-        , <&kp KEY_PASTE>
+        = <&kp LC(T)> // new tab
+        , <&kp LC(K)> // focus address bar
+        , <&kp KEY_PASTE> // paste
         ;
 )
 
@@ -216,11 +220,11 @@ ZMK_MACRO(macro_browser_new_search_tab,
 
 ZMK_MACRO(macro_copy_and_toggle_app_and_paste,
     bindings
-        = <&kp LC(L)>
-        , <&kp KEY_COPY>
-        , <&kp KEY_TOGGLE_APP>
-        , <&kp HOME>
-        , <&kp KEY_PASTE>
+        = <&kp LC(L)> // focus address bar of source app
+        , <&kp KEY_COPY> // copy
+        , <&kp KEY_APP_TOGGLE> // toggle to target app (that has file dialog open)
+        , <&kp HOME>  // (optional) go to beginning of line
+        , <&kp KEY_PASTE> // paste
         ;
 )
 
@@ -228,7 +232,7 @@ ZMK_MACRO(macro_copy_and_toggle_app_and_paste,
 
 ZMK_MACRO(macro_std_cpp,
     bindings
-        = <&kp S &kp T &kp D &kp COLON &kp COLON>
+        = <&kp S &kp T &kp D &kp COLON &kp COLON> // std::
         ;
 )
 
@@ -263,17 +267,18 @@ ZMK_MACRO(macro_std_cpp,
 
 ////////////////////////////////
 
-// tap: backspace | lshft + tap: delete | rshft + tap: shift-delete
+// tap: backspace | lshft + tap: delete | rshft + tap: rshift + delete
 ZMK_MOD_MORPH(mm_bspc_del,
     bindings = <&kp BSPC>, <&kp DEL>;
     mods = <(MOD_LSFT|MOD_RSFT)>;
     keep-mods = <MOD_RSFT>;
 )
-
 ZMK_HOLD_TAP_xHRM_xx_MM(mm_bspc_del)
 
 ////////////////
 
+// tap: enable "caps word" mode | shift + tap: enable caps lock
+// WARN: does not work as intended
 ZMK_MOD_MORPH(mm_capsword_capslock,
     bindings = <&caps_word>, <&kp CAPSLOCK>;
     mods = <(MOD_LSFT|MOD_RSFT)>;
@@ -281,6 +286,7 @@ ZMK_MOD_MORPH(mm_capsword_capslock,
 
 ////////////////
 
+// tap: enable "num word" mode in NUM layer| shift + tab: toggle to NUM layer (?)
 ZMK_MOD_MORPH(mm_numword_numlock,
     bindings = <&num_word NUM>, <&tog NUM>;
     mods = <(MOD_LSFT|MOD_RSFT)>;
@@ -357,28 +363,37 @@ ZMK_MOD_MORPH_SIMPLE(mm_space_, SFT, &kp SPACE, &kp MINUS)
 
 #define __VARIOUS
 
-#define ZMK_TRI_STATE_ALT_TAB(name, ...) \
-    ZMK_TRI_STATE( \
-        name, \
-        bindings = <&kt LALT>, <&kp TAB>, <&kt LALT>; \
+/*
+https://github.com/dhruvinsh/zmk-tri-state:
+- Pressing tri-state will fire the first behavior, and output A, as well as the second behavior, outputting B.
+- Subsequent presses of tri-state will output B.
+- When another key is pressed or a layer change occurs, the third, 'interrupt' behavior C will fire.
+
+In this definition:
+- A is pressing and holding KEY_MOD_APP_TOGGLE (by toggling it ON),
+- B is pressing Tab, and
+- C is releasing KEY_MOD_APP_TOGGLE (by toggling it OFF).
+*/
+#define ZMK_TRI_STATE__APP_SWITCH(name, ...)          \
+    ZMK_TRI_STATE(                                    \
+        name,                                         \
+        bindings = <&kt KEY_MOD_APP_TOGGLE>, <&kp TAB>, <&kt KEY_MOD_APP_TOGGLE>; \
         __VA_ARGS__ \
     )
 
-
-ZMK_TRI_STATE_ALT_TAB(
-    tri_alt_tab__base,
+ZMK_TRI_STATE__APP_SWITCH(
+    tri__app_switch__base_layer,
 #if MOERGO_DEVICE == MOERGO_DEVICE_GLOVE80
     ignored-key-positions =
     <
-        LF3 LF1
-        LF4 LH1
-        LF5 LH0
+        LF5 LF4 LF3
+        LF1 LH1 LH0
     >;
 #endif
 )
 
-ZMK_TRI_STATE_ALT_TAB(
-    tri_alt_tab__nav,
+ZMK_TRI_STATE__APP_SWITCH(
+    tri__app_switch__nav_layer,
     ignored-key-positions =
     <
         RT1 RT3
@@ -397,10 +412,10 @@ MOERGO_LAYER(base,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
 // │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
 #define KEYS_LAYER_BASE_LC \
-    &kp LA(F4) \
+    &kp KEY_APP_QUIT \
     &kp LC(F4) \
     &kp LC(LS(TAB)) \
-    &tri_alt_tab__base \
+    &tri__app_switch__base_layer \
     &kp LC(TAB)
     KEYS_LAYER_BASE_LC
     ,
@@ -416,7 +431,7 @@ MOERGO_LAYER(base,
 
     &kp DEL
     &kp LC(PAGE_UP)
-    &kp KEY_TOGGLE_APP
+    &kp KEY_APP_TOGGLE
     &kp LC(PAGE_DOWN)
     &kp KEY_UNDO
     ,
@@ -696,7 +711,7 @@ MOERGO_LAYER(sym,
 
     &kp AT_SIGN
     &kp AMPERSAND
-    &LHRM_MO_KP(NUM, PLUS)
+    &kp PLUS
     &kp ASTERISK
     &kp BACKSLASH
     ,
@@ -1007,7 +1022,7 @@ MOERGO_LAYER(nav,
     ,
     ___
     ___
-    &tri_alt_tab__nav
+    &tri__app_switch__nav_layer
     ___
     ___
     ___
