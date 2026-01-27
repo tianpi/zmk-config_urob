@@ -386,8 +386,7 @@ ZMK_TRI_STATE__APP_SWITCH(
 #if MOERGO_DEVICE == MOERGO_DEVICE_GLOVE80
     ignored-key-positions =
     <
-        LF5 LF4 LF3
-        LF1 LH1 LH0
+        LF5 LF4 LF3 LF1 LH1 LH0
     >;
 #endif
 )
@@ -396,9 +395,9 @@ ZMK_TRI_STATE__APP_SWITCH(
     tri__app_switch__nav_layer,
     ignored-key-positions =
     <
-        RT1 RT3
-        RM1 RM3
-        RB1 RB3
+        RT1 RT2 RT3
+        RM1 RM2 RM3
+        RB1     RB3
     >;
 )
 
