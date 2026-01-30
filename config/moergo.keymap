@@ -444,7 +444,7 @@ MOERGO_LAYER(base,
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
-    &mm_capsword_capslock
+    &kp LEFT_SHIFT
 
     &kp Q
     &LHRM_KP_KP(LEFT_META, W)
@@ -458,7 +458,7 @@ MOERGO_LAYER(base,
     &RHRM_KP_KP(LEFT_META, O)
     &kp SINGLE_QUOTE
 
-    &mm_capsword_capslock
+    &kp RIGHT_SHIFT
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
@@ -480,7 +480,7 @@ MOERGO_LAYER(base,
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
-    &kp LEFT_SHIFT
+    &mm_capsword_capslock
 
     &LHRM_KP_KP(RIGHT_ALT, Z)
     &LHRM_KP_KP(KEY_META_CTRL, X)
@@ -494,7 +494,7 @@ MOERGO_LAYER(base,
     &RHRM_KP_MM(KEY_META_CTRL, mm_dot_colon)
     &RHRM_KP_MM(RIGHT_ALT, mm_excl_qmark)
 
-    &kp RIGHT_SHIFT
+    &mm_capsword_capslock
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
@@ -1107,23 +1107,17 @@ MOERGO_LAYER(sys,
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     ___
 
-    XXX
-    XXX
-    XXX
-    XXX
-    XXX
+    &rgb_ug RGB_ON
+    &rgb_ug RGB_COLOR_HSB(0,100,100) // red
+    &rgb_ug RGB_EFF // effect forward
+    &rgb_ug RGB_SPI // speed increase
+    &out OUT_BLE // switch to BLE
     ,
-    XXX
-#if CONFIG_WIRELESS
+    &bt BT_CLR // clear current BT device
     &bt BT_PRV // switch to previous BT device
     XXX
+    XXX
     &bt BT_NXT // switch to next BT device
-#else
-    XXX
-    XXX
-    XXX
-#endif
-    XXX
 
     ___
     ,
@@ -1131,29 +1125,17 @@ MOERGO_LAYER(sys,
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
     ___
 
+    &rgb_ug RGB_TOG
+    &rgb_ug RGB_COLOR_HSB(120,100,100) // green
+    &rgb_ug RGB_STATUS
     XXX
-#if CONFIG_WIRELESS
-    &out OUT_BLE // switch to BLE
-#else
-    XXX
-#endif
     &out OUT_TOG  // toggle USB/BLE
-    &out OUT_USB  // switch to USB
-    XXX
     ,
     XXX
-#if CONFIG_WIRELESS
-    // switch to BT device 0, 1, 2, 3
-    &bt BT_SEL 0
+    &bt BT_SEL 0 // switch to BT device 0
     &bt BT_SEL 1
     &bt BT_SEL 2
     &bt BT_SEL 3
-#else
-    XXX
-    XXX
-    XXX
-    XXX
-#endif
 
     ___
     ,
@@ -1161,23 +1143,19 @@ MOERGO_LAYER(sys,
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
     ___
 
-    XXX
-    XXX
-    XXX
-    XXX
-    XXX
+    &rgb_ug RGB_OFF
+    &rgb_ug RGB_COLOR_HSB(240,100,100) // blue
+    &rgb_ug RGB_EFR // effect reverse
+    &rgb_ug RGB_SPD // speed decrease
+    &out OUT_USB  // switch to USB
     ,
-#if CONFIG_WIRELESS
-    &bt BT_CLR // clear all paired BT devices
-#else
-    XXX
-#endif
-    XXX
-    XXX
-    XXX
-    XXX
+    &bt BT_CLR_ALL // clear all paired BT devices
+    &bt BT_DISC 0
+    &bt BT_DISC 1
+    &bt BT_DISC 2
+    &bt BT_DISC 3
 
-    ___
+    &magic MAGIC 0
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
