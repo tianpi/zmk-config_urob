@@ -6,11 +6,8 @@
 ////////////////////////////////
 ////////////////////////////////////////////////////////////////
 
-#define MOERGO_DEV_MODE 1
-#if MOERGO_DEV_MODE
 #include "moergo_includes.h"
 #include "moergo_macros.h"
-#endif
 
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/keymaps#multiple-layers
@@ -18,24 +15,49 @@
 #define __KEYMAP_LAYERS
 
 #define BASE        0
-#define NUM         1
-#define NUMNAV      2
-#define SYM         3
-#define FUN         4
-#define FUNMAC      5
-#define FUNFUN      6
-#define NAV         7
-#define SYS         8
-#define FACTORY     9
-#define MAGIC       10
-#define _TEMPLATE   12
+#define SYS         1
+#define NUM         2
+#define NUMNAV      3
+#define SYM         4
+#define FUN         5
+#define FUNMAC      6
+#define FUNFUN      7
+#define NAV         8
+#define _TEMPLATE   9
+
+////////////////////////////////////////////////////////////////
+
+#define __KEYS
+
+#define XXX             &none
+#define ___             &trans
+
+#define KEY_UNDO        LC(Z)
+#define KEY_REDO        LC(Y)
+
+#define KEY_CUT         LC(X)
+#define KEY_COPY        LC(C)
+#define KEY_PASTE       LC(V)
+
+#if MOERGO_OS == MOERGO_OS_WINDOWS_OR_LINUX
+#define KEY_MOD_APP_TOGGLE  LALT
+#define KEY_APP_TOGGLE      LA(TAB)
+#define KEY_APP_QUIT        LA(F4)
+#elif MOERGO_OS == MOERGO_OS_MACOS
+#define KEY_MOD_APP_TOGGLE  LGUI
+#define KEY_APP_TOGGLE      LG(TAB)
+#define KEY_APP_QUIT        LG(Q)
+#endif
+
+#define KEY_MEH         LS(LC(LALT))
+#define KEY_HYPER       LS(LC(LA(LMETA)))
+#define KEY_META_CTRL   LG(LCTRL)
+
 
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/keymaps/behaviors
 
-#define __GLOBALS
-
-////////////////////////////////
+#define __BEHAVIORS
 
 // https://zmk.dev/docs/keymaps/behaviors/caps-word
 &caps_word {
@@ -78,38 +100,10 @@
 //     hold-trigger-key-positions = <0>;
 // };
 
-////////////////////////////////
-
-#define XXX             &none
-#define ___             &trans
-
-#define KEY_UNDO        LC(Z)
-#define KEY_REDO        LC(Y)
-
-#define KEY_CUT         LC(X)
-#define KEY_COPY        LC(C)
-#define KEY_PASTE       LC(V)
-
-#if MOERGO_OS == MOERGO_OS_WINDOWS_OR_LINUX
-#define KEY_MOD_APP_TOGGLE  LALT
-#define KEY_APP_TOGGLE      LA(TAB)
-#define KEY_APP_QUIT        LA(F4)
-#elif MOERGO_OS == MOERGO_OS_MACOS
-#define KEY_MOD_APP_TOGGLE  LGUI
-#define KEY_APP_TOGGLE      LG(TAB)
-#define KEY_APP_QUIT        LG(Q)
-#endif
-
-#define KEY_MEH         LS(LC(LALT))
-#define KEY_HYPER       LS(LC(LA(LMETA)))
-#define KEY_META_CTRL   LG(LCTRL)
-
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/keymaps/behaviors/hold-tap
 
-#define __HOMEROW_MODS
-
-////////////////////////////////
+#define ____BEHAVIOURS__HOLD_TAP__HRM
 
 #define ZMK_HOLD_TAP_HRM(name, binding_hold, binding_tap, hold_trigger_key_positions) \
     ZMK_HOLD_TAP(name, \
@@ -189,7 +183,7 @@ ZMK_HOLD_TAP_HRM(ht_rhrm_mo_kp, &mo, &kp, KEYS_L THUMBS)
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/keymaps/behaviors/macros
 
-#define __MACROS
+#define ____BEHAVIOURS__MACRO
 
 ////////////////////////////////
 
@@ -263,7 +257,7 @@ ZMK_MACRO(macro_std_cpp,
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/keymaps/behaviors/mod-morph
 
-#define __MOD_MORPHS
+#define ____BEHAVIOURS__MOD_MORPH
 
 ////////////////////////////////
 
@@ -344,7 +338,7 @@ ZMK_MOD_MORPH_SIMPLE(mm_space_, SFT, &kp SPACE, &kp MINUS)
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/config/combos
 
-#define __COMBOS
+#define ____BEHAVIOURS__COMBO
 
 ////////////////
 
@@ -361,7 +355,7 @@ ZMK_MOD_MORPH_SIMPLE(mm_space_, SFT, &kp SPACE, &kp MINUS)
 
 ////////////////////////////////////////////////////////////////
 
-#define __VARIOUS
+#define ____BEHAVIOURS__TRI_STATE
 
 /*
 https://github.com/dhruvinsh/zmk-tri-state:
@@ -537,6 +531,102 @@ MOERGO_LAYER(base,
     &RHRM_MO_MM(FUNMAC, mm_slash_backslash)
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
+
+////////////////////////////////////////////////////////////////
+
+#define ____KEYMAP_LAYER_SYS
+
+MOERGO_LAYER(sys,
+// ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
+     ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
+// ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
+     ___   ___   ___   ___   ___   ___ , ___   ___   ___   ___   ___   ___,
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
+    ___
+
+    &rgb_ug RGB_ON
+    &rgb_ug RGB_COLOR_HSB(0,100,100) // red
+    &rgb_ug RGB_EFF // effect forward
+    &rgb_ug RGB_SPI // speed increase
+    &out OUT_BLE // switch to BLE
+    ,
+    &bt BT_CLR // clear current BT device
+    &bt BT_PRV // switch to previous BT device
+    XXX
+    XXX
+    &bt BT_NXT // switch to next BT device
+
+    ___
+    ,
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
+    ___
+
+    &rgb_ug RGB_TOG
+    &rgb_ug RGB_COLOR_HSB(120,100,100) // green
+    &rgb_ug RGB_STATUS
+    XXX
+    &out OUT_TOG  // toggle USB/BLE
+    ,
+    XXX
+    &bt BT_SEL 0 // switch to BT device 0
+    &bt BT_SEL 1
+    &bt BT_SEL 2
+    &bt BT_SEL 3
+
+    ___
+    ,
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
+    ___
+
+    &rgb_ug RGB_OFF
+    &rgb_ug RGB_COLOR_HSB(240,100,100) // blue
+    &rgb_ug RGB_EFR // effect reverse
+    &rgb_ug RGB_SPD // speed decrease
+    &out OUT_USB  // switch to USB
+    ,
+    &bt BT_CLR_ALL // clear all paired BT devices
+    &bt BT_DISC 0
+    &bt BT_DISC 1
+    &bt BT_DISC 2
+    &bt BT_DISC 3
+
+    ___
+    ,
+// ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
+     ___   ___ , ___   ___   ___       ,       ___   ___   ___ , ___   ___,
+// ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
+// │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
+     ___   ___ , ___                   ,                   ___ , ___   ___,
+// ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
+// │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
+     ___ , ___   ___                   ,                   ___   ___ , ___
+// ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
+)
+
+////////////////////////////////////////////////////////////////
+
+/*
+#define ____KEYMAP_LAYER_FACTORY
+
+KEYMAP_LAYER_FACTORY
+
+*/
+
+////////////////////////////////////////////////////////////////
+
+/*
+
+#define ____KEYMAP_LAYER_MAGIC
+
+KEYMAP_LAYER_MAGIC
+
+*/
 
 ////////////////////////////////////////////////////////////////
 
@@ -837,7 +927,7 @@ MOERGO_LAYER(fun,
     &kp C_VOLUME_DOWN
     &kp C_BRIGHTNESS_DEC
 
-    &magic MAGIC 0
+    ___
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
@@ -1091,95 +1181,6 @@ MOERGO_LAYER(nav,
      ___ , ___   ___                   ,                   ___   ___ , ___
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
-
-////////////////////////////////////////////////////////////////
-
-#define ____KEYMAP_LAYER_SYS
-
-MOERGO_LAYER(sys,
-// ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
-// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
-     ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
-// ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
-// │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
-     ___   ___   ___   ___   ___   ___ , ___   ___   ___   ___   ___   ___,
-// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-// │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
-    ___
-
-    &rgb_ug RGB_ON
-    &rgb_ug RGB_COLOR_HSB(0,100,100) // red
-    &rgb_ug RGB_EFF // effect forward
-    &rgb_ug RGB_SPI // speed increase
-    &out OUT_BLE // switch to BLE
-    ,
-    &bt BT_CLR // clear current BT device
-    &bt BT_PRV // switch to previous BT device
-    XXX
-    XXX
-    &bt BT_NXT // switch to next BT device
-
-    ___
-    ,
-// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-// │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
-    ___
-
-    &rgb_ug RGB_TOG
-    &rgb_ug RGB_COLOR_HSB(120,100,100) // green
-    &rgb_ug RGB_STATUS
-    XXX
-    &out OUT_TOG  // toggle USB/BLE
-    ,
-    XXX
-    &bt BT_SEL 0 // switch to BT device 0
-    &bt BT_SEL 1
-    &bt BT_SEL 2
-    &bt BT_SEL 3
-
-    ___
-    ,
-// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-// │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
-    ___
-
-    &rgb_ug RGB_OFF
-    &rgb_ug RGB_COLOR_HSB(240,100,100) // blue
-    &rgb_ug RGB_EFR // effect reverse
-    &rgb_ug RGB_SPD // speed decrease
-    &out OUT_USB  // switch to USB
-    ,
-    &bt BT_CLR_ALL // clear all paired BT devices
-    &bt BT_DISC 0
-    &bt BT_DISC 1
-    &bt BT_DISC 2
-    &bt BT_DISC 3
-
-    &magic MAGIC 0
-    ,
-// ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
-// │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
-     ___   ___ , ___   ___   ___       ,       ___   ___   ___ , ___   ___,
-// ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
-// │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
-     ___   ___ , ___                   ,                   ___ , ___   ___,
-// ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
-// │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
-     ___ , ___   ___                   ,                   ___   ___ , ___
-// ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
-)
-
-////////////////////////////////////////////////////////////////
-
-#define ____KEYMAP_LAYER_FACTORY
-
-KEYMAP_LAYER_FACTORY
-
-////////////////////////////////////////////////////////////////
-
-#define ____KEYMAP_LAYER_MAGIC
-
-KEYMAP_LAYER_MAGIC
 
 ////////////////////////////////////////////////////////////////
 
