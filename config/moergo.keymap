@@ -646,7 +646,7 @@ MOERGO_LAYER(layer_num,
     XXX
     XXX /* LAYER -> THIS */
     &mo LAYER_SYM
-    XXX
+    &kp LEFT_SHIFT
     ,
     &kp STAR
     &kp N7
@@ -694,7 +694,20 @@ MOERGO_LAYER(layer_num,
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
-     ___   ___ , ___   ___   ___       ,       ___   ___   ___ , ___   ___,
+    ___
+    ___
+    ,
+    ___
+    ___
+    ___
+    ,
+    &mm_comma_semicolon
+    &kp N0
+    &mm_dot_colon
+    ,
+    ___
+    ___
+    ,
 // ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
 // │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
      ___   ___ , ___                   ,                   ___ , ___   ___,
