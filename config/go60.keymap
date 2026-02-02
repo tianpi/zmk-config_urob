@@ -334,6 +334,29 @@ ZMK_LAYER(magic, \
 #include "moergo.keymap"
 
 ////////////////////////////////////////////////////////////////
+// https://zmk.dev/docs/keymaps/input-processors
+
+#include <dt-bindings/zmk/input_transform.h>
+#include <dt-bindings/zmk/pointing.h>
+#include <input/processors.dtsi>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+////////////////////////////////
+
+&cirque_lh_listener {
+    input-processors = \
+        <&zip_xy_scaler 2 1>;
+};
+
+&cirque_rh_listener {
+    input-processors = \
+        <&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>, \
+        <&zip_xy_to_scroll_mapper>, \
+        <&zip_xy_scaler 1 25>;
+};
+
+
+////////////////////////////////////////////////////////////////
 ////////////////////////////////
 ////////////////
 ////////
