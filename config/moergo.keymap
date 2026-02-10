@@ -495,7 +495,7 @@ MOERGO_LAYER(layer_base,
     &kp PAGE_UP
     ,
     &kp LEFT_ARROW
-    &kp DOWN_ARROW
+    &kp DELETE
     &kp RIGHT_ARROW
     ,
     XXX
