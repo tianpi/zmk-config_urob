@@ -30,6 +30,7 @@
 
 #define XXX             &none
 #define ___             &trans
+#define NOOP            0
 
 #define KEY_UNDO        LC(Z)
 #define KEY_REDO        LC(Y)
@@ -138,36 +139,36 @@ ZMK_HOLD_TAP_HRM(ht_rhrm_mo_kp, &mo, &kp, KEYS_L THUMBS)
 #define ZMK_HOLD_TAP_LHRM_KP_MM(mm_on_tap) \
     ZMK_HOLD_TAP_HRM(ht_lhrm_kp_mm_ ## mm_on_tap, &kp, &mm_on_tap, KEYS_R THUMBS)
 #define LHRM_KP_MM(key_on_hold, mm_on_tap) \
-    ht_lhrm_kp_mm_ ## mm_on_tap key_on_hold 0
+    ht_lhrm_kp_mm_ ## mm_on_tap key_on_hold NOOP
 
 #define ZMK_HOLD_TAP_RHRM_KP_MM(mm_on_tap) \
     ZMK_HOLD_TAP_HRM(ht_rhrm_kp_mm_ ## mm_on_tap, &kp, &mm_on_tap, KEYS_L THUMBS)
 #define RHRM_KP_MM(key_on_hold, mm_on_tap) \
-    ht_rhrm_kp_mm_ ## mm_on_tap key_on_hold 0
+    ht_rhrm_kp_mm_ ## mm_on_tap key_on_hold NOOP
 
 ////////////////
 
 #define ZMK_HOLD_TAP_LHRM_MO_MM(mm_on_tap) \
     ZMK_HOLD_TAP_HRM(ht_lhrm_mo_mm_ ## mm_on_tap, &mo, &mm_on_tap, KEYS_R THUMBS)
 #define LHRM_MO_MM(layer_on_hold, mm_on_tap) \
-    ht_lhrm_mo_mm_ ## mm_on_tap layer_on_hold 0
+    ht_lhrm_mo_mm_ ## mm_on_tap layer_on_hold NOOP
 
 #define ZMK_HOLD_TAP_RHRM_MO_MM(mm_on_tap) \
     ZMK_HOLD_TAP_HRM(ht_rhrm_mo_mm_ ## mm_on_tap, &mo, &mm_on_tap, KEYS_L THUMBS)
 #define RHRM_MO_MM(layer_on_hold, mm_on_tap) \
-    ht_rhrm_mo_mm_ ## mm_on_tap layer_on_hold 0
+    ht_rhrm_mo_mm_ ## mm_on_tap layer_on_hold NOOP
 
 ////////////////
 
 #define ZMK_HOLD_TAP_LHRM_MACRO_KP(macro_on_hold) \
     ZMK_HOLD_TAP_HRM(ht_lhrm_macro_kp_ ## macro_on_hold, &macro_on_hold, &kp, KEYS_R THUMBS)
 #define LHRM_MACRO_KP(macro_on_hold, key_on_tap) \
-    ht_lhrm_macro_kp_ ## macro_on_hold 0 key_on_tap
+    ht_lhrm_macro_kp_ ## macro_on_hold NOOP key_on_tap
 
 #define ZMK_HOLD_TAP_RHRM_MACRO_KP(macro_on_hold) \
     ZMK_HOLD_TAP_HRM(ht_rhrm_macro_kp_ ## macro_on_hold, &macro_on_hold, &kp, KEYS_L THUMBS)
 #define RHRM_MACRO_KP(macro_on_hold, key_on_tap) \
-    ht_rhrm_macro_kp_ ## macro_on_hold 0 key_on_tap
+    ht_rhrm_macro_kp_ ## macro_on_hold NOOP key_on_tap
 
 ////////////////
 
@@ -268,23 +269,6 @@ ZMK_MOD_MORPH(mm_bspc_del,
 )
 ZMK_HOLD_TAP_xHRM_xx_MM(mm_bspc_del)
 
-////////////////
-
-// tap: enable "caps word" mode | shift + tap: enable caps lock
-// WARN: does not work as intended
-ZMK_MOD_MORPH(mm_capsword_capslock,
-    bindings = <&caps_word>, <&kp CAPSLOCK>;
-    mods = <(MOD_LSFT|MOD_RSFT)>;
-)
-
-////////////////
-
-// tap: enable "num word" mode in LAYER_NUM layer| shift + tab: toggle to LAYER_NUM layer (?)
-ZMK_MOD_MORPH(mm_numword_numlock,
-    bindings = <&num_word LAYER_NUM>, <&tog LAYER_NUM>;
-    mods = <(MOD_LSFT|MOD_RSFT)>;
-)
-
 ////////////////////////////////
 
 #define ZMK_MOD_MORPH_SIMPLE(name, mod, binding1, binding2) \
@@ -295,44 +279,35 @@ ZMK_MOD_MORPH(mm_numword_numlock,
     ZMK_HOLD_TAP_xHRM_xx_MM(name)
 
 
-ZMK_MOD_MORPH_SIMPLE(mm_comma_semicolon, SFT, &kp COMMA, &kp SEMICOLON)
-ZMK_MOD_MORPH_SIMPLE(mm_comma_singlequote, SFT, &kp COMMA, &kp SINGLE_QUOTE)
-ZMK_MOD_MORPH_SIMPLE(mm_dot_colon, SFT, &kp DOT, &kp COLON)
-ZMK_MOD_MORPH_SIMPLE(mm_dot_doublequotes, SFT, &kp DOT, &kp DOUBLE_QUOTES)
-ZMK_MOD_MORPH_SIMPLE(mm_parenthesis, SFT, &kp LEFT_PARENTHESIS, &kp RIGHT_PARENTHESIS)
+ZMK_MOD_MORPH_SIMPLE(mm_add_sub, SFT, &kp PLUS, &kp MINUS)
+ZMK_MOD_MORPH_SIMPLE(mm_and_or, SFT, &kp AMPERSAND, &kp PIPE)
 ZMK_MOD_MORPH_SIMPLE(mm_brackets, SFT, &kp LEFT_BRACKET, &kp RIGHT_BRACKET)
 ZMK_MOD_MORPH_SIMPLE(mm_braces, SFT, &kp LEFT_BRACE, &kp RIGHT_BRACE)
-ZMK_MOD_MORPH_SIMPLE(mm_equal_equal, SFT, &kp EQUAL, &kp EQUAL)
-ZMK_MOD_MORPH_SIMPLE(mm_add_sub, SFT, &kp PLUS, &kp MINUS)
-ZMK_MOD_MORPH_SIMPLE(mm_mul_div, SFT, &kp ASTERISK, &kp SLASH)
-ZMK_MOD_MORPH_SIMPLE(mm_and_or, SFT, &kp AMPERSAND, &kp PIPE)
-ZMK_MOD_MORPH_SIMPLE(mm_lt_gt, SFT, &kp LESS_THAN, &kp GREATER_THAN)
-ZMK_MOD_MORPH_SIMPLE(mm_excl_qmark, SFT, &kp EXCLAMATION, &kp QMARK)
-ZMK_MOD_MORPH_SIMPLE(mm_slash_backslash, SFT, &kp SLASH, &kp BACKSLASH)
-ZMK_MOD_MORPH_SIMPLE(mm_underscore_minus, SFT, &kp UNDERSCORE, &kp MINUS)
-ZMK_MOD_MORPH_SIMPLE(mm_grave_caret, SFT, &kp GRAVE, &kp CARET)
-ZMK_MOD_MORPH_SIMPLE(mm_semicolon_semicolon, SFT, &kp SEMICOLON, &kp SEMICOLON)
-ZMK_MOD_MORPH_SIMPLE(mm_doublequotes_singlequote, SFT, &kp DOUBLE_QUOTES, &kp SINGLE_QUOTE)
-ZMK_MOD_MORPH_SIMPLE(mm_pointer_reference, SFT, &kp ASTERISK, &kp AMPERSAND)
 ZMK_MOD_MORPH_SIMPLE(mm_caret_underscore, SFT, &kp CARET, &kp UNDERSCORE)
+ZMK_MOD_MORPH_SIMPLE(mm_comma_semicolon, SFT, &kp COMMA, &kp SEMICOLON)
+ZMK_MOD_MORPH_SIMPLE(mm_comma_singlequote, SFT, &kp COMMA, &kp SINGLE_QUOTE)
+ZMK_MOD_MORPH_SIMPLE(mm_doublequotes_singlequote, SFT, &kp DOUBLE_QUOTES, &kp SINGLE_QUOTE)
+ZMK_MOD_MORPH_SIMPLE(mm_dot_colon, SFT, &kp DOT, &kp COLON)
+ZMK_MOD_MORPH_SIMPLE(mm_dot_doublequotes, SFT, &kp DOT, &kp DOUBLE_QUOTES)
+ZMK_MOD_MORPH_SIMPLE(mm_enter_escape, SFT, &kp ENTER, &kp ESCAPE)
+ZMK_MOD_MORPH_SIMPLE(mm_equal_equal, SFT, &kp EQUAL, &kp EQUAL)
+ZMK_MOD_MORPH_SIMPLE(mm_excl_qmark, SFT, &kp EXCLAMATION, &kp QMARK)
+ZMK_MOD_MORPH_SIMPLE(mm_grave_caret, SFT, &kp GRAVE, &kp CARET)
+ZMK_MOD_MORPH_SIMPLE(mm_lt_gt, SFT, &kp LESS_THAN, &kp GREATER_THAN)
+ZMK_MOD_MORPH_SIMPLE(mm_minus_plus, SFT, &kp MINUS, &kp PLUS)
+ZMK_MOD_MORPH_SIMPLE(mm_mul_div, SFT, &kp ASTERISK, &kp SLASH)
+ZMK_MOD_MORPH_SIMPLE(mm_parenthesis, SFT, &kp LEFT_PARENTHESIS, &kp RIGHT_PARENTHESIS)
+ZMK_MOD_MORPH_SIMPLE(mm_pointer_reference, SFT, &kp ASTERISK, &kp AMPERSAND)
+ZMK_MOD_MORPH_SIMPLE(mm_semicolon_semicolon, SFT, &kp SEMICOLON, &kp SEMICOLON)
+ZMK_MOD_MORPH_SIMPLE(mm_slash_backslash, SFT, &kp SLASH, &kp BACKSLASH)
+ZMK_MOD_MORPH_SIMPLE(mm_underscore_equal, SFT, &kp UNDERSCORE, &kp EQUAL)
+ZMK_MOD_MORPH_SIMPLE(mm_underscore_minus, SFT, &kp UNDERSCORE, &kp MINUS)
 
 ZMK_MOD_MORPH_SIMPLE(mm_keypad_add_sub, SFT, &kp KP_PLUS, &kp KP_MINUS)
-ZMK_MOD_MORPH_SIMPLE(mm_keypad_mul_div, SFT, &kp KP_ASTERISK, &kp KP_SLASH)
 ZMK_MOD_MORPH_SIMPLE(mm_keypad_dot_comma, SFT, &kp KP_DOT, &kp KP_COMMA)
+ZMK_MOD_MORPH_SIMPLE(mm_keypad_mul_div, SFT, &kp KP_ASTERISK, &kp KP_SLASH)
 ZMK_MOD_MORPH_SIMPLE(mm_keypad_parenthesis, SFT, &kp KP_LEFT_PARENTHESIS, &kp KP_RIGHT_PARENTHESIS)
 
-ZMK_MOD_MORPH_SIMPLE(mm_n9_, SFT, &kp N9, &kp RIGHT_BRACE)
-ZMK_MOD_MORPH_SIMPLE(mm_n8_, SFT, &kp N8, &kp CARET)
-ZMK_MOD_MORPH_SIMPLE(mm_n7_, SFT, &kp N7, &kp LEFT_BRACE)
-ZMK_MOD_MORPH_SIMPLE(mm_n6_, SFT, &kp N6, &kp RIGHT_PARENTHESIS)
-ZMK_MOD_MORPH_SIMPLE(mm_n5_, SFT, &kp N5, &kp N5)
-ZMK_MOD_MORPH_SIMPLE(mm_n4_, SFT, &kp N4, &kp LEFT_PARENTHESIS)
-ZMK_MOD_MORPH_SIMPLE(mm_n3_, SFT, &kp N3, &kp RIGHT_BRACKET)
-ZMK_MOD_MORPH_SIMPLE(mm_n2_, SFT, &kp N2, &kp N2)
-ZMK_MOD_MORPH_SIMPLE(mm_n1_, SFT, &kp N1, &kp LEFT_BRACKET)
-ZMK_MOD_MORPH_SIMPLE(mm_n0_, SFT, &kp N0, &kp SEMICOLON)
-
-ZMK_MOD_MORPH_SIMPLE(mm_space_, SFT, &kp SPACE, &kp MINUS)
 
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/config/combos
@@ -437,7 +412,7 @@ MOERGO_LAYER(layer_base,
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
-    &kp LEFT_SHIFT
+    &kp TAB
 
     &kp Q
     &LHRM_KP_KP(LEFT_META, W)
@@ -451,7 +426,7 @@ MOERGO_LAYER(layer_base,
     &RHRM_KP_KP(LEFT_META, O)
     &kp SINGLE_QUOTE
 
-    &kp RIGHT_SHIFT
+    &kp LS(TAB)
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
@@ -469,11 +444,11 @@ MOERGO_LAYER(layer_base,
     &RHRM_KP_KP(LCTL, L)
     &RHRM_KP_KP(LALT, P)
 
-    &ht__reset_keyboard_and_go_to_base_layer__kp 0 ESCAPE
+    &ht__reset_keyboard_and_go_to_base_layer__kp NOOP ESCAPE
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
-    &mm_capsword_capslock
+    &caps_word
 
     &LHRM_KP_KP(RIGHT_ALT, Z)
     &LHRM_KP_KP(KEY_META_CTRL, X)
@@ -487,7 +462,7 @@ MOERGO_LAYER(layer_base,
     &RHRM_KP_MM(KEY_META_CTRL, mm_dot_colon)
     &RHRM_KP_MM(RIGHT_ALT, mm_excl_qmark)
 
-    &mm_capsword_capslock
+    &caps_word
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
@@ -508,18 +483,18 @@ MOERGO_LAYER(layer_base,
 // ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
 // │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
     &LHRM_MO_MM(LAYER_NAV, mm_bspc_del)
-    &RHRM_KP_KP(LEFT_CONTROL, TAB)
+    &RHRM_KP_MM(LEFT_CONTROL, mm_minus_plus) // RHRM since modifier is used in "mouse mode" with keys on left-hand side
     ,
     &kp PRINTSCREEN
     ,
     XXX
     ,
-    &RHRM_MO_MM(LAYER_FUNFUN, mm_underscore_minus)
+    &RHRM_MO_MM(LAYER_FUNFUN, mm_underscore_equal)
     &RHRM_MO_KP(LAYER_FUN, SPACE)
     ,
 // ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
 // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
-    &RHRM_MO_KP(LAYER_FUN, ESCAPE)
+    &LHRM_MO_MM(LAYER_FUN, mm_slash_backslash)
     ,
     &kp PAGE_DOWN
     &kp END
@@ -527,7 +502,7 @@ MOERGO_LAYER(layer_base,
     XXX
     XXX
     ,
-    &RHRM_MO_MM(LAYER_FUNMAC, mm_slash_backslash)
+    &RHRM_MO_KP(LAYER_FUNMAC, TAB)
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
 
