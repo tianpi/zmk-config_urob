@@ -343,6 +343,19 @@ ZMK_LAYER(magic, \
 
 ////////////////////////////////
 
+/ {
+    input_processors {
+        zip_click_to_right_click_mapper: zip_click_to_right_click_mapper {
+            compatible = "zmk,input-processor-code-mapper";
+            #input-processor-cells = <0>;
+            type = <INPUT_EV_KEY>;
+            map = <INPUT_BTN_0 INPUT_BTN_1>;
+        };
+    };
+};
+
+////////////////////////////////
+
 &cirque_lh_listener {
     input-processors = \
         <&zip_xy_scaler 2 1>;
@@ -352,7 +365,8 @@ ZMK_LAYER(magic, \
     input-processors = \
         <&zip_xy_to_scroll_mapper>, \
         <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>, \
-        <&zip_scroll_scaler 1 25>;
+        <&zip_scroll_scaler 1 25>, \
+        <&zip_click_to_right_click_mapper>;
 };
 
 
