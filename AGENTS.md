@@ -85,6 +85,10 @@ Do not delete unrelated build outputs unless the user asks.
   `config/moergo.keymap`.
 - GO60 right Cirque is configured for scroll mode and maps click button 0 to
   button 1 via `zip_click_to_right_click_mapper`.
+- Layer index macros used in keymap bindings must expand to either plain numbers
+  or parenthesized expressions. Bare arithmetic such as `LAYER_SYS + 1` breaks
+  devicetree parsing when used in bindings like `&mo` / `&to`; use
+  `(LAYER_SYS + 1)` instead.
 
 ## Verified Builds
 
