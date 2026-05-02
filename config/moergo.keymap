@@ -380,7 +380,7 @@ In this definition:
     )
 
 ZMK_TRI_STATE__APP_SWITCH(
-    tri__app_switch__base_layer,
+    tri__app_switch__nav_left,
 #if MOERGO_DEVICE == MOERGO_DEVICE_GLOVE80
     ignored-key-positions =
     <
@@ -390,7 +390,7 @@ ZMK_TRI_STATE__APP_SWITCH(
 )
 
 ZMK_TRI_STATE__APP_SWITCH(
-    tri__app_switch__nav_layer,
+    tri__app_switch__nav_right,
     ignored-key-positions =
     <
         RT1 RT2 RT3
@@ -408,16 +408,14 @@ ZMK_TRI_STATE__APP_SWITCH(
 MOERGO_LAYER(layer_base,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
 // │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
-#define KEYS_LAYER_BASE_LC \
-    &kp KEY_APP_QUIT \
-    &kp LC(F4) \
-    &kp LC(LS(TAB)) \
-    &tri__app_switch__base_layer \
-    &kp LC(TAB)
-    KEYS_LAYER_BASE_LC
+    XXX
+    XXX
+    XXX
+    XXX
+    XXX
     ,
     XXX
-    &macro_std_cpp
+    XXX
     XXX
     XXX
     XXX
@@ -563,7 +561,7 @@ MOERGO_LAYER(layer_various,
     ,
     XXX
     XXX
-    XXX
+    &mmv MOVE_UP
     XXX
     XXX
 
@@ -579,11 +577,11 @@ MOERGO_LAYER(layer_various,
     &kp C_MUTE
     XXX
     ,
-    XXX
-    XXX
-    XXX
-    XXX
-    XXX
+    &msc SCRL_LEFT
+    &mmv MOVE_LEFT
+    &mmv MOVE_DOWN
+    &mmv MOVE_RIGHT
+    &msc SCRL_RIGHT
 
     ___
     ,
@@ -597,11 +595,11 @@ MOERGO_LAYER(layer_various,
     &kp C_VOLUME_DOWN
     &kp C_BRIGHTNESS_DEC
     ,
-    XXX
-    XXX
-    XXX
-    XXX
-    XXX
+    &msc SCRL_UP
+    &mkp LCLK
+    &mkp MCLK
+    &mkp RCLK
+    &msc SCRL_DOWN
 
     ___
     ,
@@ -983,10 +981,10 @@ MOERGO_LAYER(layer_fun,
     &kp INSERT
     ,
     &kp KP_NUMLOCK
-    &kp F13
-    &kp F16
-    &kp F19
     &kp F22
+    &kp F19
+    &kp F16
+    &kp F13
 
     ___
     ,
@@ -1001,10 +999,10 @@ MOERGO_LAYER(layer_fun,
     &kp PRINTSCREEN
     ,
     &kp CAPSLOCK
-    &kp F14
-    &kp F17
-    &kp F20
     &kp F23
+    &kp F20
+    &kp F17
+    &kp F14
 
     ___
     ,
@@ -1019,10 +1017,10 @@ MOERGO_LAYER(layer_fun,
     &kp PAUSE_BREAK
     ,
     &kp SCROLLLOCK
-    &kp F15
-    &kp F16
-    &kp F21
     &kp F24
+    &kp F21
+    &kp F18
+    &kp F15
 
     ___
     ,
@@ -1065,7 +1063,7 @@ MOERGO_LAYER(layer_modfun,
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
-    &kp F13
+    &kp F24
 
     ___
     ___
@@ -1079,11 +1077,11 @@ MOERGO_LAYER(layer_modfun,
     ___
     ___
 
-    &kp F24
+    &kp F13
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
-    &kp F14
+    &kp F23
 
     ___
     ___
@@ -1097,11 +1095,11 @@ MOERGO_LAYER(layer_modfun,
     ___
     ___
 
-    &kp F23
+    &kp F14
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
-    &kp F15
+    &kp F22
 
     ___
     ___
@@ -1115,19 +1113,19 @@ MOERGO_LAYER(layer_modfun,
     ___
     ___
 
-    &kp F22
+    &kp F15
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
      ___
      ___ ,
-     &kp F16
-     &kp F17
-     &kp F18
-     ,
-     &kp F19
-     &kp F20
      &kp F21
+     &kp F20
+     &kp F19
+     ,
+     &kp F18
+     &kp F17
+     &kp F16
      ,
      ___
      ___,
@@ -1175,7 +1173,7 @@ MOERGO_LAYER(layer_macros,
     ___
 
     XXX
-    &macro_copy_and_toggle_app_and_paste
+    &macro_std_cpp
     XXX
     &macro_browser_new_search_tab
     XXX
@@ -1202,7 +1200,7 @@ MOERGO_LAYER(layer_macros,
     XXX
     XXX
     XXX
-    XXX
+    &macro_copy_and_toggle_app_and_paste
 
     ___
     ,
@@ -1228,12 +1226,16 @@ MOERGO_LAYER(layer_nav,
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
-    KEYS_LAYER_BASE_LC
+    &kp KEY_APP_QUIT
+    &kp LC(F4)
+    &kp LC(LS(TAB))
+    &tri__app_switch__nav_left
+    &kp LC(TAB)
     ___
     ,
     ___
     ___
-    &tri__app_switch__nav_layer
+    &tri__app_switch__nav_right
     ___
     ___
     ___

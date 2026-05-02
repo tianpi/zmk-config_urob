@@ -1,22 +1,24 @@
 {
     "files.associations": {
-        "*.tcu": "cuda",
         "*.keymap": "cpp",
         "*.dtsi": "cpp",
     },
-    // "search.useIgnoreFiles": false,
-    // "search.useGlobalIgnoreFiles": false,
+    // make VS Code search (not)ignore repo .gitignore, .ignore files
+    "search.useIgnoreFiles": true,
+    // make VS Code search (not) ignore global ignore files, ~/.gitignore
+    "search.useGlobalIgnoreFiles": true,
+    // Keep upstream workspace trees searchable even if extensions or defaults try to hide them.
     "search.exclude": {
         "${workspaceFolder}/zmk/**": false,
         "${workspaceFolder}/modules/**": false,
         "${workspaceFolder}/zephyr/**": false
     },
-    "C_Cpp.default.compilerPath": "",
     "C_Cpp.default.includePath": [
         "${workspaceFolder}/config",
         "${workspaceFolder}/zmk/app/dts",
         "${workspaceFolder}/zmk/app/include",
         "${workspaceFolder}/modules/zmk/auto-layer/dts",
-        "${workspaceFolder}/modules/zmk/helpers/include"
+        "${workspaceFolder}/modules/zmk/helpers/include",
+        "${workspaceFolder}/modules/zmk/unicode/include",
     ]
 }
