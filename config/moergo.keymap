@@ -43,17 +43,18 @@
 #if MOERGO_OS == MOERGO_OS_WINDOWS_OR_LINUX
 #define KEY_MOD_APP_TOGGLE  LALT
 #define KEY_APP_TOGGLE      LA(TAB)
+#define KEY_APP_WIN_TOGGLE  LA(GRAVE)
 #define KEY_APP_QUIT        LA(F4)
 #elif MOERGO_OS == MOERGO_OS_MACOS
 #define KEY_MOD_APP_TOGGLE  LGUI
 #define KEY_APP_TOGGLE      LG(TAB)
+#define KEY_APP_WIN_TOGGLE  LG(GRAVE)
 #define KEY_APP_QUIT        LG(Q)
 #endif
 
 #define KEY_MEH         LA(LC(LSHIFT))
 #define KEY_HYPER       LG(KEY_MEH)
 #define KEY_META_CTRL   LG(LCTRL)
-
 
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/keymaps/behaviors
@@ -372,15 +373,15 @@ In this definition:
 - B is pressing Tab, and
 - C is releasing KEY_MOD_APP_TOGGLE (by toggling it OFF).
 */
-#define ZMK_TRI_STATE__APP_SWITCH(name, ...)          \
+#define ZMK_TRI_STATE__APP_SWITCH_FORWARD(name, ...)          \
     ZMK_TRI_STATE(                                    \
         name,                                         \
         bindings = <&kt KEY_MOD_APP_TOGGLE>, <&kp TAB>, <&kt KEY_MOD_APP_TOGGLE>; \
         __VA_ARGS__ \
     )
 
-ZMK_TRI_STATE__APP_SWITCH(
-    tri__app_switch__nav_left,
+ZMK_TRI_STATE__APP_SWITCH_FORWARD(
+    tri__app_switch_fw__nav_left,
 #if MOERGO_DEVICE == MOERGO_DEVICE_GLOVE80
     ignored-key-positions =
     <
@@ -389,8 +390,8 @@ ZMK_TRI_STATE__APP_SWITCH(
 #endif
 )
 
-ZMK_TRI_STATE__APP_SWITCH(
-    tri__app_switch__nav_right,
+ZMK_TRI_STATE__APP_SWITCH_FORWARD(
+    tri__app_switch_fw__nav_right,
     ignored-key-positions =
     <
         RT1 RT2 RT3
@@ -398,6 +399,29 @@ ZMK_TRI_STATE__APP_SWITCH(
         RB1     RB3
     >;
 )
+
+#define ZMK_TRI_STATE__APP_WIN_SWITCH_FORWARD(name, ...)          \
+    ZMK_TRI_STATE(                                    \
+        name,                                         \
+        bindings = <&kt KEY_MOD_APP_TOGGLE>, <&kp GRAVE>, <&kt KEY_MOD_APP_TOGGLE>; \
+        __VA_ARGS__ \
+    )
+
+ZMK_TRI_STATE__APP_WIN_SWITCH_FORWARD(
+    tri__app_win_switch_fw,
+)
+
+#define ZMK_TRI_STATE__APP_WIN_SWITCH_BACKWARD(name, ...)          \
+    ZMK_TRI_STATE(                                    \
+        name,                                         \
+        bindings = <&kt KEY_MOD_APP_TOGGLE>, <&kp LS(GRAVE)>, <&kt KEY_MOD_APP_TOGGLE>; \
+        __VA_ARGS__ \
+    )
+
+ZMK_TRI_STATE__APP_WIN_SWITCH_BACKWARD(
+    tri__app_win_switch_bw,
+)
+
 
 ////////////////////////////////////////////////////////////////
 
@@ -640,8 +664,8 @@ MOERGO_LAYER(layer_sys,
     &bt BT_CLR // clear current BT device
     &bt BT_PRV // switch to previous BT device
     XXX
-    XXX
     &bt BT_NXT // switch to next BT device
+    XXX
 
     ___
     ,
@@ -1173,16 +1197,16 @@ MOERGO_LAYER(layer_macros,
     ___
 
     XXX
-    &macro_std_cpp
+    &macro_std_cpp  // S
     XXX
-    &macro_browser_new_search_tab
+    &macro_browser_new_search_tab  // T
     XXX
     ,
     XXX
     XXX
     XXX
     XXX
-    XXX
+    &macro_copy_and_toggle_app_and_paste  // P
 
     ___
     ,
@@ -1200,7 +1224,7 @@ MOERGO_LAYER(layer_macros,
     XXX
     XXX
     XXX
-    &macro_copy_and_toggle_app_and_paste
+    XXX
 
     ___
     ,
@@ -1229,14 +1253,14 @@ MOERGO_LAYER(layer_nav,
     &kp KEY_APP_QUIT
     &kp LC(F4)
     &kp LC(LS(TAB))
-    &tri__app_switch__nav_left
+    &tri__app_switch_fw__nav_left
     &kp LC(TAB)
     ___
     ,
     ___
-    ___
-    &tri__app_switch__nav_right
-    ___
+    &tri__app_win_switch_bw
+    &tri__app_switch_fw__nav_right
+    &tri__app_win_switch_fw
     ___
     ___
     ,

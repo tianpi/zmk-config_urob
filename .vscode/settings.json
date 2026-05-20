@@ -3,7 +3,7 @@
         "*.keymap": "cpp",
         "*.dtsi": "cpp",
     },
-    // make VS Code search (not)ignore repo .gitignore, .ignore files
+    // make VS Code search (not) ignore repo .gitignore, .ignore files
     "search.useIgnoreFiles": true,
     // make VS Code search (not) ignore global ignore files, ~/.gitignore
     "search.useGlobalIgnoreFiles": true,
