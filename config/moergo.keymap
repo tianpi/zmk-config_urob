@@ -409,6 +409,12 @@ ZMK_TRI_STATE__APP_SWITCH_FORWARD(
 
 ZMK_TRI_STATE__APP_WIN_SWITCH_FORWARD(
     tri__app_win_switch_fw,
+    ignored-key-positions =
+    <
+        RT1 RT2 RT3
+        RM1 RM2 RM3
+        RB1     RB3
+    >;
 )
 
 #define ZMK_TRI_STATE__APP_WIN_SWITCH_BACKWARD(name, ...)          \
@@ -420,6 +426,12 @@ ZMK_TRI_STATE__APP_WIN_SWITCH_FORWARD(
 
 ZMK_TRI_STATE__APP_WIN_SWITCH_BACKWARD(
     tri__app_win_switch_bw,
+    ignored-key-positions =
+    <
+        RT1 RT2 RT3
+        RM1 RM2 RM3
+        RB1     RB3
+    >;
 )
 
 
