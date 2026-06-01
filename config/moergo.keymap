@@ -1267,7 +1267,7 @@ MOERGO_LAYER(layer_nav,
     &kp LC(LS(TAB))
     &tri__app_switch_fw__nav_left
     &kp LC(TAB)
-    ___
+    &tri__app_win_switch_fw
     ,
     ___
     &tri__app_win_switch_bw
