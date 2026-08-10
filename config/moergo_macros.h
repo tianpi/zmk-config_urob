@@ -279,14 +279,14 @@
 
 ////////////////////////////////
 
-#ifndef KEYS_L
-#define KEYS_L
+#ifndef KEYS_LEFT_HAND
+#define KEYS_LEFT_HAND
 #endif
-#ifndef KEYS_R
-#define KEYS_R
+#ifndef KEYS_RIGHT_HAND
+#define KEYS_RIGHT_HAND
 #endif
-#ifndef THUMBS
-#define THUMBS
+#ifndef KEYS_LEFT_AND_RIGHT_THUMB
+#define KEYS_LEFT_AND_RIGHT_THUMB
 #endif
 
 ////////////////////////////////

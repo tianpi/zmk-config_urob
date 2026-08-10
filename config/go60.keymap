@@ -199,9 +199,9 @@
 
 ////////////////////////////////
 
-#define KEYS_L LEFT_HAND_KEYS
-#define KEYS_R RIGHT_HAND_KEYS
-#define THUMBS THUMB_KEYS
+#define KEYS_LEFT_HAND LEFT_HAND_KEYS
+#define KEYS_RIGHT_HAND RIGHT_HAND_KEYS
+#define KEYS_LEFT_AND_RIGHT_THUMB THUMB_KEYS
 
 ////////////////////////////////////////////////////////////////
 // https://github.com/moergo-keyboards/go60-zmk-config/blob/main/config/go60.keymap

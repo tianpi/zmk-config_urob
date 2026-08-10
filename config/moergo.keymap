@@ -14,14 +14,13 @@
 #define __KEYMAP_LAYERS
 
 #define LAYER_BASE        0
-#define LAYER_VARIOUS     (LAYER_BASE + 1)
-#define LAYER_SYS         (LAYER_VARIOUS + 1)
+#define LAYER_MEDIA_MOUSE (LAYER_BASE + 1)
+#define LAYER_SYS         (LAYER_MEDIA_MOUSE + 1)
 #define LAYER_NUM         (LAYER_SYS + 1)
-#define LAYER_NUMNAV      (LAYER_NUM + 1)
-#define LAYER_SYM         (LAYER_NUMNAV + 1)
+#define LAYER_NUMPAD      (LAYER_NUM + 1)
+#define LAYER_SYM         (LAYER_NUMPAD + 1)
 #define LAYER_FUN         (LAYER_SYM + 1)
-#define LAYER_MODFUN      (LAYER_FUN + 1)
-#define LAYER_MACROS      (LAYER_MODFUN + 1)
+#define LAYER_MACROS      (LAYER_FUN + 1)
 #define LAYER_NAV         (LAYER_MACROS + 1)
 #define _LAYER_TEMPLATE   (LAYER_NAV + 1)
 
@@ -107,9 +106,70 @@
 
 #define ____BEHAVIOURS__HOLD_TAP__HRM
 
-#define ZMK_HOLD_TAP_HRM(name, binding_hold, binding_tap, hold_trigger_key_positions) \
+/*
+
+## HRM variants
+
+Hold input \ Tap input | Key (&kp)          | Mod-morph (&mm)
+-----------------------|--------------------|------------------------------
+Key (&kp)              | [L,R]HRM_KP_KP     | [L,R]HRM_KP_MM
+Layer (&mo)            | [L,R]HRM_MO_KP     | [L,R]HRM_MO_MM
+Macro                  | [L,R]HRM_MACRO_KP  | [L,R]HRM_MACRO_MM
+Layer + modifier       | [L,R]HRM_MO_MOD_KP | [L,R]HRM_MO_MOD_MM
+
+## Example
+
+ZMK_HOLD_TAP_HRM
+  → creates 'lhrm_kp_kp' *behavior*
+    → LHRM_KP_KP supplies its hold and tap parameters at a keymap position
+
+'lhrm_kp_kp' is a named *ZMK behavior*, defined by:
+    ZMK_HOLD_TAP_HRM(lhrm_kp_kp, &kp, &kp, KEYS_LHRM)
+A keymap binding is its use at a physical key position, with arguments, for example:
+    &LHRM_KP_KP(LEFT_META, W)
+
+So this *keymap binding*:
+    &LHRM_KP_KP(LEFT_META, W)
+preprocesses to:
+    &lhrm_kp_kp LEFT_META W
+
+The other LHRM_* / RHRM_* macros follow the same pattern:
+generic factory → concrete behavior instance → short keymap-facing alias.
+
+## Naming patterns
+
+Everything follows a coherent convention:
+
+[L,R]HRM_<hold behavior>_<tap behavior>
+ZMK_HOLD_TAP_xHRM_<hold behavior>_<tap behavior>
+[l,r]hrm_<hold behavior>_<tap behavior>[_specific tap behavior]
+
+## Glossary
+
+- `ZMK`: the keyboard firmware framework that provides the behavior system.
+- `[L,R]`: compact notation meaning both the left and right HRM variants.
+- `[l,r]`: compact notation meaning both the left (`l`) and right (`r`) behavior variants.
+- `HRM`: home-row-mod hold-tap behavior with positional triggering.
+- `KP`: key-press behavior (`&kp`).
+- `MO`: momentary-layer behavior (`&mo`).
+- `MM`: mod-morph behavior.
+- `MACRO`: macro behavior used as the hold binding.
+- `MOD`: fixed modifier held together with a layer.
+- `xHRM`: generator that creates both left- and right-hand HRM variants.
+- `[l,r]hrm_*`: named left/right ZMK hold-tap behavior instances used by the keymap aliases.
+- `KEYS_LHRM` / `KEYS_RHRM`: opposite-hand and thumb positions that trigger the corresponding HRM hold.
+- `macro_mo_kp_*`: named parameterized macro behavior that holds a layer plus a fixed modifier.
+- `ZMK_HOLD_TAP_HRM`: factory macro that creates one HRM behavior with shared timing and positional-trigger settings.
+- `NOOP`: zero-valued placeholder for an unused behavior parameter.
+
+Behavior names are limited to 47 visible characters by Zephyr, so generated behavior names may use abbreviations.
+
+*/
+
+// Creates the named HRM behavior with the shared timing and positional-trigger policy.
+#define ZMK_HOLD_TAP_HRM(name, hold_binding, tap_binding, hold_trigger_key_positions) \
     ZMK_HOLD_TAP(name, \
-        bindings = <binding_hold>, <binding_tap>; \
+        bindings = <hold_binding>, <tap_binding>; \
         flavor = "balanced"; \
         tapping-term-ms = <MOERGO_HOLD_TAP__TAPPING_TERM_MS>; \
         quick-tap-ms = <MOERGO_HOLD_TAP__QUICK_TAP_MS>; \
@@ -118,75 +178,75 @@
         hold-trigger-on-release; \
     )
 
-////////////////
-
-ZMK_HOLD_TAP_HRM(ht_lhrm_kp_kp, &kp, &kp, KEYS_R THUMBS)
-ZMK_HOLD_TAP_HRM(ht_rhrm_kp_kp, &kp, &kp, KEYS_L THUMBS)
-
-ZMK_HOLD_TAP_HRM(ht_lhrm_mo_kp, &mo, &kp, KEYS_R THUMBS)
-ZMK_HOLD_TAP_HRM(ht_rhrm_mo_kp, &mo, &kp, KEYS_L THUMBS)
+#define KEYS_LHRM   KEYS_LEFT_AND_RIGHT_THUMB KEYS_RIGHT_HAND
+#define KEYS_RHRM   KEYS_LEFT_AND_RIGHT_THUMB KEYS_LEFT_HAND
 
 ////////////////
 
-#define LHRM_KP_KP(key_on_hold, key_on_tap) ht_lhrm_kp_kp key_on_hold key_on_tap
-#define RHRM_KP_KP(key_on_hold, key_on_tap) ht_rhrm_kp_kp key_on_hold key_on_tap
+// Creates [l,r]hrm_<name> behaviors with the supplied hold and tap bindings.
+#define ZMK_HOLD_TAP_xHRM(name, hold_binding, tap_binding) \
+    ZMK_HOLD_TAP_HRM(lhrm_ ## name, hold_binding, tap_binding, KEYS_LHRM) \
+    ZMK_HOLD_TAP_HRM(rhrm_ ## name, hold_binding, tap_binding, KEYS_RHRM)
+
+ZMK_HOLD_TAP_xHRM(kp_kp, &kp, &kp)
+
+// Provides [l,r]hrm_kp_kp behaviors that hold one keycode and tap another.
+#define LHRM_KP_KP(key_on_hold, key_on_tap) lhrm_kp_kp key_on_hold key_on_tap
+#define RHRM_KP_KP(key_on_hold, key_on_tap) rhrm_kp_kp key_on_hold key_on_tap
+
+ZMK_HOLD_TAP_xHRM(mo_kp, &mo, &kp)
+
+// Provides [l,r]hrm_mo_kp behaviors that hold a layer and tap a keycode.
+#define LHRM_MO_KP(layer_on_hold, key_on_tap) lhrm_mo_kp layer_on_hold key_on_tap
+#define RHRM_MO_KP(layer_on_hold, key_on_tap) rhrm_mo_kp layer_on_hold key_on_tap
 
 ////////////////
 
-#define LHRM_MO_KP(layer_on_hold, key_on_tab) ht_lhrm_mo_kp layer_on_hold key_on_tab
-#define RHRM_MO_KP(layer_on_hold, key_on_tab) ht_rhrm_mo_kp layer_on_hold key_on_tab
+// Creates [l,r]hrm_kp_mm_<mod-morph> behaviors that hold a keycode and tap a mod-morph.
+#define ZMK_HOLD_TAP_xHRM_KP_MM(mm_on_tap) \
+    ZMK_HOLD_TAP_HRM(lhrm_kp_mm_ ## mm_on_tap, &kp, &mm_on_tap, KEYS_LHRM) \
+    ZMK_HOLD_TAP_HRM(rhrm_kp_mm_ ## mm_on_tap, &kp, &mm_on_tap, KEYS_RHRM)
+
+// Creates [l,r]hrm_mo_mm_<mod-morph> behaviors that hold a layer and tap a mod-morph.
+#define ZMK_HOLD_TAP_xHRM_MO_MM(mm_on_tap) \
+    ZMK_HOLD_TAP_HRM(lhrm_mo_mm_ ## mm_on_tap, &mo, &mm_on_tap, KEYS_LHRM) \
+    ZMK_HOLD_TAP_HRM(rhrm_mo_mm_ ## mm_on_tap, &mo, &mm_on_tap, KEYS_RHRM)
+
+// Creates both keycode-hold and layer-hold HRM behavior pairs for one mod-morph tap behavior.
+#define ZMK_HOLD_TAP_xHRM_KP_AND_MO_MM(mm_on_tap) \
+    ZMK_HOLD_TAP_xHRM_KP_MM(mm_on_tap) \
+    ZMK_HOLD_TAP_xHRM_MO_MM(mm_on_tap)
+
+// Provides [l,r]hrm_kp_mm_<mod-morph> behaviors that hold a keycode and tap a mod-morph.
+#define LHRM_KP_MM(key_on_hold, mm_on_tap) lhrm_kp_mm_ ## mm_on_tap key_on_hold NOOP
+#define RHRM_KP_MM(key_on_hold, mm_on_tap) rhrm_kp_mm_ ## mm_on_tap key_on_hold NOOP
+
+// Provides [l,r]hrm_mo_mm_<mod-morph> behaviors that hold a layer and tap a mod-morph.
+#define LHRM_MO_MM(layer_on_hold, mm_on_tap) lhrm_mo_mm_ ## mm_on_tap layer_on_hold NOOP
+#define RHRM_MO_MM(layer_on_hold, mm_on_tap) rhrm_mo_mm_ ## mm_on_tap layer_on_hold NOOP
 
 ////////////////
 
-#define ZMK_HOLD_TAP_LHRM_KP_MM(mm_on_tap) \
-    ZMK_HOLD_TAP_HRM(ht_lhrm_kp_mm_ ## mm_on_tap, &kp, &mm_on_tap, KEYS_R THUMBS)
-#define LHRM_KP_MM(key_on_hold, mm_on_tap) \
-    ht_lhrm_kp_mm_ ## mm_on_tap key_on_hold NOOP
+// Creates [l,r]hrm_macro_kp_<macro> behaviors that hold a macro and tap a keycode.
+#define ZMK_HOLD_TAP_xHRM_MACRO_KP(macro_on_hold) \
+    ZMK_HOLD_TAP_HRM(lhrm_macro_kp_ ## macro_on_hold, &macro_on_hold, &kp, KEYS_LHRM) \
+    ZMK_HOLD_TAP_HRM(rhrm_macro_kp_ ## macro_on_hold, &macro_on_hold, &kp, KEYS_RHRM)
 
-#define ZMK_HOLD_TAP_RHRM_KP_MM(mm_on_tap) \
-    ZMK_HOLD_TAP_HRM(ht_rhrm_kp_mm_ ## mm_on_tap, &kp, &mm_on_tap, KEYS_L THUMBS)
-#define RHRM_KP_MM(key_on_hold, mm_on_tap) \
-    ht_rhrm_kp_mm_ ## mm_on_tap key_on_hold NOOP
+// Creates [l,r]hrm_macro_mm_<macro>_<mod-morph> behaviors that hold a macro and tap a mod-morph.
+#define ZMK_HOLD_TAP_xHRM_MACRO_MM(macro_on_hold, mm_on_tap) \
+    ZMK_HOLD_TAP_HRM(lhrm_macro_mm_ ## macro_on_hold ## _ ## mm_on_tap, &macro_on_hold, &mm_on_tap, KEYS_LHRM) \
+    ZMK_HOLD_TAP_HRM(rhrm_macro_mm_ ## macro_on_hold ## _ ## mm_on_tap, &macro_on_hold, &mm_on_tap, KEYS_RHRM)
 
-////////////////
+// Provides [l,r]hrm_macro_kp_<macro> behaviors that hold a macro and tap a keycode.
+#define LHRM_MACRO_KP(macro_on_hold, key_on_tap) lhrm_macro_kp_ ## macro_on_hold NOOP key_on_tap
+#define RHRM_MACRO_KP(macro_on_hold, key_on_tap) rhrm_macro_kp_ ## macro_on_hold NOOP key_on_tap
 
-#define ZMK_HOLD_TAP_LHRM_MO_MM(mm_on_tap) \
-    ZMK_HOLD_TAP_HRM(ht_lhrm_mo_mm_ ## mm_on_tap, &mo, &mm_on_tap, KEYS_R THUMBS)
-#define LHRM_MO_MM(layer_on_hold, mm_on_tap) \
-    ht_lhrm_mo_mm_ ## mm_on_tap layer_on_hold NOOP
-
-#define ZMK_HOLD_TAP_RHRM_MO_MM(mm_on_tap) \
-    ZMK_HOLD_TAP_HRM(ht_rhrm_mo_mm_ ## mm_on_tap, &mo, &mm_on_tap, KEYS_L THUMBS)
-#define RHRM_MO_MM(layer_on_hold, mm_on_tap) \
-    ht_rhrm_mo_mm_ ## mm_on_tap layer_on_hold NOOP
+// Provides [l,r]hrm_macro_mm_<macro>_<mod-morph> behaviors that hold a macro and tap a mod-morph.
+#define LHRM_MACRO_MM(macro_on_hold, mm_on_tap, macro_param) lhrm_macro_mm_ ## macro_on_hold ## _ ## mm_on_tap macro_param NOOP
+#define RHRM_MACRO_MM(macro_on_hold, mm_on_tap, macro_param) rhrm_macro_mm_ ## macro_on_hold ## _ ## mm_on_tap macro_param NOOP
 
 ////////////////
 
-#define ZMK_HOLD_TAP_LHRM_MACRO_KP(macro_on_hold) \
-    ZMK_HOLD_TAP_HRM(ht_lhrm_macro_kp_ ## macro_on_hold, &macro_on_hold, &kp, KEYS_R THUMBS)
-#define LHRM_MACRO_KP(macro_on_hold, key_on_tap) \
-    ht_lhrm_macro_kp_ ## macro_on_hold NOOP key_on_tap
-
-#define ZMK_HOLD_TAP_RHRM_MACRO_KP(macro_on_hold) \
-    ZMK_HOLD_TAP_HRM(ht_rhrm_macro_kp_ ## macro_on_hold, &macro_on_hold, &kp, KEYS_L THUMBS)
-#define RHRM_MACRO_KP(macro_on_hold, key_on_tap) \
-    ht_rhrm_macro_kp_ ## macro_on_hold NOOP key_on_tap
-
-////////////////
-
-#define ZMK_HOLD_TAP_LHRM_MACRO_MM(macro_on_hold, mm_on_tap) \
-    ZMK_HOLD_TAP_HRM(ht_lhrm_macro_mm_ ## macro_on_hold ## _ ## mm_on_tap, &macro_on_hold, &mm_on_tap, KEYS_R THUMBS)
-#define LHRM_MACRO_MM(macro_on_hold, mm_on_tap, layer_on_hold) \
-    ht_lhrm_macro_mm_ ## macro_on_hold ## _ ## mm_on_tap layer_on_hold NOOP
-
-#define ZMK_HOLD_TAP_RHRM_MACRO_MM(macro_on_hold, mm_on_tap) \
-    ZMK_HOLD_TAP_HRM(ht_rhrm_macro_mm_ ## macro_on_hold ## _ ## mm_on_tap, &macro_on_hold, &mm_on_tap, KEYS_L THUMBS)
-#define RHRM_MACRO_MM(macro_on_hold, mm_on_tap, layer_on_hold) \
-    ht_rhrm_macro_mm_ ## macro_on_hold ## _ ## mm_on_tap layer_on_hold NOOP
-
-////////////////
-
-// Generic pattern: hold = layer + fixed modifier, tap = key.
 #define ZMK_MACRO_ONE_PARAM_MO_KP(name, mod_on_hold) \
     ZMK_MACRO_ONE_PARAM(name, \
         wait-ms = <0>; \
@@ -201,38 +261,27 @@ ZMK_HOLD_TAP_HRM(ht_rhrm_mo_kp, &mo, &kp, KEYS_L THUMBS)
             ; \
     )
 
-#define LHRM_MO_MOD_KP(layer_on_hold, mod_on_hold, key_on_tap) \
-    hlmk_ ## mod_on_hold layer_on_hold key_on_tap
-#define RHRM_MO_MOD_KP(layer_on_hold, mod_on_hold, key_on_tap) \
-    hrmk_ ## mod_on_hold layer_on_hold key_on_tap
-
-#define LHRM_MO_MOD_MM(layer_on_hold, mod_on_hold, mm_on_tap) \
-    hlmm_ ## mod_on_hold ## _ ## mm_on_tap layer_on_hold NOOP
-#define RHRM_MO_MOD_MM(layer_on_hold, mod_on_hold, mm_on_tap) \
-    hrmm_ ## mod_on_hold ## _ ## mm_on_tap layer_on_hold NOOP
-
-////////////////////////////////
-
-// HINT: generate manually
+// Creates macro_mo_kp_<modifier> plus [l,r]hrm_mo_mod_kp_<modifier> behaviors.
 #define ZMK_HOLD_TAP_xHRM_MO_MOD_KP(mod_on_hold) \
-    ZMK_MACRO_ONE_PARAM_MO_KP(mmk_ ## mod_on_hold, mod_on_hold) \
-    ZMK_HOLD_TAP_HRM(hlmk_ ## mod_on_hold, &mmk_ ## mod_on_hold, &kp, KEYS_R THUMBS) \
-    ZMK_HOLD_TAP_HRM(hrmk_ ## mod_on_hold, &mmk_ ## mod_on_hold, &kp, KEYS_L THUMBS)
+    ZMK_MACRO_ONE_PARAM_MO_KP(macro_mo_kp_ ## mod_on_hold, mod_on_hold) \
+    ZMK_HOLD_TAP_HRM(lhrm_mo_mod_kp_ ## mod_on_hold, &macro_mo_kp_ ## mod_on_hold, &kp, KEYS_LHRM) \
+    ZMK_HOLD_TAP_HRM(rhrm_mo_mod_kp_ ## mod_on_hold, &macro_mo_kp_ ## mod_on_hold, &kp, KEYS_RHRM)
 
+// Provides macro_mo_kp_<modifier>
 ZMK_HOLD_TAP_xHRM_MO_MOD_KP(KEY_MEH)
 
-// HINT: generate manually
+// Provides [l,r]hrm_mo_mod_kp_<modifier> behaviors that hold a layer plus modifier and tap a keycode.
+#define LHRM_MO_MOD_KP(layer_on_hold, mod_on_hold, key_on_tap) lhrm_mo_mod_kp_ ## mod_on_hold layer_on_hold key_on_tap
+#define RHRM_MO_MOD_KP(layer_on_hold, mod_on_hold, key_on_tap) rhrm_mo_mod_kp_ ## mod_on_hold layer_on_hold key_on_tap
+
+// Creates [l,r]hrm_mo_mod_mm_<modifier>_<mod-morph> behaviors that hold a layer plus modifier and tap a mod-morph.
 #define ZMK_HOLD_TAP_xHRM_MO_MOD_MM(mod_on_hold, mm_on_tap) \
-    ZMK_HOLD_TAP_HRM(hlmm_ ## mod_on_hold ## _ ## mm_on_tap, &mmk_ ## mod_on_hold, &mm_on_tap, KEYS_R THUMBS) \
-    ZMK_HOLD_TAP_HRM(hrmm_ ## mod_on_hold ## _ ## mm_on_tap, &mmk_ ## mod_on_hold, &mm_on_tap, KEYS_L THUMBS)
+    ZMK_HOLD_TAP_HRM(lhrm_mo_mod_mm_ ## mod_on_hold ## _ ## mm_on_tap, &macro_mo_kp_ ## mod_on_hold, &mm_on_tap, KEYS_LHRM) \
+    ZMK_HOLD_TAP_HRM(rhrm_mo_mod_mm_ ## mod_on_hold ## _ ## mm_on_tap, &macro_mo_kp_ ## mod_on_hold, &mm_on_tap, KEYS_RHRM)
 
-// HINT: generated automatically (see below)
-#define ZMK_HOLD_TAP_xHRM_xx_MM(mm_on_tap) \
-    ZMK_HOLD_TAP_LHRM_KP_MM(mm_on_tap) \
-    ZMK_HOLD_TAP_RHRM_KP_MM(mm_on_tap) \
-    ZMK_HOLD_TAP_LHRM_MO_MM(mm_on_tap) \
-    ZMK_HOLD_TAP_RHRM_MO_MM(mm_on_tap)
-
+// Provides [l,r]hrm_mo_mod_mm_<modifier>_<mod-morph> behaviors that hold a layer plus modifier and tap a mod-morph.
+#define LHRM_MO_MOD_MM(layer_on_hold, mod_on_hold, mm_on_tap) lhrm_mo_mod_mm_ ## mod_on_hold ## _ ## mm_on_tap layer_on_hold NOOP
+#define RHRM_MO_MOD_MM(layer_on_hold, mod_on_hold, mm_on_tap) rhrm_mo_mod_mm_ ## mod_on_hold ## _ ## mm_on_tap layer_on_hold NOOP
 
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/keymaps/behaviors/macros
@@ -298,16 +347,17 @@ ZMK_MOD_MORPH(mm_bspc_del,
     mods = <(MOD_LSFT|MOD_RSFT)>;
     keep-mods = <MOD_RSFT>;
 )
-ZMK_HOLD_TAP_xHRM_xx_MM(mm_bspc_del)
+ZMK_HOLD_TAP_xHRM_KP_AND_MO_MM(mm_bspc_del)
 
 ////////////////////////////////
 
+// Defines a shift-sensitive mod-morph and its compatible HRM variants.
 #define ZMK_MOD_MORPH_SIMPLE(name, mod, binding1, binding2) \
     ZMK_MOD_MORPH(name, \
         mods = <(MOD_L ## mod | MOD_R ## mod)>; \
         bindings = <binding1>, <binding2>; \
     ) \
-    ZMK_HOLD_TAP_xHRM_xx_MM(name)
+    ZMK_HOLD_TAP_xHRM_KP_AND_MO_MM(name)
 
 
 ZMK_MOD_MORPH_SIMPLE(mm_add_sub, SFT, &kp PLUS, &kp MINUS)
@@ -357,7 +407,6 @@ ZMK_MOD_MORPH_SIMPLE(mm_keypad_parenthesis, SFT, &kp KP_LEFT_PARENTHESIS, &kp KP
 
 // ZMK_COMBO(combo_lm4_rm4, &to LAYER_SYS, LM4 RM4, ALL, COMBO_TERM_FAST, COMBO_IDLE_FAST)  // switch to system layer
 
-
 ////////////////////////////////////////////////////////////////
 
 #define ____BEHAVIOURS__TRI_STATE
@@ -368,11 +417,13 @@ https://github.com/dhruvinsh/zmk-tri-state:
 - Subsequent presses of tri-state will output B.
 - When another key is pressed or a layer change occurs, the third, 'interrupt' behavior C will fire.
 
-In this definition:
+For example:
 - A is pressing and holding KEY_MOD_APP_TOGGLE (by toggling it ON),
 - B is pressing Tab, and
 - C is releasing KEY_MOD_APP_TOGGLE (by toggling it OFF).
 */
+
+// Defines a tri-state forward app switcher that holds Alt/GUI and repeatedly sends Tab.
 #define ZMK_TRI_STATE__APP_SWITCH_FORWARD(name, ...)          \
     ZMK_TRI_STATE(                                    \
         name,                                         \
@@ -400,6 +451,7 @@ ZMK_TRI_STATE__APP_SWITCH_FORWARD(
     >;
 )
 
+// Defines a tri-state forward app-window switcher that repeatedly sends Grave.
 #define ZMK_TRI_STATE__APP_WIN_SWITCH_FORWARD(name, ...)          \
     ZMK_TRI_STATE(                                    \
         name,                                         \
@@ -417,6 +469,7 @@ ZMK_TRI_STATE__APP_WIN_SWITCH_FORWARD(
     >;
 )
 
+// Defines a tri-state backward app-window switcher that repeatedly sends Shift+Grave.
 #define ZMK_TRI_STATE__APP_WIN_SWITCH_BACKWARD(name, ...)          \
     ZMK_TRI_STATE(                                    \
         name,                                         \
@@ -486,7 +539,7 @@ MOERGO_LAYER(layer_base,
     ,
     &kp Y
     &RHRM_MO_KP(LAYER_SYM, U)
-    &RHRM_MO_KP(LAYER_NUMNAV, I)
+    &RHRM_MO_KP(LAYER_NUMPAD, I)
     &RHRM_KP_KP(LEFT_META, O)
     &kp SINGLE_QUOTE
 
@@ -558,7 +611,7 @@ MOERGO_LAYER(layer_base,
     ,
 // ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
 // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
-    &LHRM_MO_MM(LAYER_VARIOUS, mm_slash_backslash)
+    &LHRM_MO_MM(LAYER_MEDIA_MOUSE, mm_slash_backslash)
     ,
     &kp PAGE_DOWN
     &kp END
@@ -566,15 +619,15 @@ MOERGO_LAYER(layer_base,
     XXX
     XXX
     ,
-    &RHRM_MO_MOD_KP(LAYER_MODFUN, KEY_MEH, TAB)
+    &kp TAB
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_LAYER_VARIOUS
+#define ____KEYMAP_LAYER_MEDIA_MOUSE
 
-MOERGO_LAYER(layer_various,
+MOERGO_LAYER(layer_media_mouse,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
 // │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
@@ -589,16 +642,16 @@ MOERGO_LAYER(layer_various,
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     ___
 
-    XXX
+    &kp C_BRIGHTNESS_INC
     XXX
     &kp C_PREVIOUS
     &kp C_VOLUME_UP
-    &kp C_BRIGHTNESS_INC
+    XXX
     ,
     XXX
-    XXX
+    &msc SCRL_UP
     &mmv MOVE_UP
-    XXX
+    &msc SCRL_DOWN
     XXX
 
     ___
@@ -625,18 +678,17 @@ MOERGO_LAYER(layer_various,
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
     &kp PRINTSCREEN
 
-    XXX
+    &kp C_BRIGHTNESS_DEC
     XXX
     &kp C_NEXT
     &kp C_VOLUME_DOWN
-    &kp C_BRIGHTNESS_DEC
+    XXX
     ,
     &msc SCRL_UP
     &mkp LCLK
     &mkp MCLK
     &mkp RCLK
     &msc SCRL_DOWN
-
     ___
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
@@ -765,7 +817,7 @@ MOERGO_LAYER(layer_num,
 	___
 
     XXX
-    XXX
+    &kp COLON
     XXX /* LAYER -> THIS */
     &mo LAYER_SYM
     &kp LEFT_SHIFT
@@ -783,9 +835,9 @@ MOERGO_LAYER(layer_num,
     ___
 
     &kp SEMICOLON
-    &kp COMMA
-    XXX
     &kp DOT
+    XXX
+    &kp COMMA
     &kp COLON
     ,
     &kp EQUAL
@@ -842,9 +894,9 @@ MOERGO_LAYER(layer_num,
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_LAYER_NUMNAV
+#define ____KEYMAP_LAYER_NUMPAD
 
-MOERGO_LAYER(layer_numnav,
+MOERGO_LAYER(LAYER_NUMPAD,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
 // │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
@@ -880,9 +932,9 @@ MOERGO_LAYER(layer_numnav,
     &kp KP_EQUAL
     ,
     XXX
-    &kp KP_DOT
-    XXX
     &kp KP_COMMA
+    XXX
+    &kp KP_DOT
     XXX
 
     ___
@@ -1071,109 +1123,6 @@ MOERGO_LAYER(layer_fun,
      ___ , ___   ___                   ,                   ___   ___ , ___
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
-
-
-////////////////////////////////////////////////////////////////
-
-#define ____KEYMAP_LAYER_MODFUN
-
-MOERGO_LAYER(layer_modfun,
-// ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
-// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
-     ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
-// ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
-// │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
-    &kp F1
-    &kp F2
-    &kp F3
-    &kp F4
-    &kp F5
-    &kp F6
-    ,
-    &kp F7
-    &kp F8
-    &kp F9
-    &kp F10
-    &kp F11
-    &kp F12
-    ,
-// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-// │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
-    &kp F24
-
-    ___
-    ___
-    ___
-    ___
-    ___
-    ,
-    ___
-    ___
-    ___
-    ___
-    ___
-
-    &kp F13
-    ,
-// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-// │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
-    &kp F23
-
-    ___
-    ___
-    ___
-    ___
-    ___
-    ,
-    ___
-    ___
-    ___
-    ___
-    ___
-
-    &kp F14
-    ,
-// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-// │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
-    &kp F22
-
-    ___
-    ___
-    ___
-    ___
-    ___
-    ,
-    ___
-    ___
-    ___
-    ___
-    ___
-
-    &kp F15
-    ,
-// ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
-// │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
-     ___
-     ___ ,
-     &kp F21
-     &kp F20
-     &kp F19
-     ,
-     &kp F18
-     &kp F17
-     &kp F16
-     ,
-     ___
-     ___,
-// ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
-// │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
-     ___   ___ , ___                   ,                   ___ , ___   ___,
-// ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
-// │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
-     ___ , ___   ___                   ,                   ___   ___ , ___
-// ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
-)
-
 
 ////////////////////////////////////////////////////////////////
 
