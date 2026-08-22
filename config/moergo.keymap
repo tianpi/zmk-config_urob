@@ -60,6 +60,14 @@
 
 #define __BEHAVIORS
 
+/ {
+    sys_rgb_status_timer: sys_rgb_status_timer {
+        compatible = "tianpi,layer-rgb-status-timer";
+        layer = <LAYER_SYS>;
+        interval-ms = <5000>;
+    };
+};
+
 // https://zmk.dev/docs/keymaps/behaviors/caps-word
 &caps_word {
     /delete-property/ ignore-modifiers; // mods deactivate caps-word, requires PR #1451
@@ -896,7 +904,7 @@ MOERGO_LAYER(layer_num,
 
 #define ____KEYMAP_LAYER_NUMPAD
 
-MOERGO_LAYER(LAYER_NUMPAD,
+MOERGO_LAYER(layer_numpad,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
 // │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,

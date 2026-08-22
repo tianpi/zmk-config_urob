@@ -1,0 +1,13 @@
+description: Refreshes RGB status while a configured ZMK layer is active
+
+compatible: "tianpi,layer-rgb-status-timer"
+
+properties:
+  layer:
+    type: int
+    required: true
+    description: ZMK layer index that enables the timer.
+  interval-ms:
+    type: int
+    default: 5000
+    description: Time between RGB status refreshes while the layer is active.

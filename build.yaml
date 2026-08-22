@@ -14,6 +14,10 @@
 ---
 include:
   - board: glove80_lh
+    cmake-args: "-DZMK_EXTRA_MODULES=${GITHUB_WORKSPACE}/tp-modules/layer-rgb-status-timer"
   - board: glove80_rh
+    cmake-args: "-DZMK_EXTRA_MODULES=${GITHUB_WORKSPACE}/tp-modules/layer-rgb-status-timer"
   - board: go60_lh
+    cmake-args: "-DZMK_EXTRA_MODULES=${GITHUB_WORKSPACE}/tp-modules/layer-rgb-status-timer"
   - board: go60_rh
+    cmake-args: "-DZMK_EXTRA_MODULES=${GITHUB_WORKSPACE}/tp-modules/layer-rgb-status-timer"
