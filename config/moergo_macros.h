@@ -279,14 +279,20 @@
 
 ////////////////////////////////
 
-#ifndef KEYS_LEFT_HAND
-#define KEYS_LEFT_HAND
+#ifndef KEYS_FINGERS_LEFT
+#define KEYS_FINGERS_LEFT
 #endif
-#ifndef KEYS_RIGHT_HAND
-#define KEYS_RIGHT_HAND
+#ifndef KEYS_FINGERS_RIGHT
+#define KEYS_FINGERS_RIGHT
 #endif
-#ifndef KEYS_LEFT_AND_RIGHT_THUMB
-#define KEYS_LEFT_AND_RIGHT_THUMB
+#ifndef KEYS_THUMB_LEFT
+#define KEYS_THUMB_LEFT
+#endif
+#ifndef KEYS_THUMB_RIGHT
+#define KEYS_THUMB_RIGHT
+#endif
+#ifndef KEYS_THUMB_LEFT_AND_RIGHT
+#define KEYS_THUMB_LEFT_AND_RIGHT
 #endif
 
 ////////////////////////////////

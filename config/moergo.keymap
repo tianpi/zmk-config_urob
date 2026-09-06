@@ -132,7 +132,7 @@ ZMK_HOLD_TAP_HRM
     → LHRM_KP_KP supplies its hold and tap parameters at a keymap position
 
 'lhrm_kp_kp' is a named *ZMK behavior*, defined by:
-    ZMK_HOLD_TAP_HRM(lhrm_kp_kp, &kp, &kp, KEYS_LHRM)
+    ZMK_HOLD_TAP_HRM(lhrm_kp_kp, &kp, &kp, KEYS_LHRM_HOLD_TRIGGER)
 A keymap binding is its use at a physical key position, with arguments, for example:
     &LHRM_KP_KP(LEFT_META, W)
 
@@ -165,7 +165,7 @@ ZMK_HOLD_TAP_xHRM_<hold behavior>_<tap behavior>
 - `MOD`: fixed modifier held together with a layer.
 - `xHRM`: generator that creates both left- and right-hand HRM variants.
 - `[l,r]hrm_*`: named left/right ZMK hold-tap behavior instances used by the keymap aliases.
-- `KEYS_LHRM` / `KEYS_RHRM`: opposite-hand and thumb positions that trigger the corresponding HRM hold.
+- `KEYS_LHRM_HOLD_TRIGGER` / `KEYS_RHRM_HOLD_TRIGGER`: opposite-hand positions that trigger the corresponding HRM hold.
 - `macro_mo_kp_*`: named parameterized macro behavior that holds a layer plus a fixed modifier.
 - `ZMK_HOLD_TAP_HRM`: factory macro that creates one HRM behavior with shared timing and positional-trigger settings.
 - `NOOP`: zero-valued placeholder for an unused behavior parameter.
@@ -186,22 +186,31 @@ Behavior names are limited to 47 visible characters by Zephyr, so generated beha
         hold-trigger-on-release; \
     )
 
-#define KEYS_LHRM   KEYS_LEFT_AND_RIGHT_THUMB KEYS_RIGHT_HAND
-#define KEYS_RHRM   KEYS_LEFT_AND_RIGHT_THUMB KEYS_LEFT_HAND
-
-////////////////
+// While an HRM is undecided, a key from its opposite-hand hold-trigger set resolves it as a hold;
+// a same-hand key resolves it as a tap. `hold-trigger-on-release` makes this decision when the
+// following key releases. Holding the HRM alone beyond the tapping term also resolves it as hold.
+#define KEYS_LHRM_HOLD_TRIGGER \
+    KEYS_FINGERS_RIGHT \
+    KEYS_THUMB_RIGHT
+#define KEYS_RHRM_HOLD_TRIGGER \
+    KEYS_FINGERS_LEFT \
+    KEYS_THUMB_LEFT
 
 // Creates [l,r]hrm_<name> behaviors with the supplied hold and tap bindings.
 #define ZMK_HOLD_TAP_xHRM(name, hold_binding, tap_binding) \
-    ZMK_HOLD_TAP_HRM(lhrm_ ## name, hold_binding, tap_binding, KEYS_LHRM) \
-    ZMK_HOLD_TAP_HRM(rhrm_ ## name, hold_binding, tap_binding, KEYS_RHRM)
+    ZMK_HOLD_TAP_HRM(lhrm_ ## name, hold_binding, tap_binding, KEYS_LHRM_HOLD_TRIGGER) \
+    ZMK_HOLD_TAP_HRM(rhrm_ ## name, hold_binding, tap_binding, KEYS_RHRM_HOLD_TRIGGER)
 
+////////////////
+
+// Creates [l,r]hrm_kp_kp behaviors that hold one keycode and tap another.
 ZMK_HOLD_TAP_xHRM(kp_kp, &kp, &kp)
 
 // Provides [l,r]hrm_kp_kp behaviors that hold one keycode and tap another.
 #define LHRM_KP_KP(key_on_hold, key_on_tap) lhrm_kp_kp key_on_hold key_on_tap
 #define RHRM_KP_KP(key_on_hold, key_on_tap) rhrm_kp_kp key_on_hold key_on_tap
 
+// Creates [l,r]hrm_mo_kp behaviors that hold a layer and tap a keycode.
 ZMK_HOLD_TAP_xHRM(mo_kp, &mo, &kp)
 
 // Provides [l,r]hrm_mo_kp behaviors that hold a layer and tap a keycode.
@@ -212,13 +221,11 @@ ZMK_HOLD_TAP_xHRM(mo_kp, &mo, &kp)
 
 // Creates [l,r]hrm_kp_mm_<mod-morph> behaviors that hold a keycode and tap a mod-morph.
 #define ZMK_HOLD_TAP_xHRM_KP_MM(mm_on_tap) \
-    ZMK_HOLD_TAP_HRM(lhrm_kp_mm_ ## mm_on_tap, &kp, &mm_on_tap, KEYS_LHRM) \
-    ZMK_HOLD_TAP_HRM(rhrm_kp_mm_ ## mm_on_tap, &kp, &mm_on_tap, KEYS_RHRM)
+    ZMK_HOLD_TAP_xHRM(kp_mm_ ## mm_on_tap, &kp, &mm_on_tap)
 
 // Creates [l,r]hrm_mo_mm_<mod-morph> behaviors that hold a layer and tap a mod-morph.
 #define ZMK_HOLD_TAP_xHRM_MO_MM(mm_on_tap) \
-    ZMK_HOLD_TAP_HRM(lhrm_mo_mm_ ## mm_on_tap, &mo, &mm_on_tap, KEYS_LHRM) \
-    ZMK_HOLD_TAP_HRM(rhrm_mo_mm_ ## mm_on_tap, &mo, &mm_on_tap, KEYS_RHRM)
+    ZMK_HOLD_TAP_xHRM(mo_mm_ ## mm_on_tap, &mo, &mm_on_tap)
 
 // Creates both keycode-hold and layer-hold HRM behavior pairs for one mod-morph tap behavior.
 #define ZMK_HOLD_TAP_xHRM_KP_AND_MO_MM(mm_on_tap) \
@@ -237,13 +244,11 @@ ZMK_HOLD_TAP_xHRM(mo_kp, &mo, &kp)
 
 // Creates [l,r]hrm_macro_kp_<macro> behaviors that hold a macro and tap a keycode.
 #define ZMK_HOLD_TAP_xHRM_MACRO_KP(macro_on_hold) \
-    ZMK_HOLD_TAP_HRM(lhrm_macro_kp_ ## macro_on_hold, &macro_on_hold, &kp, KEYS_LHRM) \
-    ZMK_HOLD_TAP_HRM(rhrm_macro_kp_ ## macro_on_hold, &macro_on_hold, &kp, KEYS_RHRM)
+    ZMK_HOLD_TAP_xHRM(macro_kp_ ## macro_on_hold, &macro_on_hold, &kp)
 
 // Creates [l,r]hrm_macro_mm_<macro>_<mod-morph> behaviors that hold a macro and tap a mod-morph.
 #define ZMK_HOLD_TAP_xHRM_MACRO_MM(macro_on_hold, mm_on_tap) \
-    ZMK_HOLD_TAP_HRM(lhrm_macro_mm_ ## macro_on_hold ## _ ## mm_on_tap, &macro_on_hold, &mm_on_tap, KEYS_LHRM) \
-    ZMK_HOLD_TAP_HRM(rhrm_macro_mm_ ## macro_on_hold ## _ ## mm_on_tap, &macro_on_hold, &mm_on_tap, KEYS_RHRM)
+    ZMK_HOLD_TAP_xHRM(macro_mm_ ## macro_on_hold ## _ ## mm_on_tap, &macro_on_hold, &mm_on_tap)
 
 // Provides [l,r]hrm_macro_kp_<macro> behaviors that hold a macro and tap a keycode.
 #define LHRM_MACRO_KP(macro_on_hold, key_on_tap) lhrm_macro_kp_ ## macro_on_hold NOOP key_on_tap
@@ -255,6 +260,8 @@ ZMK_HOLD_TAP_xHRM(mo_kp, &mo, &kp)
 
 ////////////////
 
+// Creates macro_mo_kp_<modifier> behaviors that hold a layer plus a fixed modifier and tap a keycode.
+// Layer and keycode are provided as parameters to the macro, while the modifier is fixed in the macro name.
 #define ZMK_MACRO_ONE_PARAM_MO_KP(name, mod_on_hold) \
     ZMK_MACRO_ONE_PARAM(name, \
         wait-ms = <0>; \
@@ -272,10 +279,9 @@ ZMK_HOLD_TAP_xHRM(mo_kp, &mo, &kp)
 // Creates macro_mo_kp_<modifier> plus [l,r]hrm_mo_mod_kp_<modifier> behaviors.
 #define ZMK_HOLD_TAP_xHRM_MO_MOD_KP(mod_on_hold) \
     ZMK_MACRO_ONE_PARAM_MO_KP(macro_mo_kp_ ## mod_on_hold, mod_on_hold) \
-    ZMK_HOLD_TAP_HRM(lhrm_mo_mod_kp_ ## mod_on_hold, &macro_mo_kp_ ## mod_on_hold, &kp, KEYS_LHRM) \
-    ZMK_HOLD_TAP_HRM(rhrm_mo_mod_kp_ ## mod_on_hold, &macro_mo_kp_ ## mod_on_hold, &kp, KEYS_RHRM)
+    ZMK_HOLD_TAP_xHRM(mo_mod_kp_ ## mod_on_hold, &macro_mo_kp_ ## mod_on_hold, &kp)
 
-// Provides macro_mo_kp_<modifier>
+// Provides macro_mo_kp_KEY_MEH plus [l,r]hrm_mo_mod_kp_KEY_MEH behaviors.
 ZMK_HOLD_TAP_xHRM_MO_MOD_KP(KEY_MEH)
 
 // Provides [l,r]hrm_mo_mod_kp_<modifier> behaviors that hold a layer plus modifier and tap a keycode.
@@ -284,8 +290,7 @@ ZMK_HOLD_TAP_xHRM_MO_MOD_KP(KEY_MEH)
 
 // Creates [l,r]hrm_mo_mod_mm_<modifier>_<mod-morph> behaviors that hold a layer plus modifier and tap a mod-morph.
 #define ZMK_HOLD_TAP_xHRM_MO_MOD_MM(mod_on_hold, mm_on_tap) \
-    ZMK_HOLD_TAP_HRM(lhrm_mo_mod_mm_ ## mod_on_hold ## _ ## mm_on_tap, &macro_mo_kp_ ## mod_on_hold, &mm_on_tap, KEYS_LHRM) \
-    ZMK_HOLD_TAP_HRM(rhrm_mo_mod_mm_ ## mod_on_hold ## _ ## mm_on_tap, &macro_mo_kp_ ## mod_on_hold, &mm_on_tap, KEYS_RHRM)
+    ZMK_HOLD_TAP_xHRM(mo_mod_mm_ ## mod_on_hold ## _ ## mm_on_tap, &macro_mo_kp_ ## mod_on_hold, &mm_on_tap)
 
 // Provides [l,r]hrm_mo_mod_mm_<modifier>_<mod-morph> behaviors that hold a layer plus modifier and tap a mod-morph.
 #define LHRM_MO_MOD_MM(layer_on_hold, mod_on_hold, mm_on_tap) lhrm_mo_mod_mm_ ## mod_on_hold ## _ ## mm_on_tap layer_on_hold NOOP
@@ -608,7 +613,9 @@ MOERGO_LAYER(layer_base,
 // ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
 // │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
     &LHRM_MO_MM(LAYER_NAV, mm_bspc_del)
-    &RHRM_KP_MM(LEFT_CONTROL, mm_minus_plus) // RHRM since modifier is used in "mouse mode" with keys on left-hand side
+    // RHRM is used because, while the mouse is operated with the right hand,
+    // the modifier is combined with keys from the left hand side.
+    &RHRM_KP_MM(LEFT_CONTROL, mm_minus_plus)
     ,
     &kp PRINTSCREEN
     ,

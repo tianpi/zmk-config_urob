@@ -193,15 +193,22 @@
   POS_RH_C1R4 POS_RH_C2R4 POS_RH_C3R4 POS_RH_C4R4 POS_RH_C5R4 POS_RH_C6R4 \
               POS_RH_C2R5 POS_RH_C3R5 POS_RH_C4R5
 
-#define THUMB_KEYS \
-  POS_LH_T1 POS_LH_T2 POS_LH_T3 \
+#define LEFT_THUMB_KEYS \
+  POS_LH_T1 POS_LH_T2 POS_LH_T3
+
+#define RIGHT_THUMB_KEYS \
   POS_RH_T1 POS_RH_T2 POS_RH_T3
+
+#define THUMB_KEYS \
+  LEFT_THUMB_KEYS RIGHT_THUMB_KEYS
 
 ////////////////////////////////
 
-#define KEYS_LEFT_HAND LEFT_HAND_KEYS
-#define KEYS_RIGHT_HAND RIGHT_HAND_KEYS
-#define KEYS_LEFT_AND_RIGHT_THUMB THUMB_KEYS
+#define KEYS_FINGERS_LEFT LEFT_HAND_KEYS
+#define KEYS_FINGERS_RIGHT RIGHT_HAND_KEYS
+#define KEYS_THUMB_LEFT LEFT_THUMB_KEYS
+#define KEYS_THUMB_RIGHT RIGHT_THUMB_KEYS
+#define KEYS_THUMB_LEFT_AND_RIGHT THUMB_KEYS
 
 ////////////////////////////////////////////////////////////////
 // https://github.com/moergo-keyboards/go60-zmk-config/blob/main/config/go60.keymap
