@@ -354,13 +354,13 @@ ZMK_MACRO(macro_std_cpp,
 
 ////////////////////////////////
 
-// tap: backspace | lshft + tap: delete | rshft + tap: rshift + delete
-ZMK_MOD_MORPH(mm_bspc_del,
+// tap -> BACKSPACE | LSFT + tap -> DELETE | RSFT + tap -> RSFT-DELETE
+ZMK_MOD_MORPH(mm_backspace_delete,
     bindings = <&kp BSPC>, <&kp DEL>;
     mods = <(MOD_LSFT|MOD_RSFT)>;
     keep-mods = <MOD_RSFT>;
 )
-ZMK_HOLD_TAP_xHRM_KP_AND_MO_MM(mm_bspc_del)
+ZMK_HOLD_TAP_xHRM_KP_AND_MO_MM(mm_backspace_delete)
 
 ////////////////////////////////
 
@@ -542,7 +542,7 @@ MOERGO_LAYER(layer_base,
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
-    &kp TAB
+    &kp SPACE // &kp TAB
 
     &kp Q
     &LHRM_KP_KP(LEFT_META, W)
@@ -556,7 +556,7 @@ MOERGO_LAYER(layer_base,
     &RHRM_KP_KP(LEFT_META, O)
     &kp SINGLE_QUOTE
 
-    &kp LS(TAB)
+    XXX // &kp LS(TAB)
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
@@ -600,7 +600,7 @@ MOERGO_LAYER(layer_base,
     &kp PAGE_UP
     ,
     &kp LEFT_ARROW
-    &kp DELETE
+    &kp SPACE
     &kp RIGHT_ARROW
     ,
     XXX
@@ -612,7 +612,7 @@ MOERGO_LAYER(layer_base,
     ,
 // ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
 // │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
-    &LHRM_MO_MM(LAYER_NAV, mm_bspc_del)
+    &LHRM_MO_MM(LAYER_NAV, mm_backspace_delete)
     // RHRM is used because, while the mouse is operated with the right hand,
     // the modifier is combined with keys from the left hand side.
     &RHRM_KP_MM(LEFT_CONTROL, mm_minus_plus)
@@ -658,9 +658,9 @@ MOERGO_LAYER(layer_media_mouse,
     ___
 
     &kp C_BRIGHTNESS_INC
-    XXX
     &kp C_PREVIOUS
     &kp C_VOLUME_UP
+    XXX
     XXX
     ,
     XXX
@@ -676,9 +676,9 @@ MOERGO_LAYER(layer_media_mouse,
     ___
 
     XXX
-    XXX
     &kp C_PLAY_PAUSE
     &kp C_MUTE
+    XXX
     XXX
     ,
     &msc SCRL_LEFT
@@ -694,9 +694,9 @@ MOERGO_LAYER(layer_media_mouse,
     &kp PRINTSCREEN
 
     &kp C_BRIGHTNESS_DEC
-    XXX
     &kp C_NEXT
     &kp C_VOLUME_DOWN
+    XXX
     XXX
     ,
     &msc SCRL_UP
