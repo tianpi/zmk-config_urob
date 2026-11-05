@@ -14,14 +14,15 @@
 #define __KEYMAP_LAYERS
 
 #define LAYER_BASE        0
-#define LAYER_MEDIA_MOUSE (LAYER_BASE + 1)
-#define LAYER_SYS         (LAYER_MEDIA_MOUSE + 1)
+#define LAYER_MEDIA       (LAYER_BASE + 1)
+#define LAYER_SYS         (LAYER_MEDIA + 1)
 #define LAYER_NUM         (LAYER_SYS + 1)
 #define LAYER_NUMPAD      (LAYER_NUM + 1)
 #define LAYER_SYM         (LAYER_NUMPAD + 1)
 #define LAYER_FUN         (LAYER_SYM + 1)
 #define LAYER_MACROS      (LAYER_FUN + 1)
-#define LAYER_NAV         (LAYER_MACROS + 1)
+#define LAYER_NAV_MOUSE   (LAYER_MACROS + 1)
+#define LAYER_NAV         (LAYER_NAV_MOUSE + 1)
 #define _LAYER_TEMPLATE   (LAYER_NAV + 1)
 
 ////////////////////////////////////////////////////////////////
@@ -542,7 +543,7 @@ MOERGO_LAYER(layer_base,
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
-    &kp SPACE // &kp TAB
+    &mo LAYER_MEDIA
 
     &kp Q
     &LHRM_KP_KP(LEFT_META, W)
@@ -556,7 +557,7 @@ MOERGO_LAYER(layer_base,
     &RHRM_KP_KP(LEFT_META, O)
     &kp SINGLE_QUOTE
 
-    XXX // &kp LS(TAB)
+    &caps_word
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
@@ -578,7 +579,7 @@ MOERGO_LAYER(layer_base,
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
-    &caps_word
+    &kp LCTRL
 
     &LHRM_KP_KP(RIGHT_ALT, Z)
     &LHRM_KP_KP(KEY_META_CTRL, X)
@@ -592,16 +593,16 @@ MOERGO_LAYER(layer_base,
     &RHRM_KP_MM(KEY_META_CTRL, mm_dot_colon)
     &RHRM_KP_MM(RIGHT_ALT, mm_excl_qmark)
 
-    &caps_word
+    &kp CAPSLOCK
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
     &kp HOME
     &kp PAGE_UP
     ,
-    &kp LEFT_ARROW
+    &kp LCTRL
     &kp SPACE
-    &kp RIGHT_ARROW
+    &kp PRINTSCREEN
     ,
     XXX
     XXX
@@ -626,7 +627,7 @@ MOERGO_LAYER(layer_base,
     ,
 // ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
 // │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
-    &LHRM_MO_MM(LAYER_MEDIA_MOUSE, mm_slash_backslash)
+    &LHRM_MO_MM(LAYER_NAV_MOUSE, mm_slash_backslash)
     ,
     &kp PAGE_DOWN
     &kp END
@@ -640,33 +641,43 @@ MOERGO_LAYER(layer_base,
 
 ////////////////////////////////////////////////////////////////
 
-#define ____KEYMAP_LAYER_MEDIA_MOUSE
+#define ____KEYMAP_LAYER_MEDIA
 
-MOERGO_LAYER(layer_media_mouse,
+MOERGO_LAYER(layer_media,
 // ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
 // │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
      ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
 // ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
-    ___   ___   ___   ___   ___   ___
+    XXX
+    XXX
+    &kp C_BRIGHTNESS_INC
+    &kp C_PREVIOUS
+    &kp C_VOLUME_UP
+    XXX
     ,
-    ___   ___   ___   ___   ___   &to LAYER_SYS
+    XXX
+    XXX
+    XXX
+    XXX
+    XXX
+    &to LAYER_SYS
     ,
 
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
     ___
 
-    &kp C_BRIGHTNESS_INC
-    &kp C_PREVIOUS
-    &kp C_VOLUME_UP
     XXX
+    &kp C_BRIGHTNESS_DEC
+    &kp C_NEXT
+    &kp C_VOLUME_DOWN
     XXX
     ,
     XXX
-    &msc SCRL_UP
-    &mmv MOVE_UP
-    &msc SCRL_DOWN
+    XXX
+    XXX
+    XXX
     XXX
 
     ___
@@ -676,34 +687,35 @@ MOERGO_LAYER(layer_media_mouse,
     ___
 
     XXX
+    XXX
     &kp C_PLAY_PAUSE
     &kp C_MUTE
     XXX
-    XXX
     ,
-    &msc SCRL_LEFT
-    &mmv MOVE_LEFT
-    &mmv MOVE_DOWN
-    &mmv MOVE_RIGHT
-    &msc SCRL_RIGHT
+    XXX
+    XXX
+    XXX
+    XXX
+    XXX
 
     ___
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
-    &kp PRINTSCREEN
+    ___
 
-    &kp C_BRIGHTNESS_DEC
-    &kp C_NEXT
-    &kp C_VOLUME_DOWN
+    XXX
+    XXX
+    XXX
     XXX
     XXX
     ,
-    &msc SCRL_UP
-    &mkp LCLK
-    &mkp MCLK
-    &mkp RCLK
-    &msc SCRL_DOWN
+    XXX
+    XXX
+    XXX
+    XXX
+    XXX
+
     ___
     ,
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
@@ -717,7 +729,6 @@ MOERGO_LAYER(layer_media_mouse,
      ___ , ___   ___                   ,                   ___   ___ , ___
 // ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
 )
-
 
 ////////////////////////////////////////////////////////////////
 
@@ -1207,6 +1218,95 @@ MOERGO_LAYER(layer_macros,
 // ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
 // │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
      ___   ___ , ___   ___   ___       ,       ___   ___   ___ , ___   ___,
+// ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
+// │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
+     ___   ___ , ___                   ,                   ___ , ___   ___,
+// ├─────┼─────┼─────┤                                   ├─────┼─────┼─────┤
+// │ LH2 │ LH1 │ LH0 │                                   │ RH0 │ RH1 │ RH2 │
+     ___ , ___   ___                   ,                   ___   ___ , ___
+// ╰─────┴─────┴─────╯                                   ╰─────┴─────┴─────╯
+)
+
+////////////////////////////////////////////////////////////////
+
+#define ____KEYMAP_LAYER_NAV_MOUSE
+
+MOERGO_LAYER(layer_nav_mouse,
+// ╭─────┬─────┬─────┬─────┬─────╮           ╭─────┬─────┬─────┬─────┬─────╮
+// │ LC5 │ LC4 │ LC3 │ LC2 │ LC1 │           │ RC1 │ RC2 │ RC3 │ RC4 │ RC5 │
+     ___   ___   ___   ___   ___       ,       ___   ___   ___   ___   ___,
+// ├─────┼─────┼─────┼─────┼─────┼─────┬─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LN5 │ LN4 │ LN3 │ LN2 │ LN1 │ LN0 │ RN0 │ RN1 │ RN2 │ RN3 │ RN4 │ RN5 │
+    ___   ___   ___   ___   ___   ___
+    ,
+    ___   ___   ___   ___   ___   ___
+    ,
+
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LT5 │ LT4 │ LT3 │ LT2 │ LT1 │ LT0 │ RT0 │ RT1 │ RT2 │ RT3 │ RT4 │ RT5 │
+    ___
+
+    XXX
+    XXX
+    XXX
+    XXX
+    XXX
+    ,
+    XXX
+    &msc SCRL_UP
+    &mmv MOVE_UP
+    &msc SCRL_DOWN
+    XXX
+
+    ___
+    ,
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LM5 │ LM4 │ LM3 │ LM2 │ LM1 │ LM0 │ RM0 │ RM1 │ RM2 │ RM3 │ RM4 │ RM5 │
+    ___
+
+    &kp TAB
+    &kp DELETE
+    &kp UP_ARROW
+    &kp BACKSPACE
+    &kp KEY_CUT
+    ,
+    &msc SCRL_LEFT
+    &mmv MOVE_LEFT
+    &mmv MOVE_DOWN
+    &mmv MOVE_RIGHT
+    &msc SCRL_RIGHT
+
+    ___
+    ,
+// ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LB5 │ LB4 │ LB3 │ LB2 │ LB1 │ LB0 │ RB0 │ RB1 │ RB2 │ RB3 │ RB4 │ RB5 │
+    ___
+
+    &kp KEY_PASTE
+    &kp LEFT_ARROW
+    &kp DOWN_ARROW
+    &kp RIGHT_ARROW
+    &kp KEY_COPY
+    ,
+    &msc SCRL_UP
+    &mkp LCLK
+    &mkp MCLK
+    &mkp RCLK
+    &msc SCRL_DOWN
+
+    ___
+    ,
+// ├─────┼─────┼─────┼─────┼─────┼─────┴─────┼─────┼─────┼─────┼─────┼─────┤
+// │ LF5 │ LF4 │ LF3 │ LF2 │ LF1 │           │ RF1 │ RF2 │ RF3 │ RF4 │ RF5 │
+    &kp PAGE_UP
+    &kp PAGE_DOWN
+    ,
+    &kp HOME
+    &kp K_CONTEXT_MENU
+    &kp END
+    ,
+    ___   ___   ___  , ___  ___
+    ,
 // ├─────┼─────┼─────┼─────┴─────╯           ╰─────┴─────┼─────┼─────┼─────┤
 // │ LH5 │ LH4 │ LH3 │                                   │ RH3 │ RH4 │ RH5 │
      ___   ___ , ___                   ,                   ___ , ___   ___,

@@ -74,8 +74,10 @@ Do not delete unrelated build outputs unless the user asks.
 
 ## Current Behavior Notes
 
-- `config/moergo.keymap` defines the shared layer stack:
-  `BASE`, `SYS`, `NUM`, `NUMNAV`, `SYM`, `FUN`, `FUNFUN`, `FUNMAC`, and `NAV`.
+- `config/moergo.keymap` defines the shared layer stack, in index order:
+  `BASE`, `MEDIA`, `SYS`, `NUM`, `NUMPAD`, `SYM`, `FUN`, `MACROS`, `NAV_MOUSE`,
+  and `NAV`. The `LAYER_*` defines must stay in the same order as the
+  `MOERGO_LAYER(...)` blocks in the file.
 - Homerow hold-taps use balanced timing with positional hold-trigger rules.
   Timing constants live in `config/moergo_includes.h`.
 - The keymap uses mod-morph helpers for shifted punctuation and related symbol
