@@ -56,6 +56,14 @@
 #define KEY_HYPER       LG(KEY_MEH)
 #define KEY_META_CTRL   LG(LCTRL)
 
+// Diagonal mouse moves at the same speed as straight moves:
+// each axis gets ZMK_POINTING_DEFAULT_MOVE_VAL / sqrt(2) (1/sqrt(2) ~= 7071/10000).
+#define MOVE_VAL_DIAGONAL   (ZMK_POINTING_DEFAULT_MOVE_VAL * 7071 / 10000)
+#define MOVE_UP_LEFT        MOVE(-MOVE_VAL_DIAGONAL, -MOVE_VAL_DIAGONAL)
+#define MOVE_UP_RIGHT       MOVE( MOVE_VAL_DIAGONAL, -MOVE_VAL_DIAGONAL)
+#define MOVE_DOWN_LEFT      MOVE(-MOVE_VAL_DIAGONAL,  MOVE_VAL_DIAGONAL)
+#define MOVE_DOWN_RIGHT     MOVE( MOVE_VAL_DIAGONAL,  MOVE_VAL_DIAGONAL)
+
 ////////////////////////////////////////////////////////////////
 // https://zmk.dev/docs/keymaps/behaviors
 
@@ -1247,15 +1255,15 @@ MOERGO_LAYER(layer_nav_mouse,
     ___
 
     XXX
-    XXX
-    XXX
-    XXX
+    &mkp LCLK
+    &mkp MCLK
+    &mkp RCLK
     XXX
     ,
     XXX
-    &msc SCRL_UP
+    &mmv MOVE_UP_LEFT
     &mmv MOVE_UP
-    &msc SCRL_DOWN
+    &mmv MOVE_UP_RIGHT
     XXX
 
     ___
@@ -1289,9 +1297,9 @@ MOERGO_LAYER(layer_nav_mouse,
     &kp KEY_COPY
     ,
     &msc SCRL_UP
-    &mkp LCLK
-    &mkp MCLK
-    &mkp RCLK
+    &mmv MOVE_DOWN_LEFT
+    &mmv MOVE_DOWN
+    &mmv MOVE_DOWN_RIGHT
     &msc SCRL_DOWN
 
     ___
